@@ -6,7 +6,7 @@
 - [ ] Quiz collection
 
 - [ ] Complete Admin Side
-- [ ] Admin Login Page
+- [x] Admin Login Page
 - [ ] Admin Dashboard Page
 - [ ] Admin Quiz Page
 - [ ] Admin Add Update Quiz Page
