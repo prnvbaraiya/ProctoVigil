@@ -4,7 +4,7 @@ import AdminLayout from "../AdminLayout";
 function Dashboard() {
   return (
     <>
-      <AdminLayout>Its' Dashboard</AdminLayout>
+      <AdminLayout>It's Dashboard</AdminLayout>
     </>
   );
 }
