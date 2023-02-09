@@ -10,9 +10,10 @@ import {
 } from "@mui/material";
 import SignalCellularAltIcon from "@mui/icons-material/SignalCellularAlt";
 import PersonIcon from "@mui/icons-material/Person";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import LiveTvIcon from "@mui/icons-material/LiveTv";
 import SettingsIcon from "@mui/icons-material/Settings";
-import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import LogoutIcon from "@mui/icons-material/Logout";
 import logo from "../assets/logo_Procto-removebg-preview.png";
 import { NavItem } from "./nav-item";
 
@@ -28,6 +29,11 @@ const items = [
     title: "User",
   },
   {
+    href: "/quiz",
+    icon: <LibraryBooksIcon fontSize="small" />,
+    title: "Quiz",
+  },
+  {
     href: "/stream",
     icon: <LiveTvIcon fontSize="small" />,
     title: "Stream",
@@ -37,11 +43,10 @@ const items = [
     icon: <SettingsIcon fontSize="small" />,
     title: "Settings",
   },
-
   {
-    href: "/404",
-    icon: <WarningAmberIcon fontSize="small" />,
-    title: "Error",
+    href: "/logout",
+    icon: <LogoutIcon fontSize="small" />,
+    title: "Log Out",
   },
 ];
 

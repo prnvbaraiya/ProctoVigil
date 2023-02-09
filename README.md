@@ -12,7 +12,9 @@
 - [ ] Admin Quiz Page
 - [ ] Admin Add Update Quiz Page
 - [ ] Admin Add Quiz Using csv file
-- [ ] Admin Stream Page
+- [x] Admin Stream Page
+- [x] Admin watch Stream Page
+- [ ] Set up watch Stream with watching data
 - [ ] Add zegocloud sdk for proctaring custom ui
 - [ ] Admin Proctar Student Page
 

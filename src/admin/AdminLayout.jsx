@@ -5,6 +5,7 @@ import { AuthGuard } from "../components/auth-guard";
 import { DashboardNavbar } from "../components/dashboard-navbar";
 import { DashboardSidebar } from "../components/dashboard-sidebar";
 import { theme } from "../theme/index";
+import BreadcrumbsItem from "../components/BreadcrumbsItem";
 
 const DashboardLayoutRoot = styled("div")(({ theme }) => ({
   display: "flex",
@@ -36,6 +37,16 @@ const AdminLayout = (props) => {
               sx={{
                 m: 2,
                 p: 2,
+                backgroundColor: theme.palette.neutral[300],
+              }}
+              varient="outlined"
+            >
+              <BreadcrumbsItem />
+            </Paper>
+            <Paper
+              sx={{
+                m: 2,
+                p: 1,
                 backgroundColor: theme.palette.neutral[200],
               }}
               varient="outlined"

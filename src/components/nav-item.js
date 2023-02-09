@@ -6,7 +6,9 @@ export const NavItem = (props) => {
   const { href, icon, title, ...others } = props;
   const navigate = useNavigate();
   const location = useLocation();
-  const active = href ? location.pathname === "/admin" + href : false;
+  const active = href
+    ? location.pathname.split("/")[2] === href.split("/")[1]
+    : false;
 
   return (
     <ListItem
