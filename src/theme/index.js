@@ -154,6 +154,7 @@ export const theme = createTheme({
     background: {
       default: "#F9FAFC",
       paper: "#FFFFFF",
+      body: "#F0F2F5",
     },
     divider: "#E6E8F0",
     primary: {

@@ -6,7 +6,7 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import AdminLayout from "../AdminLayout";
 
@@ -14,10 +14,6 @@ function Stream() {
   const [quiz, setQuiz] = React.useState("");
   const [student, setStudent] = React.useState("");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log(process.env.REACT_APP_ZCLOUD_APPID);
-  }, []);
 
   const handleSubmit = () => {
     const data = { quiz, student };
