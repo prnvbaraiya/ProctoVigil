@@ -1,10 +1,9 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "@emotion/styled";
 import {
   AppBar,
   Avatar,
-  Badge,
   Box,
   IconButton,
   Toolbar,
@@ -12,12 +11,9 @@ import {
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import GroupIcon from "@mui/icons-material/Group";
-// import { AccountPopover } from "./account-popover";
 import logo from "../../assets/logo_Procto-removebg-preview.png";
 import avatar from "../../assets/avatar-removebg-preview.png";
+import { Link } from "react-router-dom";
 
 const UserNavbarRoot = styled(AppBar)(({ theme }) => ({
   backgroundColor: "rgba(255, 255, 255, 0.8)",
@@ -32,9 +28,8 @@ const UserNavbarRoot = styled(AppBar)(({ theme }) => ({
 }));
 
 export const UserNavbar = (props) => {
-  const { onSidebarOpen, ...other } = props;
+  const { onSidebarOpen } = props;
   const settingsRef = useRef(null);
-  // const [openAccountPopover, setOpenAccountPopover] = useState(false);
 
   return (
     <>
@@ -64,9 +59,16 @@ export const UserNavbar = (props) => {
           </Tooltip>
           <Box sx={{ flexGrow: 1 }} />
           {/* RIGHT SIDE  */}
-          <Tooltip title="Home">
-            <Typography sx={{ ml: 1 }}>Home</Typography>
-          </Tooltip>
+          <Link to="/">
+            <Tooltip title="Home">
+              <Typography sx={{ ml: 1 }}>Home</Typography>
+            </Tooltip>
+          </Link>
+          <Link to="quiz">
+            <Tooltip title="Home">
+              <Typography sx={{ ml: 3 }}>Quiz</Typography>
+            </Tooltip>
+          </Link>
           <Avatar
             ref={settingsRef}
             sx={{

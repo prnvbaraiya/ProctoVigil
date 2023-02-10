@@ -1,8 +1,9 @@
 import { Box, Paper, styled, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { UserNavbar } from "./header/UserNavbar";
 import bgImg from "../assets/bg-presentation.88963029.jpg";
 import { theme } from "../theme";
+import Footer from "./footer/Footer";
 // import theme from "../theme/index";
 
 const UserLayoutRoot = styled("div")(({ theme }) => ({
@@ -67,7 +68,7 @@ function UserLayout(props) {
           {children}
         </Paper>
       </Box>
-      Footer
+      <Footer />
     </UserLayoutRoot>
   );
 }
