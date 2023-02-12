@@ -10,9 +10,9 @@ function ViewStream() {
   const data = location.state;
   const zconf = {
     roomId: "345",
-    token: `04AAAAAGPmM80AEDlhcGJmc3B1MWVnOXg2eDgAoDy5u6mPNYLv0Tv9mtGaelg/SdXJ1E3Do5jo0EkGQJLCMGxHomibJ+tKuIddEkA2vG9lCyw/f3sdOF57EwMabir284YcQzcKwJv35NpeKgw5T1VQFgxx2Ej03OY0m/I3AphVosLkuTZM50wcYDtGSES/FRPhezQTWtsqynHRZLGoNQvHvlTUOmmOwAAHeOmylhT/gUhGayMmxt4LbpATos4=`,
-    userId: "user2",
-    userName: "user2",
+    token: `04AAAAAGPp7iYAEGFxY3gwZnNicmg0dW9jMXMAoNoC35zzArMYM7ZRtEtsSLY9juyBVR6NZdAFzbingqt0Orhv80Iu8J2P4b1uSOAnhvPsongngNqVyo8vk7n0RPNWMqoWne35yHTKio2OfvbAFEAvTeMnDMj+7kwnbnOanF9jgFUQT6wmqMHupy6H6kkecAJLi+v28qfPhO5pDlSDZ+vFetcIkl5Fhfg1Axw3A0w79r6drAJQTcA/imly4m0=`,
+    userId: "admin",
+    userName: "admin",
   };
 
   const instance = zegoInstance();

@@ -1,5 +1,6 @@
 import { Box, Button, Divider, Grid, Typography } from "@mui/material";
 import React from "react";
+import { Link } from "react-router-dom";
 import { theme } from "../../theme";
 import UserLayout from "../UserLayout";
 
@@ -45,7 +46,9 @@ function Quiz() {
             </Box>
           </Grid>
           <Grid item xs={2} alignItems="center" display="flex">
-            <Button variant="contained">Start Quiz</Button>
+            <Link to="start">
+              <Button variant="contained">Start Quiz</Button>
+            </Link>
           </Grid>
           <Divider style={{ width: "100%", margin: "10px 0" }} />
           <Typography>By: Pranav Baraiya</Typography>
