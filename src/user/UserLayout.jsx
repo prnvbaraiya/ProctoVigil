@@ -1,7 +1,7 @@
 import { Box, Paper, styled, Typography } from "@mui/material";
 import React from "react";
 import { UserNavbar } from "./header/UserNavbar";
-import bgImg from "../assets/bg-presentation.88963029.jpg";
+import bgImg from "../assets/bg.jpg";
 import { theme } from "../theme";
 import Footer from "./footer/Footer";
 // import theme from "../theme/index";

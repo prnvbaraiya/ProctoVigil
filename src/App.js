@@ -1,5 +1,5 @@
 import "./App.css";
-import { Routes } from "react-router-dom";
+import { Outlet, Routes } from "react-router-dom";
 import UserRoutes from "./routes/UserRoutes";
 import AdminRoutes from "./routes/AdminRoutes";
 import { ThemeProvider } from "@emotion/react";
@@ -13,6 +13,7 @@ function App() {
           {UserRoutes}
           {AdminRoutes}
         </Routes>
+        <Outlet />
       </ThemeProvider>
     </div>
   );

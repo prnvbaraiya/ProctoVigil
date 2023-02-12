@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import { zegoInstance } from "../../config/ZegoConfig";
+import ExamLayout from "../ExamLayout";
 import DraggableLocalStream from "../../components/DraggableLocalStream";
 import axios from "axios";
+import { AUTH_API } from "../../variables/constants";
 
 function AttemptQuiz() {
   const zconf = {
@@ -18,8 +20,8 @@ function AttemptQuiz() {
   }, []);
 
   const createRoom = async () => {
-    const tk = await axios
-      .post("http://localhost:1322/api/auth/generateToken", {
+    await axios
+      .post(AUTH_API + "generateToken", {
         userId: zconf.userId,
       })
       .then((res) => (zconf.token = res.data))
@@ -50,14 +52,23 @@ function AttemptQuiz() {
     );
 
     localView.play("local-stream");
+
+    instance.on(
+      "roomStreamUpdate",
+      async (roomID, updateType, streamList, extendedData) => {
+        console.log("Update:", updateType);
+      }
+    );
   };
 
   return (
     <>
-      <div style={{ width: "98vw", height: "98vh" }}>
-        <div>Here User will Give Quiz</div>
-        <DraggableLocalStream></DraggableLocalStream>
-      </div>
+      <ExamLayout>
+        <div>
+          <div>Here User will Give Quiz</div>
+          <DraggableLocalStream></DraggableLocalStream>
+        </div>
+      </ExamLayout>
     </>
   );
 }

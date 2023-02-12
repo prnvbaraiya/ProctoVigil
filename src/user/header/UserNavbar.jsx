@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
-import logo from "../../assets/logo_Procto-removebg-preview.png";
+import logo from "../../assets/logo.png";
 import avatar from "../../assets/avatar-removebg-preview.png";
 
 const UserNavbarRoot = styled(AppBar)(({ theme }) => ({

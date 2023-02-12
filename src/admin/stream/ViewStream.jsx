@@ -10,7 +10,7 @@ function ViewStream() {
   const data = location.state;
   const zconf = {
     roomId: "345",
-    token: `04AAAAAGPp7iYAEGFxY3gwZnNicmg0dW9jMXMAoNoC35zzArMYM7ZRtEtsSLY9juyBVR6NZdAFzbingqt0Orhv80Iu8J2P4b1uSOAnhvPsongngNqVyo8vk7n0RPNWMqoWne35yHTKio2OfvbAFEAvTeMnDMj+7kwnbnOanF9jgFUQT6wmqMHupy6H6kkecAJLi+v28qfPhO5pDlSDZ+vFetcIkl5Fhfg1Axw3A0w79r6drAJQTcA/imly4m0=`,
+    token: `04AAAAAGPqPlYAEDNiZWs3OHhianA3aDZvZmEAoCHENs8IREl7G/Qx7ZVHda70k57237igrNhh6AkuREPqjmFkwxH5EGCFHV/pOeIt48zE20eB/KeWowS5cRumSkcd1azkGd8BTOE0m5CYJE6Vphj1Nx/vxeJAcLgPKwZp0iigQHUlRAFaSw6R7u31sclFRItr5OrFBJXmWkv9e6QJSNI08zYib7tuvjEYZl7Ubw2rSfCJ7uB91OAvHPUCQks=`,
     userId: "admin",
     userName: "admin",
   };
