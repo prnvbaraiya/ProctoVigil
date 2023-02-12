@@ -10,10 +10,10 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import logo from "../../assets/logo_Procto-removebg-preview.png";
 import avatar from "../../assets/avatar-removebg-preview.png";
-import { Link } from "react-router-dom";
 
 const UserNavbarRoot = styled(AppBar)(({ theme }) => ({
   backgroundColor: "rgba(255, 255, 255, 0.8)",
@@ -59,15 +59,17 @@ export const UserNavbar = (props) => {
           </Tooltip>
           <Box sx={{ flexGrow: 1 }} />
           {/* RIGHT SIDE  */}
-          <Link to="/">
-            <Tooltip title="Home">
-              <Typography sx={{ ml: 1 }}>Home</Typography>
-            </Tooltip>
+          <Link underline="hover" to="/">
+            <Typography sx={{ ml: 1 }}>Home</Typography>
           </Link>
-          <Link to="quiz">
-            <Tooltip title="Home">
-              <Typography sx={{ ml: 3 }}>Quiz</Typography>
-            </Tooltip>
+          <Link underline="hover" to="/quiz">
+            <Typography sx={{ ml: 3 }}>Quiz</Typography>
+          </Link>
+          <Link component="button" underline="hover" to="/quiz">
+            <Typography sx={{ ml: 3 }}>About Us</Typography>
+          </Link>
+          <Link component="button" underline="hover" to="/quiz">
+            <Typography sx={{ ml: 3 }}>Contact Us</Typography>
           </Link>
           <Avatar
             ref={settingsRef}

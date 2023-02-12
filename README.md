@@ -44,9 +44,9 @@
 
 - [ ] Complete User Side
 - [ ] User Login Page
-- [ ] User Layout
+- [x] User Layout
 - [ ] User get all the permissions and validate do not start until all the conditions follow
-- [ ] User Quiz Page
+- [x] User Quiz Page
 - [ ] User send data to zegocloud Page
 
 - [ ] Account setup in zegocloud

@@ -1,20 +1,19 @@
-const express = require("express");
-const cors = require("cors");
+import express, { json } from "express";
+import { config } from "dotenv";
+import { connect } from "mongoose";
+import cors from "cors";
+import AuthRoute from "./Routes/AuthRoute.js";
 
+config();
 const app = express();
-const PORT = 8000;
+app.use(json());
+const port = process.env.PORT || 5000;
 
 app.use(cors());
-app.use(express.json());
+app.use("/api/auth", AuthRoute);
 
-app.get("/yay", (req, res) => {
-  console.log("lol");
-  return res.send("YAY");
-});
+connect(process.env.MONGO_URL)
+  .then(() => console.log("Connected with Database Successfull"))
+  .catch((e) => console.log("Database Connection Failed"));
 
-app.post("/admin/auth-login", (req, res) => {
-  console.log(req.body);
-  return res.status(202).send("Success");
-});
-
-app.listen(PORT, () => console.log("Server is Running on port ", PORT));
+app.listen(port, () => console.log("Server is Running on port ", port));
