@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { zegoInstance } from "../../config/ZegoConfig";
 import DraggableLocalStream from "../../components/DraggableLocalStream";
+import axios from "axios";
 
 function AttemptQuiz() {
   const zconf = {
     roomId: "345",
-    token: `04AAAAAGPp7goAEDVhd2E5b291bXBwa2trNW8AoOIdc+gMDrWzeprFOWV3G3yLHoXKuGCjSdhcccru0gjDB39kcVedsisgJAQTv1ZJyuTFNk7hqiWYzRIWR6PzTMamJ8FnELjv1opXvKt0kfNAvEn1k+CJOfeauFiFpmI1Vztm/5n8Ho5jH4zA4V2Q58T+v9iZFbfNXSrRcMiqs/HqcECSNBoQMDEeN08HDYrMvU7UpK0fNucieTS7hmE2mLE=`,
-    userId: "user1",
-    userName: "user 1",
+    userId: "prnv",
+    token: "",
+    userName: "Pranav",
   };
   const instance = zegoInstance();
 
@@ -17,6 +18,12 @@ function AttemptQuiz() {
   }, []);
 
   const createRoom = async () => {
+    const tk = await axios
+      .post("http://localhost:1322/api/auth/generateToken", {
+        userId: zconf.userId,
+      })
+      .then((res) => (zconf.token = res.data))
+      .catch((err) => console.log("Error ", err));
     const deviceInfo = await instance.enumDevices();
     try {
       await instance.loginRoom(zconf.roomId, zconf.token, {
