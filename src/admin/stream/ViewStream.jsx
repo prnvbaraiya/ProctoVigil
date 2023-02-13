@@ -4,13 +4,15 @@ import AdminLayout from "../AdminLayout";
 import { Box } from "@mui/system";
 import { useLocation } from "react-router-dom";
 import { zegoInstance } from "../../config/ZegoConfig";
+import axios from "axios";
+import { AUTH_API } from "../../variables/constants";
 
 function ViewStream() {
   const location = useLocation();
   const data = location.state;
   const zconf = {
-    roomId: "345",
-    token: `04AAAAAGPqPlYAEDNiZWs3OHhianA3aDZvZmEAoCHENs8IREl7G/Qx7ZVHda70k57237igrNhh6AkuREPqjmFkwxH5EGCFHV/pOeIt48zE20eB/KeWowS5cRumSkcd1azkGd8BTOE0m5CYJE6Vphj1Nx/vxeJAcLgPKwZp0iigQHUlRAFaSw6R7u31sclFRItr5OrFBJXmWkv9e6QJSNI08zYib7tuvjEYZl7Ubw2rSfCJ7uB91OAvHPUCQks=`,
+    roomId: "678",
+    token: "",
     userId: "admin",
     userName: "admin",
   };
@@ -19,19 +21,6 @@ function ViewStream() {
 
   useEffect(() => {
     createRoom();
-    // eslint-disable-next-line
-  }, []);
-
-  const createRoom = async () => {
-    try {
-      await instance.loginRoom(zconf.roomId, zconf.token, {
-        userID: zconf.userId,
-        userName: zconf.userName,
-      });
-    } catch (err) {
-      console.log("Create Room Err: ", err);
-    }
-
     instance.on(
       "roomStreamUpdate",
       async (roomID, updateType, streamList, extendedData) => {
@@ -47,6 +36,25 @@ function ViewStream() {
         }
       }
     );
+    // eslint-disable-next-line
+  }, []);
+
+  const createRoom = async () => {
+    await axios
+      .post(AUTH_API + "generateToken", {
+        userId: zconf.userId,
+      })
+      .then((res) => (zconf.token = res.data))
+      .catch((err) => console.log("Error ", err));
+
+    try {
+      await instance.loginRoom(zconf.roomId, zconf.token, {
+        userID: zconf.userId,
+        userName: zconf.userName,
+      });
+    } catch (err) {
+      console.log("Create Room Err: ", err);
+    }
   };
 
   return (

@@ -13,7 +13,6 @@ const User = {
 
 const ZegocloudTokenGenerator = {
   getToken: async (req, res) => {
-    console.log(process.env.ZCLOUD_APPID);
     const userId = req.body.userId;
     const effectiveTimeInSeconds = 36000;
 
