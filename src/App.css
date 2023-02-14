@@ -5,3 +5,13 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+.selected {
+  border-radius: 50px;
+  background-color: #0b815a;
+  color: white;
+}
+
+.queNavBtn {
+  border-radius: 50px;
+}

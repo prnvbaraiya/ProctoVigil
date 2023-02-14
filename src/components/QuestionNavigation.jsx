@@ -1,91 +1,83 @@
 import React from "react";
-import { styled } from "@mui/material/styles";
-import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
-import MuiAccordion from "@mui/material/Accordion";
-import MuiAccordionSummary from "@mui/material/AccordionSummary";
-import MuiAccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
 import DraggableLocalStream from "../components/DraggableLocalStream";
+import { Grid } from "@mui/material";
+import SectionAccordion from "./SectionAccordion";
 
-const Accordion = styled((props) => (
-  <MuiAccordion disableGutters elevation={0} square {...props} />
-))(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  "&:not(:last-child)": {
-    borderBottom: 0,
-  },
-  "&:before": {
-    display: "none",
-  },
-}));
+export default function QuestionNavigation(props) {
+  const { que, setQue } = props;
 
-const AccordionSummary = styled((props) => (
-  <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
-    {...props}
-  />
-))(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === "dark"
-      ? "rgba(255, 255, 255, .05)"
-      : "rgba(0, 0, 0, .03)",
-  flexDirection: "row-reverse",
-  "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
-    transform: "rotate(90deg)",
-  },
-  "& .MuiAccordionSummary-content": {
-    marginLeft: theme.spacing(1),
-  },
-}));
+  const showLegends = (bgColor, title) => {
+    console.log(bgColor);
+    return (
+      <>
+        <Grid
+          item
+          xs={2}
+          textAlign="center"
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: `${bgColor}`,
+            height: 20,
+            margin: 1,
+            borderRadius: "25%/50%",
+          }}
+        ></Grid>
+        <Grid
+          item
+          xs={7}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: 25,
+            margin: 1,
+          }}
+        >
+          {title}
+        </Grid>
+      </>
+    );
+  };
 
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-  padding: theme.spacing(2),
-  borderTop: "1px solid rgba(0, 0, 0, .125)",
-}));
+  const getQueNav = () => {
+    const rows = [];
+    for (let i = 1; i <= 30; i++) {
+      rows.push(
+        <Grid
+          item
+          className={i === que ? "selected" : "queNavBtn"}
+          textAlign="center"
+          onClick={(e) => handleQuestion(e)}
+          key={i}
+          id={i}
+          xs={2}
+        >
+          {i < 10 ? "0" + i : i}
+        </Grid>
+      );
+    }
+    return rows;
+  };
 
-export default function QuestionNavigation() {
-  const [expanded, setExpanded] = React.useState("panel1");
-
-  const handleChange = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
+  const handleQuestion = (e) => {
+    console.log(e.target.id);
+    setQue(e.target.id);
+    e.target.classList.remove("queNavBtn");
+    e.target.classList.add("selected");
   };
 
   return (
     <div>
-      <DraggableLocalStream />
-      <Accordion
-        expanded={expanded === "panel1"}
-        onChange={handleChange("panel1")}
-      >
-        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-          <Typography autofocus>Section 01</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada
-            lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded === "panel2"}
-        onChange={handleChange("panel2")}
-        disabled
-      >
-        <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-          <Typography>Section 02</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada
-            lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
+      {/* <DraggableLocalStream /> */}
+      <SectionAccordion title="Section 01" data={getQueNav()} />
+      <SectionAccordion title="Section 02" data={getQueNav()} disabled={true} />
+
+      <Grid container textAlign="center">
+        {showLegends("black", "Unanswered")}
+        {showLegends("#0b815a", "Answered")}
+      </Grid>
     </div>
   );
 }
