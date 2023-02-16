@@ -1,14 +1,34 @@
 import { Box, Button, Divider, Typography } from "@mui/material";
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import BasicTable from "../../components/form/BasicTable";
+import { SERVER_LINK } from "../../variables/constants";
 import AdminLayout from "../AdminLayout";
 
 function Quiz() {
+  const [data, setData] = useState([]);
+
+  const columns = [
+    { field: "_id", headerName: "Id", width: 220 },
+    { field: "name", headerName: "Name", width: 220 },
+    { field: "description", headerName: "Description", width: 220 },
+  ];
+
+  const hideColumns = ["_id"];
+
+  const getData = async () => {
+    const res = await axios.get(SERVER_LINK + "/quizzes");
+    setData(res.data);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   return (
     <AdminLayout>
-      {/*Container */}
       <Box>
-        {/* Header */}
         <Box
           sx={{
             display: "flex",
@@ -25,8 +45,9 @@ function Quiz() {
           </Box>
         </Box>
         <Divider sx={{ margin: "10px 0 20px" }} />
-        {/* Body  */}
-        <Box textAlign="center">Its Content of Quiz Page</Box>
+        <Box textAlign="center">
+          <BasicTable rows={data} columns={columns} hideColumns={hideColumns} />
+        </Box>
       </Box>
     </AdminLayout>
   );

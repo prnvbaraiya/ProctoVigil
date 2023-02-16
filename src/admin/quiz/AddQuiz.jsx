@@ -1,6 +1,6 @@
 import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TextBox from "../../components/form/TextBox";
 import { useFormInput } from "../../hooks/useFormInput";
 import AdminLayout from "../AdminLayout";
@@ -35,6 +35,8 @@ function AddQuiz() {
     { question: "", incorrect_answer: ["", "", ""], correct_answer: "" },
   ]);
 
+  const navigate = useNavigate();
+
   const handleSubmit = async () => {
     const data = {
       name: name.value,
@@ -46,7 +48,11 @@ function AddQuiz() {
       questions,
     };
     const res = await axios.post(SERVER_LINK + "quiz/add", data);
-    console.log(res);
+    if (res.status === 202) {
+      navigate(window.history.back());
+    } else {
+      alert("There is Some error ", res);
+    }
   };
 
   return (
