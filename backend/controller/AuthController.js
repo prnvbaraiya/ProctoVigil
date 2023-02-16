@@ -1,4 +1,5 @@
 import { generateToken04 } from "../zgocloud/zegoServerAssistant.js";
+import QuizModel from "../model/QuizModel.js";
 
 const User = {
   register: async (req, res) => {
@@ -25,4 +26,24 @@ const ZegocloudTokenGenerator = {
     return res.status(202).send(token);
   },
 };
-export { User, ZegocloudTokenGenerator };
+
+const Quiz = {
+  add: async (req, res) => {
+    const data = req.body;
+    try {
+      const quiz = await QuizModel.create(data);
+      return res.status(202).send("Quiz Added");
+    } catch (err) {
+      return res.status(500).send("There is some error: " + err);
+    }
+  },
+  get: async (req, res) => {
+    try {
+      const quiz = await QuizModel.find();
+      return res.status(202).send(quiz);
+    } catch (err) {
+      return res.status(500).send("There is some error: " + err);
+    }
+  },
+};
+export { User, ZegocloudTokenGenerator, Quiz };

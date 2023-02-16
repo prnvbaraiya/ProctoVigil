@@ -2,16 +2,18 @@ a {
   text-decoration: none;
 }
 
-a:hover {
-  text-decoration: underline;
+.queNavBtn {
+  border-radius: 50px;
 }
 
 .selected {
-  border-radius: 50px;
-  background-color: #0b815a;
-  color: white;
+  background-color: lightblue;
 }
 
-.queNavBtn {
-  border-radius: 50px;
+.answered {
+  background-color: #0b815a;
+}
+
+.visited {
+  background-color: rgb(230, 130, 130);
 }

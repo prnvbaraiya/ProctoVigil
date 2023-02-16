@@ -1,1 +1,1 @@
-export const AUTH_API = "http://localhost:1322/api/auth/";
+export const SERVER_LINK = "http://localhost:1322/api/auth/";

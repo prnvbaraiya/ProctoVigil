@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import { AUTH_API } from "../../variables/constants";
+import { SERVER_LINK } from "../../variables/constants";
 
 //Copyright Component
 function Copyright(props) {
@@ -44,7 +44,7 @@ export default function Login() {
       rememberMe: formData.get("rememberMe") !== null,
     };
     try {
-      const res = await axios.post(AUTH_API + "admin/auth-login", data);
+      const res = await axios.post(SERVER_LINK + "admin/auth-login", data);
       navigate("dashboard");
       console.log(res);
     } catch (err) {}

@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import Draggable from "react-draggable";
 import axios from "axios";
 import { zegoInstance } from "../config/ZegoConfig";
-import { AUTH_API } from "../variables/constants";
+import { SERVER_LINK } from "../variables/constants";
 
 function DraggableLocalStream() {
   const zconf = {
-    roomId: "qpr",
+    roomId: "678",
     userId: "prnv",
     token: "",
     userName: "Pranav",
@@ -14,7 +14,7 @@ function DraggableLocalStream() {
   const instance = zegoInstance();
 
   useEffect(() => {
-    createRoom();
+    if (Boolean(process.env.REACT_APP_START_ZCLOUD)) createRoom();
     window.addEventListener("beforeunload", () => {
       instance.logoutRoom(zconf.roomId);
     });
@@ -23,7 +23,7 @@ function DraggableLocalStream() {
 
   const createRoom = async () => {
     await axios
-      .post(AUTH_API + "generateToken", {
+      .post(SERVER_LINK + "generateToken", {
         userId: zconf.userId,
       })
       .then((res) => (zconf.token = res.data))

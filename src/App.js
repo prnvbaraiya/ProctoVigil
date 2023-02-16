@@ -6,8 +6,18 @@ import { ThemeProvider } from "@emotion/react";
 import { theme } from "./theme/index";
 
 function App() {
+  const handleContextMenu = (e) => {
+    e.preventDefault();
+  };
+
   return (
-    <div className="App">
+    <div
+      className="App"
+      onContextMenu={handleContextMenu}
+      onCopy={handleContextMenu}
+      onCut={handleContextMenu}
+      onPaste={handleContextMenu}
+    >
       <ThemeProvider theme={theme}>
         <Routes>
           {UserRoutes}

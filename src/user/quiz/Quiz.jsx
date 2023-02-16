@@ -1,10 +1,21 @@
 import { Box, Button, Divider, Grid, Typography } from "@mui/material";
-import React from "react";
+import axios from "axios";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { theme } from "../../theme";
+import { SERVER_LINK } from "../../variables/constants";
 import UserLayout from "../UserLayout";
 
 function Quiz() {
+  const getData = async () => {
+    const res = await axios.get(SERVER_LINK + "quizzes");
+    console.log(res.data);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   return (
     <UserLayout>
       <Box display="flex" justifyContent="center">

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Paper } from "@mui/material";
+import { Box, Card, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { AuthGuard } from "../components/auth-guard";
 import { DashboardNavbar } from "../components/dashboard-navbar";
@@ -51,7 +51,16 @@ const AdminLayout = (props) => {
               }}
               varient="outlined"
             >
-              {children}
+              <Card
+                sx={{
+                  p: 2,
+                  gap: 3,
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                {children}
+              </Card>
             </Paper>
           </Box>
         </Box>

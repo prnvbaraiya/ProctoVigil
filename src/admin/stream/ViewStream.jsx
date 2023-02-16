@@ -5,7 +5,7 @@ import { Box } from "@mui/system";
 import { useLocation } from "react-router-dom";
 import { zegoInstance } from "../../config/ZegoConfig";
 import axios from "axios";
-import { AUTH_API } from "../../variables/constants";
+import { SERVER_LINK } from "../../variables/constants";
 
 function ViewStream() {
   const location = useLocation();
@@ -41,7 +41,7 @@ function ViewStream() {
 
   const createRoom = async () => {
     await axios
-      .post(AUTH_API + "generateToken", {
+      .post(SERVER_LINK + "generateToken", {
         userId: zconf.userId,
       })
       .then((res) => (zconf.token = res.data))

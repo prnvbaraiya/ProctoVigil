@@ -6,10 +6,26 @@ import QuestionNavigation from "../../components/QuestionNavigation";
 
 function AttemptQuiz() {
   const [questions, setQuestions] = useState([]);
-  const [que, setQue] = useState(1);
+  const [selectedQuestion, setSelectedQuestion] = useState(1);
+  const [selectedAnswers, setSelectedAnswers] = useState(
+    Array.from({ length: 30 }, () => null)
+  );
   const [isLoading, setIsLoading] = useState(true);
+  const [answerKey, setAnswerKey] = useState([]);
+
+  // Function to shuffle an array
+  const suffeledArray = (len) => {
+    const arr = [];
+    while (arr.length < len) {
+      const rand = Math.floor(Math.random() * len);
+      if (!arr.includes(rand)) arr.push(rand);
+    }
+    return arr;
+  };
 
   useEffect(() => {
+    // Fetch data from API
+    getData();
     // if (!document.fullscreenElement) {
     //   document.documentElement.requestFullscreen();
     // }
@@ -23,14 +39,41 @@ function AttemptQuiz() {
     //   window.removeEventListener("blur");
     //   window.removeEventListener("offline");
     // };
-    getData();
   }, []);
 
   const getData = async () => {
-    const data = await axios.get("https://opentdb.com/api.php?amount=30");
-    console.log(data.data);
-    setQuestions(data.data.results);
+    // Get 30 questions from API
+    const data = await axios.get(
+      "https://opentdb.com/api.php?amount=30&type=multiple"
+    );
+
+    // Shuffle the options for each question and set the answer key
+    const updatedQuestions = data.data.results.map((item) => {
+      const newArray = [item.correct_answer, ...item.incorrect_answers];
+      const suffleArr = suffeledArray(newArray.length);
+      setAnswerKey((prev) => [...prev, suffleArr.indexOf(0)]);
+      return {
+        ...item,
+        suffeledOptions: suffleArr.map((item) => {
+          return newArray[item];
+        }),
+      };
+    });
+
+    console.log(updatedQuestions);
+
+    // Set the updated questions and set isLoading to false
+    setQuestions(updatedQuestions);
     setIsLoading(false);
+  };
+
+  const handleAnswerChange = (e) => {
+    // Update the selected answers
+    setSelectedAnswers((prevAnswers) => {
+      const newAnswers = [...prevAnswers];
+      newAnswers[selectedQuestion - 1] = e.target.value;
+      return newAnswers;
+    });
   };
 
   return (
@@ -44,31 +87,42 @@ function AttemptQuiz() {
             <Grid item xs={9} p={3}>
               {!isLoading && (
                 <div>
+                  {/* Display the current question */}
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: que + ") " + questions[que - 1].question,
+                      __html:
+                        selectedQuestion +
+                        ") " +
+                        questions[selectedQuestion - 1].question,
                     }}
                   />
-                  <div style={{ marginTop: 5 }}>
-                    A) {questions[que - 1].correct_answer}
-                  </div>
-                  <div style={{ marginTop: 5 }}>
-                    B) {questions[que - 1].incorrect_answers[0]}
-                  </div>
-                  {questions[que - 1].incorrect_answers[1] && (
-                    <>
-                      <div style={{ marginTop: 5 }}>
-                        C) {questions[que - 1].incorrect_answers[1]}
+                  {/* Display the options for the current question */}
+                  {["A", "B", "C", "D"].map((choice, index) => {
+                    const answer =
+                      questions[selectedQuestion - 1].suffeledOptions[index];
+                    return (
+                      <div key={choice} style={{ marginTop: 5 }}>
+                        <label>
+                          <input
+                            type="radio"
+                            value={choice}
+                            name={`question-${selectedQuestion}`}
+                            checked={
+                              choice === selectedAnswers[selectedQuestion - 1]
+                            }
+                            onChange={(e) => handleAnswerChange(e)}
+                          />
+
+                          {`${choice}) ${answer}`}
+                        </label>
                       </div>
-                      <div style={{ marginTop: 5 }}>
-                        D) {questions[que - 1].incorrect_answers[2]}
-                      </div>
-                    </>
-                  )}
+                    );
+                  })}
                 </div>
               )}
             </Grid>
             <Grid item xs={3}>
+              {/* Display the question navigation panel */}
               <Box
                 component="main"
                 sx={{
@@ -77,7 +131,12 @@ function AttemptQuiz() {
                   height: "calc(100vh - 65px)",
                 }}
               >
-                <QuestionNavigation que={que} setQue={setQue} />
+                <QuestionNavigation
+                  selectedQuestion={selectedQuestion}
+                  setSelectedQuestion={setSelectedQuestion}
+                  selectedAnswers={selectedAnswers}
+                  numQuestions={questions.length}
+                />
               </Box>
             </Grid>
           </Grid>

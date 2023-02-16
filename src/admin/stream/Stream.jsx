@@ -1,11 +1,11 @@
 import {
   Button,
-  Card,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
 } from "@mui/material";
+import { Box } from "@mui/system";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import AdminLayout from "../AdminLayout";
@@ -23,14 +23,7 @@ function Stream() {
   return (
     <AdminLayout>
       <form>
-        <Card
-          sx={{
-            p: 2,
-            gap: 3,
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
+        <Box display="flex" flexDirection="column" gap={2}>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Quiz</InputLabel>
             <Select
@@ -63,7 +56,7 @@ function Stream() {
           <Button variant="contained" onClick={handleSubmit}>
             Submit
           </Button>
-        </Card>
+        </Box>
       </form>
     </AdminLayout>
   );

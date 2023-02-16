@@ -5,13 +5,17 @@ import User from "../admin/user/User";
 import ViewStream from "../admin/stream/ViewStream";
 import Quiz from "../admin/quiz/Quiz";
 import Stream from "../admin/stream/Stream";
+import AddQuiz from "../admin/quiz/AddQuiz";
 
 const AdminRoutes = [
   <Route path="/admin" key="Admin">
     <Route index element={<Login />}></Route>
     <Route path="dashboard" element={<Dashboard />}></Route>
     <Route path="user" element={<User />}></Route>
-    <Route path="quiz" element={<Quiz />}></Route>
+    <Route path="quiz">
+      <Route index element={<Quiz />}></Route>
+      <Route path="add" element={<AddQuiz />}></Route>
+    </Route>
     <Route path="stream">
       <Route index element={<Stream />}></Route>
       <Route path="view" element={<ViewStream />}></Route>

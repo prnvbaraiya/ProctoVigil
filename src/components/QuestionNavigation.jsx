@@ -1,82 +1,85 @@
-import React from "react";
+import React, { useState } from "react";
 import DraggableLocalStream from "../components/DraggableLocalStream";
 import { Grid } from "@mui/material";
 import SectionAccordion from "./SectionAccordion";
 
 export default function QuestionNavigation(props) {
-  const { que, setQue } = props;
+  const { selectedQuestion, selectedAnswers, setSelectedQuestion } = props;
+  const [visitedQuestions, setVisitedQuestions] = useState([]);
 
-  const showLegends = (bgColor, title) => {
-    console.log(bgColor);
-    return (
-      <>
+  const getQueNav = () =>
+    [...Array(30)].map((_, i) => {
+      const isSelected = selectedQuestion === i + 1;
+      const isVisited = visitedQuestions.includes(i + 1);
+      return (
         <Grid
           item
-          xs={2}
+          className={`queNavBtn ${
+            isSelected
+              ? "selected"
+              : selectedAnswers[i] !== null
+              ? "answered"
+              : isVisited
+              ? "visited"
+              : ""
+          }`}
           textAlign="center"
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: `${bgColor}`,
-            height: 20,
-            margin: 1,
-            borderRadius: "25%/50%",
+          onClick={() => {
+            setSelectedQuestion(i + 1);
+            setVisitedQuestions((prev) => [...prev, selectedQuestion]);
           }}
-        ></Grid>
-        <Grid
-          item
-          xs={7}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: 25,
-            margin: 1,
-          }}
-        >
-          {title}
-        </Grid>
-      </>
-    );
-  };
-
-  const getQueNav = () => {
-    const rows = [];
-    for (let i = 1; i <= 30; i++) {
-      rows.push(
-        <Grid
-          item
-          className={i === que ? "selected" : "queNavBtn"}
-          textAlign="center"
-          onClick={(e) => handleQuestion(e)}
           key={i}
-          id={i}
+          id={i + 1}
           xs={2}
         >
-          {i < 10 ? "0" + i : i}
+          {`${i + 1}`.padStart(2, "0")}
         </Grid>
       );
-    }
-    return rows;
-  };
+    });
 
-  const handleQuestion = (e) => {
-    console.log(e.target.id);
-    setQue(e.target.id);
-    e.target.classList.remove("queNavBtn");
-    e.target.classList.add("selected");
-  };
+  const showLegend = (bgColor, title) => (
+    <>
+      <Grid
+        item
+        xs={2}
+        textAlign="center"
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: `${bgColor}`,
+          height: 20,
+          margin: 1,
+          borderRadius: "25%/50%",
+        }}
+      />
+      <Grid
+        item
+        xs={7}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: 25,
+          margin: 1,
+        }}
+      >
+        {title}
+      </Grid>
+    </>
+  );
 
   return (
     <div>
-      {/* <DraggableLocalStream /> */}
+      <DraggableLocalStream />
       <SectionAccordion title="Section 01" data={getQueNav()} />
-      <SectionAccordion title="Section 02" data={getQueNav()} disabled={true} />
+      <SectionAccordion title="Section 02" data={"LOL"} disabled={true} />
 
       <Grid container textAlign="center">
-        {showLegends("black", "Unanswered")}
-        {showLegends("#0b815a", "Answered")}
+        {showLegend(null, "Unanswered")}
+        {showLegend("lightblue", "Selected")}
+        {showLegend("rgb(230, 130, 130)", "Visited")}
+        {showLegend("#0b815a", "Answered")}
       </Grid>
     </div>
   );
