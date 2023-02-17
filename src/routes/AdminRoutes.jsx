@@ -6,6 +6,7 @@ import ViewStream from "../admin/stream/ViewStream";
 import Quiz from "../admin/quiz/Quiz";
 import Stream from "../admin/stream/Stream";
 import AddQuiz from "../admin/quiz/AddQuiz";
+import EditQuiz from "../admin/quiz/EditQuiz";
 
 const AdminRoutes = [
   <Route path="/admin" key="Admin">
@@ -15,6 +16,7 @@ const AdminRoutes = [
     <Route path="quiz">
       <Route index element={<Quiz />}></Route>
       <Route path="add" element={<AddQuiz />}></Route>
+      <Route path="edit" element={<EditQuiz />}></Route>
     </Route>
     <Route path="stream">
       <Route index element={<Stream />}></Route>

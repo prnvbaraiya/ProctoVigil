@@ -1,6 +1,9 @@
 import { generateToken04 } from "../zgocloud/zegoServerAssistant.js";
 import QuizModel from "../model/QuizModel.js";
 
+const ERROR_CODE = 500;
+const SUCCESS_CODE = 202;
+
 const User = {
   register: async (req, res) => {
     console.log("lol");
@@ -8,7 +11,7 @@ const User = {
   },
   login: async (req, res) => {
     console.log(req.body);
-    return res.status(202).send("Success");
+    return res.status(SUCCESS_CODE).send("Success");
   },
 };
 
@@ -23,7 +26,7 @@ const ZegocloudTokenGenerator = {
       `${process.env.ZCLOUD_SERVERSECRET}`,
       effectiveTimeInSeconds
     );
-    return res.status(202).send(token);
+    return res.status(SUCCESS_CODE).send(token);
   },
 };
 
@@ -31,18 +34,48 @@ const Quiz = {
   add: async (req, res) => {
     const data = req.body;
     try {
-      const quiz = await QuizModel.create(data);
-      return res.status(202).send("Quiz Added");
+      await QuizModel.create(data);
+      return res.status(SUCCESS_CODE).send("Quiz Added");
     } catch (err) {
-      return res.status(500).send("There is some error: " + err);
+      return res.status(ERROR_CODE).send("There is some error: " + err);
     }
   },
   get: async (req, res) => {
     try {
-      const quiz = await QuizModel.find();
-      return res.status(202).send(quiz);
+      const quizzes = await QuizModel.find();
+      return res.status(SUCCESS_CODE).send(quizzes);
     } catch (err) {
-      return res.status(500).send("There is some error: " + err);
+      return res.status(ERROR_CODE).send("There is some error: " + err);
+    }
+  },
+  getById: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const quiz = await QuizModel.findById(id);
+      return res.status(SUCCESS_CODE).send(quiz);
+    } catch (err) {
+      return res.status(ERROR_CODE).send("There is some error: " + err);
+    }
+  },
+  update: async (req, res) => {
+    try {
+      const data = req.body;
+      const id = req.params.id;
+      await QuizModel.findByIdAndUpdate(id, data);
+      return res.status(SUCCESS_CODE).send("Quiz Updated");
+    } catch (err) {
+      return res.status(ERROR_CODE).send("There is some error: " + err);
+    }
+  },
+  delete: async (req, res) => {
+    try {
+      const id = req.params.id;
+      await QuizModel.findByIdAndDelete(id);
+      return res
+        .status(SUCCESS_CODE)
+        .send({ message: "Quiz Deleted", type: "success" });
+    } catch (err) {
+      return res.status(ERROR_CODE).send("There is some error: " + err);
     }
   },
 };

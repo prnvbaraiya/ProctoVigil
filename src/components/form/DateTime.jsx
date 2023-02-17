@@ -6,7 +6,8 @@ import React from "react";
 function DateTime({
   label = "Date",
   inputFormat = "dd/MMM/yyyy hh:mm aa",
-  ...props
+  value,
+  setValue,
 }) {
   return (
     <>
@@ -16,7 +17,8 @@ function DateTime({
           inputFormat={inputFormat}
           disableMaskedInput
           disablePast
-          {...props}
+          value={value}
+          onChange={(e) => setValue(e)}
           renderInput={(params) => <TextField {...params} />}
         />
       </LocalizationProvider>

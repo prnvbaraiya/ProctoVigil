@@ -24,13 +24,12 @@ const names = [
 ];
 
 function AddQuiz() {
-  const [personName, setPersonName] = React.useState([]);
-
   const name = useFormInput("");
   const description = useFormInput("");
-  const startDate = useFormInput(new Date());
-  const endDate = useFormInput(new Date());
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const duration = useFormInput("");
+  const [personName, setPersonName] = useState([]);
   const [questions, setQuestions] = useState([
     { question: "", incorrect_answer: ["", "", ""], correct_answer: "" },
   ]);
@@ -90,8 +89,16 @@ function AddQuiz() {
               direction={{ lg: "row", sm: "column" }}
               sx={{ justifyContent: "space-between" }}
             >
-              <DateTime label="Start Date" {...startDate} />
-              <DateTime label="End Date" {...endDate} />
+              <DateTime
+                label="Start Date"
+                value={startDate}
+                setValue={setStartDate}
+              />
+              <DateTime
+                label="End Date"
+                value={endDate}
+                setValue={setEndDate}
+              />
               <TextBox
                 label="Duration (in minutes)"
                 type="number"

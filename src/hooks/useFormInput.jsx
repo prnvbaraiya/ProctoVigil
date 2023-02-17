@@ -4,10 +4,14 @@ export function useFormInput(initialValue) {
   const [value, setValue] = useState(initialValue);
 
   function handleChange(e) {
+    const type = typeof e;
+    console.log(e);
     if (e.target && e.target.value) {
       setValue(e.target.value);
-    } else {
+    } else if (type === "string" || type === "number") {
       setValue(e);
+    } else {
+      setValue("");
     }
   }
 

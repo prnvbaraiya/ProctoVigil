@@ -9,8 +9,9 @@
 - [x] Admin Login Page
 - [x] Admin Layout
 - [ ] Admin Dashboard Page
-- [ ] Admin Quiz Page
-- [ ] Admin Add Update Quiz Page
+- [ ] Admin Student Page
+- [x] Admin Quiz Page
+- [x] Admin Add Update Quiz Page
 - [ ] Admin Add Quiz Using csv file
 - [x] Admin Stream Page
 - [x] Admin watch Stream Page
@@ -30,7 +31,9 @@
 - [x] Account setup in zegocloud
 - [ ] Add JWT token both side
 
-- [ ] 20% webrtc module & quiz module & frontend layout
+- [ ] In basic table hide is not working
+
+- [x] 20% webrtc module & quiz module & frontend layout
 - [ ] 40% admin can add users & quiz & admin profile setting
 - [ ] 60% all the result will be disply & send mail & quiz with subjective and different sections
 - [ ] 75% integrate the lms system with quiz & bug fixes
