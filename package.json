@@ -20,6 +20,7 @@
     "react-draggable": "^4.4.5",
     "react-router-dom": "^6.8.1",
     "react-scripts": "5.0.1",
+    "typed.js": "^2.0.12",
     "web-vitals": "^2.1.4",
     "zego-express-engine-webrtc": "^2.22.0"
   },

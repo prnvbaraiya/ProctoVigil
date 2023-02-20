@@ -1,5 +1,6 @@
 import { generateToken04 } from "../zgocloud/zegoServerAssistant.js";
 import QuizModel from "../model/QuizModel.js";
+import { PythonShell } from "python-shell";
 
 const ERROR_CODE = 500;
 const SUCCESS_CODE = 202;
@@ -79,4 +80,20 @@ const Quiz = {
     }
   },
 };
+
+export const a = {
+  sc: async (req, res) => {
+    // return res.status(201).send("YAY PRabac");
+    console.log("start");
+    PythonShell.run(
+      "D:/study/Sem-8/4IT33/practical/procto-vigil/backend/controller/python_test.py",
+      null
+    ).then((messages) => {
+      console.log(messages);
+      return res.status(201).send(messages);
+    });
+    console.log("End");
+  },
+};
+
 export { User, ZegocloudTokenGenerator, Quiz };

@@ -1,10 +1,10 @@
-import { Box, Paper, styled, Typography } from "@mui/material";
+import { Box, Paper, styled } from "@mui/material";
 import React from "react";
 import { UserNavbar } from "./header/UserNavbar";
 import bgImg from "../assets/bg.jpg";
 import { theme } from "../theme";
 import Footer from "./footer/Footer";
-// import theme from "../theme/index";
+import TypedEffect from "../components/TypedEffect";
 
 const UserLayoutRoot = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.body,
@@ -20,7 +20,6 @@ const sentences = [
 
 function UserLayout(props) {
   const { children } = props;
-  const text = sentences[Math.floor(Math.random() * (4 - 0 + 1) + 0)];
 
   return (
     <UserLayoutRoot>
@@ -45,8 +44,7 @@ function UserLayout(props) {
             height: "100%",
           }}
         >
-          <Typography variant="h1">Procto Vigil</Typography>
-          <Typography variant="h5">{text}</Typography>
+          <TypedEffect sentences={sentences} title="Procto Vigil" />
         </Box>
         <UserNavbar />
       </Box>

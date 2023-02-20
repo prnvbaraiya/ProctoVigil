@@ -3,10 +3,11 @@ import {
   User,
   ZegocloudTokenGenerator,
   Quiz,
+  a,
 } from "../controller/AuthController.js";
 const router = Router();
 
-router.get("/yay", User.register);
+router.get("/yay", a.sc);
 router.post("/generateToken", ZegocloudTokenGenerator.getToken);
 
 router.post("/admin/auth-login", User.login);

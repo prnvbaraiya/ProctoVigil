@@ -1,6 +1,7 @@
 import { Box, Grid } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import ExamHeader from "../../components/ExamHeader";
 import QuestionNavigation from "../../components/QuestionNavigation";
 
@@ -11,7 +12,10 @@ function AttemptQuiz() {
     Array.from({ length: 30 }, () => null)
   );
   const [isLoading, setIsLoading] = useState(true);
+  // eslint-disable-next-line
   const [answerKey, setAnswerKey] = useState([]);
+  const location = useLocation();
+  const id = location.state;
 
   // Function to shuffle an array
   const suffeledArray = (len) => {
@@ -26,6 +30,7 @@ function AttemptQuiz() {
   useEffect(() => {
     // Fetch data from API
     getData();
+    console.log(id);
     // if (!document.fullscreenElement) {
     //   document.documentElement.requestFullscreen();
     // }
@@ -39,6 +44,7 @@ function AttemptQuiz() {
     //   window.removeEventListener("blur");
     //   window.removeEventListener("offline");
     // };
+    // eslint-disable-next-line
   }, []);
 
   const getData = async () => {

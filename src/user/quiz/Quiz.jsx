@@ -73,7 +73,7 @@ function Quiz() {
                 </Box>
               </Grid>
               <Grid item xs={2} alignItems="center" display="flex">
-                <Link to="start">
+                <Link to="start" state={{ id: item._id }}>
                   <Button variant="contained">Start Quiz</Button>
                 </Link>
               </Grid>
