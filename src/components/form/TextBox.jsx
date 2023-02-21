@@ -6,6 +6,8 @@ function TextBox({
   type = "text",
   variant = "outlined",
   fullWidth = true,
+  multiline = false,
+  rows = 2,
   ...props
 }) {
   return (
@@ -16,6 +18,8 @@ function TextBox({
           type={type}
           label={label}
           variant={variant}
+          multiline={multiline}
+          rows={rows}
           {...props}
         />
       </FormControl>
