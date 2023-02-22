@@ -44,15 +44,15 @@ function AttemptQuiz() {
     // Fetch data from API
     getData();
     console.log(id);
-    // if (!document.fullscreenElement) {
-    //   document.documentElement.requestFullscreen();
-    // }
-    // window.addEventListener("offline", offlineEvent);
-    // window.addEventListener("blur", blueEvent);
-    // return () => {
-    //   window.removeEventListener("blur", blueEvent);
-    //   window.removeEventListener("offline", offlineEvent);
-    // };
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    }
+    window.addEventListener("offline", offlineEvent);
+    window.addEventListener("blur", blueEvent);
+    return () => {
+      window.removeEventListener("blur", blueEvent);
+      window.removeEventListener("offline", offlineEvent);
+    };
     // eslint-disable-next-line
   }, []);
 
