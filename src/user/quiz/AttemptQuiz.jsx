@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ExamHeader from "../../components/ExamHeader";
 import QuestionNavigation from "../../components/QuestionNavigation";
+import { zegoInstance } from "../../config/ZegoConfig";
 
 function AttemptQuiz() {
   const [questions, setQuestions] = useState([]);
@@ -17,6 +18,7 @@ function AttemptQuiz() {
   const [warningCount, setWarningCount] = useState(0);
   const location = useLocation();
   const id = location.state;
+  const instance = zegoInstance();
 
   // Function to shuffle an array
   const suffeledArray = (len) => {
@@ -28,25 +30,29 @@ function AttemptQuiz() {
     return arr;
   };
 
+  const blueEvent = () => {
+    alert("You are trying to change window please stay on this window");
+    setWarningCount((prev) => prev + 1);
+    console.log("Warning Count:", warningCount);
+  };
+
+  const offlineEvent = () => {
+    alert("There is Problem with your internet");
+  };
+
   useEffect(() => {
     // Fetch data from API
     getData();
     console.log(id);
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-    }
-    window.addEventListener("offline", (event) => {
-      alert("There is Problem with your internet");
-    });
-    window.addEventListener("blur", () => {
-      alert("You are trying to change window please stay on this window");
-      setWarningCount((prev) => prev + 1);
-      console.log("Warning Count:", warningCount);
-    });
-    return () => {
-      window.removeEventListener("blur");
-      window.removeEventListener("offline");
-    };
+    // if (!document.fullscreenElement) {
+    //   document.documentElement.requestFullscreen();
+    // }
+    // window.addEventListener("offline", offlineEvent);
+    // window.addEventListener("blur", blueEvent);
+    // return () => {
+    //   window.removeEventListener("blur", blueEvent);
+    //   window.removeEventListener("offline", offlineEvent);
+    // };
     // eslint-disable-next-line
   }, []);
 
@@ -89,7 +95,7 @@ function AttemptQuiz() {
     <>
       <Box>
         <Box>
-          <ExamHeader />
+          <ExamHeader instance={instance} />
         </Box>
         <Box>
           <Grid container>
@@ -145,6 +151,7 @@ function AttemptQuiz() {
                   setSelectedQuestion={setSelectedQuestion}
                   selectedAnswers={selectedAnswers}
                   numQuestions={questions.length}
+                  instance={instance}
                 />
               </Box>
             </Grid>

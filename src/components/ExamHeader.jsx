@@ -11,9 +11,9 @@ import Logo from "../assets/logo.png";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function ExamHeader() {
+export default function ExamHeader({ instance }) {
   const Ref = useRef(null);
-  const navigation = useNavigate();
+  const navigate = useNavigate();
 
   const [timer, setTimer] = useState("00:00:00");
 
@@ -58,6 +58,10 @@ export default function ExamHeader() {
     return deadline;
   };
 
+  const handleCancel = async () => {
+    navigate("/quiz");
+  };
+
   useEffect(() => {
     clearTimer();
     // eslint-disable-next-line
@@ -91,11 +95,7 @@ export default function ExamHeader() {
               <Typography variant="h6">{timer}</Typography>
             </Box>
             <Box sx={{ marginLeft: "30px", display: "flex", gap: 1 }}>
-              <Button
-                color="error"
-                variant="contained"
-                onClick={() => navigation("/quiz")}
-              >
+              <Button color="error" variant="contained" onClick={handleCancel}>
                 Cancel
               </Button>
               <Button color="secondary" variant="contained">

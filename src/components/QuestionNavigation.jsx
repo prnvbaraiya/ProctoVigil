@@ -4,7 +4,8 @@ import { Grid } from "@mui/material";
 import SectionAccordion from "./SectionAccordion";
 
 export default function QuestionNavigation(props) {
-  const { selectedQuestion, selectedAnswers, setSelectedQuestion } = props;
+  const { selectedQuestion, selectedAnswers, setSelectedQuestion, instance } =
+    props;
   const [visitedQuestions, setVisitedQuestions] = useState([]);
 
   const getQueNav = () =>
@@ -71,7 +72,7 @@ export default function QuestionNavigation(props) {
 
   return (
     <div>
-      <DraggableLocalStream />
+      <DraggableLocalStream instance={instance} />
       <SectionAccordion title="Section 01" data={getQueNav()} />
       <SectionAccordion title="Section 02" data={"LOL"} disabled={true} />
 
