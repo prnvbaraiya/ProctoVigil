@@ -1,6 +1,6 @@
-import Mongoose from "mongoose";
+const mongoose = require("mongoose");
 
-const QuizSchema = new Mongoose.Schema(
+const QuizSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -36,5 +36,5 @@ const QuizSchema = new Mongoose.Schema(
   { timestamps: true }
 );
 
-const QuizModel = Mongoose.model("Quiz", QuizSchema);
-export default QuizModel;
+const QuizModel = mongoose.model("Quiz", QuizSchema);
+module.exports = QuizModel;

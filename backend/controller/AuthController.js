@@ -1,6 +1,6 @@
-import { generateToken04 } from "../zgocloud/zegoServerAssistant.js";
-import QuizModel from "../model/QuizModel.js";
-import { PythonShell } from "python-shell";
+const { generateToken04 } = require("../zgocloud/zegoServerAssistant.js");
+const QuizModel = require("../model/QuizModel.js");
+const { PythonShell } = require("python-shell");
 
 const ERROR_CODE = 500;
 const SUCCESS_CODE = 202;
@@ -81,7 +81,7 @@ const Quiz = {
   },
 };
 
-export const a = {
+const a = {
   sc: async (req, res) => {
     // return res.status(201).send("YAY PRabac");
     console.log("start");
@@ -94,6 +94,9 @@ export const a = {
     });
     console.log("End");
   },
+  test: async (req, res) => {
+    return res.status(SUCCESS_CODE).send("Testing");
+  },
 };
 
-export { User, ZegocloudTokenGenerator, Quiz };
+module.exports = { User, ZegocloudTokenGenerator, Quiz, a };

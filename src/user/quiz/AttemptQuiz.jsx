@@ -14,6 +14,7 @@ function AttemptQuiz() {
   const [isLoading, setIsLoading] = useState(true);
   // eslint-disable-next-line
   const [answerKey, setAnswerKey] = useState([]);
+  const [warningCount, setWarningCount] = useState(0);
   const location = useLocation();
   const id = location.state;
 
@@ -31,19 +32,21 @@ function AttemptQuiz() {
     // Fetch data from API
     getData();
     console.log(id);
-    // if (!document.fullscreenElement) {
-    //   document.documentElement.requestFullscreen();
-    // }
-    // window.addEventListener("offline", (event) => {
-    //   alert("There is Problem with your internet");
-    // });
-    // window.addEventListener("blur", () => {
-    //   alert("You are trying to change window please stay on this window");
-    // });
-    // return () => {
-    //   window.removeEventListener("blur");
-    //   window.removeEventListener("offline");
-    // };
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    }
+    window.addEventListener("offline", (event) => {
+      alert("There is Problem with your internet");
+    });
+    window.addEventListener("blur", () => {
+      alert("You are trying to change window please stay on this window");
+      setWarningCount((prev) => prev + 1);
+      console.log("Warning Count:", warningCount);
+    });
+    return () => {
+      window.removeEventListener("blur");
+      window.removeEventListener("offline");
+    };
     // eslint-disable-next-line
   }, []);
 

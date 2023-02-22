@@ -4,6 +4,7 @@ import { connect } from "mongoose";
 import cors from "cors";
 import AuthRoute from "./Routes/AuthRoute.js";
 import bodyParser from "body-parser";
+import serverless from "serverless-http";
 
 config();
 const app = express();
@@ -16,6 +17,6 @@ app.use("/api/auth", AuthRoute);
 
 connect(process.env.MONGO_URL)
   .then(() => console.log("Connected with Database Successfull"))
-  .catch((e) => console.log("Database Connection Failed"));
+  .catch((e) => console.log("Database Connection Failed:", e));
 
 app.listen(port, () => console.log("Server is Running on port ", port));

@@ -1,12 +1,13 @@
-import { Router } from "express";
-import {
+const express = require("express");
+const {
   User,
   ZegocloudTokenGenerator,
-  Quiz,
-  a,
-} from "../controller/AuthController.js";
-const router = Router();
+} = require("../controller/AuthController");
+const { Quiz } = require("../controller/AuthController");
+const { a } = require("../controller/AuthController");
+const router = express.Router();
 
+router.get("/", a.test);
 router.get("/yay", a.sc);
 router.post("/generateToken", ZegocloudTokenGenerator.getToken);
 
@@ -19,4 +20,4 @@ router.post("/quiz/add", Quiz.add);
 router.post("/quiz/update/:id", Quiz.update);
 router.post("/quiz/delete/:id", Quiz.delete);
 
-export default router;
+module.exports = router;

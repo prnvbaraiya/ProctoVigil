@@ -1,4 +1,4 @@
-import { createCipheriv } from "crypto";
+const { createCipheriv } = require("crypto");
 
 const ErrorCode = {
   success: 0,
@@ -47,7 +47,7 @@ function aesEncrypt(plainText, key, iv) {
   var out = Buffer.concat([encrypted, final]);
   return Uint8Array.from(out).buffer;
 }
-export function generateToken04(
+module.exports.generateToken04 = function (
   appId,
   userId,
   secret,
@@ -107,4 +107,4 @@ export function generateToken04(
   ]);
   var dv = new DataView(Uint8Array.from(buf).buffer);
   return "04" + Buffer.from(dv.buffer).toString("base64");
-}
+};
