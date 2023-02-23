@@ -20,7 +20,7 @@ function DraggableLocalStream({ instance }) {
   const streamId = new Date().getTime().toString();
 
   useEffect(() => {
-    if (Boolean(process.env.REACT_APP_START_ZCLOUD)) createRoom();
+    createRoom();
     window.addEventListener("beforeunload", () => {
       instance.logoutRoom(zconf.roomId);
     });
