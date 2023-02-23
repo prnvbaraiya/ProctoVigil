@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { theme } from "../../theme";
 import { SERVER_LINK } from "../../variables/constants";
-import UserLayout from "../UserLayout";
 import { format } from "date-fns";
 
 function Quiz() {
@@ -28,7 +27,7 @@ function Quiz() {
   }, []);
 
   return (
-    <UserLayout>
+    <>
       <Box display="flex" justifyContent="center">
         <Typography variant="h3"> Quiz</Typography>
       </Box>
@@ -83,7 +82,7 @@ function Quiz() {
           </Box>
         );
       })}
-    </UserLayout>
+    </>
   );
 }
 

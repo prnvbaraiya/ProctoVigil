@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BasicTable from "../../components/form/BasicTable";
 import { SERVER_LINK } from "../../variables/constants";
-import AdminLayout from "../AdminLayout";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SnackbarDisplay from "../../components/SnackbarDisplay";
@@ -82,7 +81,7 @@ function Quiz() {
   }, [snackbarData]);
 
   return (
-    <AdminLayout>
+    <>
       <Box>
         <Box
           sx={{
@@ -108,7 +107,7 @@ function Quiz() {
         snackbarData={snackbarData}
         setSnackbarData={setSnackbarData}
       />
-    </AdminLayout>
+    </>
   );
 }
 

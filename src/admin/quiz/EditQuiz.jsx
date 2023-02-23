@@ -8,7 +8,6 @@ import SelectChip from "../../components/form/SelectChip";
 import TextBox from "../../components/form/TextBox";
 import { useFormInput } from "../../hooks/useFormInput";
 import { SERVER_LINK } from "../../variables/constants";
-import AdminLayout from "../AdminLayout";
 
 const names = [
   "Oliver Hansen",
@@ -73,7 +72,7 @@ function EditQuiz() {
 
   return (
     <>
-      <AdminLayout>
+      <>
         {" "}
         {/*Container */}
         <Box>
@@ -140,7 +139,7 @@ function EditQuiz() {
             </Stack>
           </form>
         </Box>
-      </AdminLayout>
+      </>
     </>
   );
 }

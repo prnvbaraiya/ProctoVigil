@@ -1,9 +1,22 @@
 const { generateToken04 } = require("../zgocloud/zegoServerAssistant.js");
 const QuizModel = require("../model/QuizModel.js");
 const { PythonShell } = require("python-shell");
+const jwt = require("jsonwebtoken");
 
 const ERROR_CODE = 500;
 const SUCCESS_CODE = 202;
+
+const JWT = {
+  generateToken: (userId, role) => {
+    const payload = { userId, role };
+    const token = jwt.sign(payload, process.env.JWT_SEC_KEY);
+    return token;
+  },
+  verifyToken: (token) => {
+    const decoded = jwt.verify(token, process.env.JWT_SEC_KEY);
+    return decoded;
+  },
+};
 
 const User = {
   register: async (req, res) => {
@@ -12,7 +25,9 @@ const User = {
   },
   login: async (req, res) => {
     console.log(req.body);
-    return res.status(SUCCESS_CODE).send("Success");
+    const token = JWT.generateToken(req.body.email, "admin");
+    console.log(JWT.verifyToken(token));
+    return res.status(SUCCESS_CODE).send({ jwt: token });
   },
 };
 
@@ -99,4 +114,21 @@ const a = {
   },
 };
 
-module.exports = { User, ZegocloudTokenGenerator, Quiz, a };
+function requireAdmin(req, res, next) {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, secret);
+
+  if (decoded.role !== "admin") {
+    return res
+      .status(403)
+      .json({ error: "You do not have permission to access this resource." });
+  }
+
+  next();
+}
+
+// app.get('/admin', requireAuth, requireAdmin, (req, res) => {
+//   // Render the admin page
+// });
+
+module.exports = { User, ZegocloudTokenGenerator, Quiz, a, requireAdmin };

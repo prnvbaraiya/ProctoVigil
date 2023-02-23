@@ -6,6 +6,7 @@ import { DashboardNavbar } from "../components/dashboard-navbar";
 import { DashboardSidebar } from "../components/dashboard-sidebar";
 import { theme } from "../theme/index";
 import BreadcrumbsItem from "../components/BreadcrumbsItem";
+import { Outlet } from "react-router-dom";
 
 const DashboardLayoutRoot = styled("div")(({ theme }) => ({
   display: "flex",
@@ -17,8 +18,7 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
   },
 }));
 
-const AdminLayout = (props) => {
-  const { children } = props;
+const AdminLayout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -59,7 +59,7 @@ const AdminLayout = (props) => {
                   flexDirection: "column",
                 }}
               >
-                {children}
+                <Outlet />
               </Card>
             </Paper>
           </Box>

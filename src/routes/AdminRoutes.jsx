@@ -8,26 +8,28 @@ import Stream from "../admin/stream/Stream";
 import AddQuiz from "../admin/quiz/AddQuiz";
 import EditQuiz from "../admin/quiz/EditQuiz";
 import EditUser from "../admin/user/EditUser";
+import AdminLayout from "../admin/AdminLayout";
 
-const AdminRoutes = [
+const AdminRoutes = (
   <Route path="/admin" key="Admin">
-    <Route index element={<Login />}></Route>
-    <Route path="dashboard" element={<Dashboard />}></Route>
-    <Route path="user">
-      <Route index element={<User />}></Route>
-      <Route path="edit" element={<EditUser />}></Route>
+    <Route index element={<Login />} />
+    <Route element={<AdminLayout />}>
+      <Route path="dashboard" element={<Dashboard />} />
+      <Route path="user">
+        <Route index element={<User />} />
+        <Route path="edit" element={<EditUser />} />
+      </Route>
+      <Route path="quiz">
+        <Route index element={<Quiz />} />
+        <Route path="add" element={<AddQuiz />} />
+        <Route path="edit" element={<EditQuiz />} />
+      </Route>
+      <Route path="stream">
+        <Route index element={<Stream />} />
+        <Route path="view" element={<ViewStream />} />
+      </Route>
     </Route>
-    <Route path="edit" element={<EditUser />}></Route>
-    <Route path="quiz">
-      <Route index element={<Quiz />}></Route>
-      <Route path="add" element={<AddQuiz />}></Route>
-      <Route path="edit" element={<EditQuiz />}></Route>
-    </Route>
-    <Route path="stream">
-      <Route index element={<Stream />}></Route>
-      <Route path="view" element={<ViewStream />}></Route>
-    </Route>
-  </Route>,
-];
+  </Route>
+);
 
 export default AdminRoutes;

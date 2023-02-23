@@ -1,6 +1,5 @@
 import { Box, Container, Divider, Grid, Typography } from "@mui/material";
 import React from "react";
-import UserLayout from "../UserLayout";
 
 const numberStyle = {
   backgroundImage:
@@ -14,7 +13,7 @@ const numberStyle = {
 
 function Home() {
   return (
-    <UserLayout>
+    <>
       <Box style={{ padding: "24px 0" }}>
         <Container fullwidth="lg">
           <Grid container direction="row" justifyContent="center" spacing={2}>
@@ -58,7 +57,7 @@ function Home() {
           </Grid>
         </Container>
       </Box>
-    </UserLayout>
+    </>
   );
 }
 

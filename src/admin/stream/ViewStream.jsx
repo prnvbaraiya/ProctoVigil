@@ -1,6 +1,5 @@
 import { Typography } from "@mui/material";
 import React, { useEffect } from "react";
-import AdminLayout from "../AdminLayout";
 import { Box } from "@mui/system";
 import { useLocation } from "react-router-dom";
 import { zegoInstance } from "../../config/ZegoConfig";
@@ -58,12 +57,12 @@ function ViewStream() {
   };
 
   return (
-    <AdminLayout>
+    <>
       <Box align="center">
         <Typography variant="h3">View {data.student}</Typography>
         <div style={{ width: "60vw", height: "60vh" }} id="remote-stream"></div>
       </Box>
-    </AdminLayout>
+    </>
   );
 }
 

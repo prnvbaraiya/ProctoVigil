@@ -1,12 +1,7 @@
 import React from "react";
-import AdminLayout from "../AdminLayout";
 
 function Dashboard() {
-  return (
-    <>
-      <AdminLayout>It's Dashboard</AdminLayout>
-    </>
-  );
+  return <>It's Dashboard</>;
 }
 
 export default Dashboard;

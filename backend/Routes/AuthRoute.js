@@ -2,9 +2,10 @@ const express = require("express");
 const {
   User,
   ZegocloudTokenGenerator,
+  Quiz,
+  a,
+  requireAdmin,
 } = require("../controller/AuthController");
-const { Quiz } = require("../controller/AuthController");
-const { a } = require("../controller/AuthController");
 const router = express.Router();
 
 router.get("/", a.test);

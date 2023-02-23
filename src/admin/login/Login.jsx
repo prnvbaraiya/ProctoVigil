@@ -14,6 +14,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { SERVER_LINK } from "../../variables/constants";
+import auth from "../../auth/auth";
 
 //Copyright Component
 function Copyright(props) {
@@ -45,9 +46,16 @@ export default function Login() {
     };
     try {
       const res = await axios.post(SERVER_LINK + "admin/auth-login", data);
-      navigate("dashboard");
-      console.log(res);
-    } catch (err) {}
+      console.log(res.data.jwt);
+      auth.authenticate(res.data.jwt);
+      if (auth.isAuthenticated) {
+        navigate("dashboard");
+      } else {
+        navigate("/");
+      }
+    } catch (err) {
+      console.log("Error:", err);
+    }
   };
 
   return (

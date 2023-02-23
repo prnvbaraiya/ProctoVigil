@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TextBox from "../../components/form/TextBox";
 import { useFormInput } from "../../hooks/useFormInput";
-import AdminLayout from "../AdminLayout";
 import DateTime from "../../components/form/DateTime";
 import SelectChip from "../../components/form/SelectChip";
 import QuestionAdd from "../../components/form/QuestionAdd";
@@ -55,7 +54,7 @@ function AddQuiz() {
   };
 
   return (
-    <AdminLayout>
+    <>
       {/*Container */}
       <Box>
         {/* Header */}
@@ -117,7 +116,7 @@ function AddQuiz() {
           </Stack>
         </form>
       </Box>
-    </AdminLayout>
+    </>
   );
 }
 

@@ -5,6 +5,7 @@ import bgImg from "../assets/bg.jpg";
 import { theme } from "../theme";
 import Footer from "./footer/Footer";
 import TypedEffect from "../components/TypedEffect";
+import { Outlet } from "react-router-dom";
 
 const UserLayoutRoot = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.body,
@@ -18,9 +19,7 @@ const sentences = [
   "Trust us, your exams are in good hands with Procto Vigil",
 ];
 
-function UserLayout(props) {
-  const { children } = props;
-
+function UserLayout() {
   return (
     <UserLayoutRoot>
       <Box
@@ -63,7 +62,7 @@ function UserLayout(props) {
             padding: "16px",
           }}
         >
-          {children}
+          <Outlet />
         </Paper>
       </Box>
       <Footer />

@@ -8,7 +8,6 @@ import {
 import { Box } from "@mui/system";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import AdminLayout from "../AdminLayout";
 
 function Stream() {
   const [quiz, setQuiz] = React.useState("");
@@ -21,7 +20,7 @@ function Stream() {
   };
 
   return (
-    <AdminLayout>
+    <>
       <form>
         <Box display="flex" flexDirection="column" gap={2}>
           <FormControl fullWidth>
@@ -58,7 +57,7 @@ function Stream() {
           </Button>
         </Box>
       </form>
-    </AdminLayout>
+    </>
   );
 }
 

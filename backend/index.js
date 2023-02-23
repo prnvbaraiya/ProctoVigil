@@ -1,10 +1,10 @@
-import express, { json } from "express";
-import { config } from "dotenv";
-import { connect } from "mongoose";
-import cors from "cors";
-import AuthRoute from "./Routes/AuthRoute.js";
-import bodyParser from "body-parser";
-import serverless from "serverless-http";
+const express = require("express");
+const { json } = require("express");
+const { config } = require("dotenv");
+const { connect } = require("mongoose");
+const cors = require("cors");
+const AuthRoute = require("./Routes/AuthRoute.js");
+const bodyParser = require("body-parser");
 
 config();
 const app = express();
@@ -13,7 +13,7 @@ const port = process.env.PORT || 5000;
 app.use(json());
 app.use(cors());
 app.use(bodyParser.raw({ type: "video/webm", limit: "10mb" }));
-app.use("/api/auth", AuthRoute);
+app.use("/api", AuthRoute);
 
 connect(process.env.MONGO_URL)
   .then(() => console.log("Connected with Database Successfull"))
