@@ -9,6 +9,13 @@ import { format } from "date-fns";
 function Quiz() {
   const [quizzes, setQuizzes] = useState([]);
 
+  const isDisable = (startDate, endDate) => {
+    const currentTime = new Date().getTime();
+    startDate = new Date(startDate).getTime();
+    endDate = new Date(endDate).getTime();
+    return currentTime >= startDate && currentTime < endDate;
+  };
+
   const getData = async () => {
     const res = await axios.get(SERVER_LINK + "quizzes");
     setQuizzes(
@@ -17,6 +24,7 @@ function Quiz() {
           ...item,
           startDate: format(new Date(item.startDate), "MMM,dd yyyy hh:mm aa"),
           endDate: format(new Date(item.endDate), "MMM,dd yyyy hh:mm aa"),
+          isAvailable: isDisable(item.startDate, item.endDate),
         };
       })
     );
@@ -29,7 +37,7 @@ function Quiz() {
   return (
     <>
       <Box display="flex" justifyContent="center">
-        <Typography variant="h3"> Quiz</Typography>
+        <Typography variant="h3">Quiz</Typography>
       </Box>
       {quizzes.map((item) => {
         return (
@@ -72,9 +80,21 @@ function Quiz() {
                 </Box>
               </Grid>
               <Grid item xs={2} alignItems="center" display="flex">
-                <Link to="start" state={{ id: item._id }}>
-                  <Button variant="contained">Start Quiz</Button>
-                </Link>
+                {item.isAvailable ? (
+                  <Link to="start" state={{ id: item._id }}>
+                    <Button variant="contained" color="secondary">
+                      Start Quiz
+                    </Button>
+                  </Link>
+                ) : (
+                  <Button
+                    variant="contained"
+                    sx={{ opacity: 0.5 }}
+                    color="error"
+                  >
+                    Start Quiz
+                  </Button>
+                )}
               </Grid>
               <Divider style={{ width: "100%", margin: "10px 0" }} />
               <Typography>By: Pranav Baraiya</Typography>

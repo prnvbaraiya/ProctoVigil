@@ -10,7 +10,6 @@ const auth = {
     this.roles = decodedToken.roles;
   },
   logout() {
-    console.log("Logout");
     localStorage.removeItem("token");
     this.isAuthenticated = false;
     this.roles = "";

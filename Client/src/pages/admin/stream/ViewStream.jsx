@@ -35,6 +35,11 @@ function ViewStream() {
         }
       }
     );
+    return () => {
+      if (instance) {
+        instance.logoutRoom(zconf.roomId);
+      }
+    };
     // eslint-disable-next-line
   }, []);
 
@@ -44,7 +49,7 @@ function ViewStream() {
         userId: zconf.userId,
       })
       .then((res) => (zconf.token = res.data))
-      .catch((err) => console.log("Error ", err));
+      .catch((err) => alert("Error:", err));
 
     try {
       await instance.loginRoom(zconf.roomId, zconf.token, {
@@ -52,7 +57,7 @@ function ViewStream() {
         userName: zconf.userName,
       });
     } catch (err) {
-      console.log("Create Room Err: ", err);
+      alert("Create Room Err: ", err);
     }
   };
 

@@ -8,7 +8,7 @@ import { Button } from "@mui/material";
 
 function DraggableLocalStream({ instance }) {
   const zconf = {
-    roomId: "111",
+    roomId: "678",
     userId: "prnv",
     token: "",
     userName: "Pranav",
@@ -42,7 +42,6 @@ function DraggableLocalStream({ instance }) {
       zconf.token = data;
 
       const deviceInfo = await instance.enumDevices();
-      console.log("DeviceP:", deviceInfo);
       if (deviceInfo.microphones.length === 0) {
         alert("Microphone Not Found");
         navigate("/quiz");
@@ -70,25 +69,9 @@ function DraggableLocalStream({ instance }) {
         });
 
         localView.play("local-stream");
-
-        instance.on(
-          "roomStreamUpdate",
-          async (roomID, updateType, streamList, extendedData) => {
-            console.log("Update:", updateType);
-          }
-        );
       }
-      console.log("Tmp:", localStream);
     } catch (err) {
-      console.log("Create Room Err: ", err);
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      navigate("/quiz");
-    } catch (err) {
-      console.log("Logout Error: ", err);
+      alert("Error: ", err);
     }
   };
 
@@ -104,7 +87,6 @@ function DraggableLocalStream({ instance }) {
               border: "2px solid black",
             }}
           ></div>
-          <Button onClick={handleLogout}>Logout</Button>
         </>
       </Draggable>
     </>

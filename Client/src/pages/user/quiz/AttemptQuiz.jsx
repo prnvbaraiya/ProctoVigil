@@ -5,8 +5,10 @@ import { useLocation } from "react-router-dom";
 import ExamHeader from "../../../components/ExamHeader";
 import QuestionNavigation from "../../../components/QuestionNavigation";
 import { zegoInstance } from "../../../config/ZegoConfig";
+import { SERVER_LINK } from "../../../variables/constants";
 
 function AttemptQuiz() {
+  const [data, setData] = useState({});
   const [questions, setQuestions] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState(1);
   const [selectedAnswers, setSelectedAnswers] = useState(
@@ -17,7 +19,7 @@ function AttemptQuiz() {
   const [answerKey, setAnswerKey] = useState([]);
   const [warningCount, setWarningCount] = useState(0);
   const location = useLocation();
-  const id = location.state;
+  const id = location.state?.id;
   const instance = zegoInstance();
 
   // Function to shuffle an array
@@ -33,7 +35,6 @@ function AttemptQuiz() {
   const blueEvent = () => {
     alert("You are trying to change window please stay on this window");
     setWarningCount((prev) => prev + 1);
-    console.log("Warning Count:", warningCount);
   };
 
   const offlineEvent = () => {
@@ -43,28 +44,27 @@ function AttemptQuiz() {
   useEffect(() => {
     // Fetch data from API
     getData();
-    console.log(id);
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-    }
-    window.addEventListener("offline", offlineEvent);
-    window.addEventListener("blur", blueEvent);
-    return () => {
-      window.removeEventListener("blur", blueEvent);
-      window.removeEventListener("offline", offlineEvent);
-    };
+    console.log("QID:", id);
+    // if (!document.fullscreenElement) {
+    //   document.documentElement.requestFullscreen();
+    // }
+    // window.addEventListener("offline", offlineEvent);
+    // window.addEventListener("blur", blueEvent);
+    // return () => {
+    //   window.removeEventListener("blur", blueEvent);
+    //   window.removeEventListener("offline", offlineEvent);
+    // };
     // eslint-disable-next-line
   }, []);
 
   const getData = async () => {
     // Get 30 questions from API
-    const data = await axios.get(
-      "https://opentdb.com/api.php?amount=30&type=multiple"
-    );
+    const res = await axios.get(SERVER_LINK + "quiz/" + id);
+    setData(res.data);
 
     // Shuffle the options for each question and set the answer key
-    const updatedQuestions = data.data.results.map((item) => {
-      const newArray = [item.correct_answer, ...item.incorrect_answers];
+    const updatedQuestions = res.data.questions.map((item) => {
+      const newArray = [item.correct_answer, ...item.incorrect_answer];
       const suffleArr = suffeledArray(newArray.length);
       setAnswerKey((prev) => [...prev, suffleArr.indexOf(0)]);
       return {
@@ -74,8 +74,6 @@ function AttemptQuiz() {
         }),
       };
     });
-
-    console.log(updatedQuestions);
 
     // Set the updated questions and set isLoading to false
     setQuestions(updatedQuestions);
@@ -95,7 +93,9 @@ function AttemptQuiz() {
     <>
       <Box>
         <Box>
-          <ExamHeader instance={instance} />
+          {data.duration && (
+            <ExamHeader instance={instance} duration={data.duration * 60} />
+          )}
         </Box>
         <Box>
           <Grid container>

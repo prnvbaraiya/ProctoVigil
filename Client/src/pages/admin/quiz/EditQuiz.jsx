@@ -56,8 +56,8 @@ function EditQuiz() {
     const data = {
       name: name.value,
       description: description.value,
-      startDate: startDate.value,
-      endDate: endDate.value,
+      startDate: startDate,
+      endDate: endDate,
       duration: duration.value,
       personName,
       questions,

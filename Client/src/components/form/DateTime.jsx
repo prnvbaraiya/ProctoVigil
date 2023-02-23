@@ -18,7 +18,9 @@ function DateTime({
           disableMaskedInput
           disablePast
           value={value}
-          onChange={(e) => setValue(e)}
+          onChange={(e) => {
+            setValue(e);
+          }}
           renderInput={(params) => <TextField {...params} />}
         />
       </LocalizationProvider>

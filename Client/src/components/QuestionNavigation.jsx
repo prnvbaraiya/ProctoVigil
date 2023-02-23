@@ -4,12 +4,17 @@ import { Grid } from "@mui/material";
 import SectionAccordion from "./SectionAccordion";
 
 export default function QuestionNavigation(props) {
-  const { selectedQuestion, selectedAnswers, setSelectedQuestion, instance } =
-    props;
+  const {
+    selectedQuestion,
+    numQuestions,
+    selectedAnswers,
+    setSelectedQuestion,
+    instance,
+  } = props;
   const [visitedQuestions, setVisitedQuestions] = useState([]);
 
   const getQueNav = () =>
-    [...Array(30)].map((_, i) => {
+    [...Array(numQuestions)].map((_, i) => {
       const isSelected = selectedQuestion === i + 1;
       const isVisited = visitedQuestions.includes(i + 1);
       return (

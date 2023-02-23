@@ -18,7 +18,6 @@ function Quiz() {
 
   const handleDelete = async (id) => {
     const res = await axios.post(SERVER_LINK + "quiz/delete/" + id);
-    console.log(res);
     if (res.status === 202) {
       setSnackbarData({
         open: true,

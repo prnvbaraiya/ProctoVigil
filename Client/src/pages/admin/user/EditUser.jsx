@@ -45,7 +45,6 @@ function EditUser() {
       fname: fname.value,
       lname: lname.value,
     };
-    console.log(data);
   };
 
   return (

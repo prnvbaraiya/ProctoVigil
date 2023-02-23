@@ -5,6 +5,7 @@ import {
   AppBar,
   Avatar,
   Box,
+  Container,
   IconButton,
   Toolbar,
   Tooltip,
@@ -59,18 +60,23 @@ export const UserNavbar = (props) => {
           </Tooltip>
           <Box sx={{ flexGrow: 1 }} />
           {/* RIGHT SIDE  */}
-          <Link underline="hover" to="/">
-            <Typography sx={{ ml: 1 }}>Home</Typography>
-          </Link>
-          <Link underline="hover" to="/quiz">
-            <Typography sx={{ ml: 3 }}>Quiz</Typography>
-          </Link>
-          <Link component="button" underline="hover" to="/quiz">
-            <Typography sx={{ ml: 3 }}>About Us</Typography>
-          </Link>
-          <Link component="button" underline="hover" to="/quiz">
-            <Typography sx={{ ml: 3 }}>Contact Us</Typography>
-          </Link>
+          <Box
+            sx={{ display: { lg: "flex", xs: "none" }, alignItems: "center" }}
+          >
+            {" "}
+            <Link underline="hover" to="/">
+              <Typography sx={{ ml: 1 }}>Home</Typography>
+            </Link>
+            <Link underline="hover" to="/quiz">
+              <Typography sx={{ ml: 3 }}>Quiz</Typography>
+            </Link>
+            <Link component="button" underline="hover" to="/quiz">
+              <Typography sx={{ ml: 3 }}>About Us</Typography>
+            </Link>
+            <Link component="button" underline="hover" to="/quiz">
+              <Typography sx={{ ml: 3 }}>Contact Us</Typography>
+            </Link>
+          </Box>
           <Link to="/login">
             <Avatar
               ref={settingsRef}

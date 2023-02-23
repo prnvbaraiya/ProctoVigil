@@ -10,10 +10,12 @@ import {
 import Logo from "../assets/logo.png";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AlertDialogBox from "./AlertDialogBox";
 
-export default function ExamHeader({ instance }) {
+export default function ExamHeader({ instance, duration }) {
   const Ref = useRef(null);
   const navigate = useNavigate();
+  const [cancelOpen, setCancelOpen] = useState(false);
 
   const [timer, setTimer] = useState("00:00:00");
 
@@ -54,11 +56,11 @@ export default function ExamHeader({ instance }) {
 
   const getDeadTime = () => {
     let deadline = new Date();
-    deadline.setSeconds(deadline.getSeconds() + 10);
+    deadline.setSeconds(deadline.getSeconds() + duration);
     return deadline;
   };
 
-  const handleCancel = async () => {
+  const handleSuccess = () => {
     navigate("/quiz");
   };
 
@@ -70,6 +72,15 @@ export default function ExamHeader({ instance }) {
   return (
     <>
       <AppBar color="default" position="static">
+        <AlertDialogBox
+          open={cancelOpen}
+          setOpen={setCancelOpen}
+          handleSuccess={handleSuccess}
+          title={"You really want to quit?"}
+          data={
+            "If You Exit now your quiz will not be submmited and you will not be able to reapeare in the exam are you really sure you want to exit ?"
+          }
+        />
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Avatar src={Logo}></Avatar>
@@ -95,7 +106,11 @@ export default function ExamHeader({ instance }) {
               <Typography variant="h6">{timer}</Typography>
             </Box>
             <Box sx={{ marginLeft: "30px", display: "flex", gap: 1 }}>
-              <Button color="error" variant="contained" onClick={handleCancel}>
+              <Button
+                color="error"
+                variant="contained"
+                onClick={() => setCancelOpen(true)}
+              >
                 Cancel
               </Button>
               <Button color="secondary" variant="contained">

@@ -51,14 +51,13 @@ export default function Login() {
       const accessToken = res?.data?.accessToken;
       const roles = res?.data?.roles;
       auth.authenticate(accessToken);
-      console.log(from || "/admin/dashboard");
       if (roles === "admin") {
         navigate(from || "/admin/dashboard", { replace: true });
       } else if (roles === "student") {
         navigate(from || "/", { replace: true });
       }
     } catch (err) {
-      console.log("Error:", err);
+      alert("Error:", err);
     }
   };
 

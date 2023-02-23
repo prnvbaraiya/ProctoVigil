@@ -5,7 +5,6 @@ export function useFormInput(initialValue) {
 
   function handleChange(e) {
     const type = typeof e;
-    console.log(e);
     if (e.target && e.target.value) {
       setValue(e.target.value);
     } else if (type === "string" || type === "number") {

@@ -24,12 +24,12 @@ const TypedEffect = ({ sentences, title }) => {
   }, [sentences]);
 
   return (
-    <div className="wrap">
+    <div className="wrap" style={{ width: "500px", height: "180px" }}>
       <Typography variant="h1">{title}</Typography>
 
       <div className="type-wrap">
         <Typography variant="h5">
-          <span style={{ whiteSpace: "pre" }} ref={el} />
+          <span ref={el} />
         </Typography>
       </div>
     </div>
