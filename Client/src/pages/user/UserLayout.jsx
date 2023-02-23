@@ -1,10 +1,10 @@
 import { Box, Paper, styled } from "@mui/material";
 import React from "react";
 import { UserNavbar } from "./header/UserNavbar";
-import bgImg from "../assets/bg.jpg";
-import { theme } from "../theme";
+import bgImg from "../../assets/bg.jpg";
+import { theme } from "../../theme";
 import Footer from "./footer/Footer";
-import TypedEffect from "../components/TypedEffect";
+import TypedEffect from "../../components/TypedEffect";
 import { Outlet } from "react-router-dom";
 
 const UserLayoutRoot = styled("div")(({ theme }) => ({

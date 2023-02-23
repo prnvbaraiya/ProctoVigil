@@ -7,8 +7,8 @@ const ERROR_CODE = 500;
 const SUCCESS_CODE = 202;
 
 const JWT = {
-  generateToken: (userId, role) => {
-    const payload = { userId, role };
+  generateToken: (email, roles) => {
+    const payload = { email, roles };
     const token = jwt.sign(payload, process.env.JWT_SEC_KEY);
     return token;
   },
@@ -24,10 +24,9 @@ const User = {
     return res.send("YAY");
   },
   login: async (req, res) => {
-    console.log(req.body);
-    const token = JWT.generateToken(req.body.email, "admin");
-    console.log(JWT.verifyToken(token));
-    return res.status(SUCCESS_CODE).send({ jwt: token });
+    const roles = "admin";
+    const accessToken = JWT.generateToken(req.body.email, roles);
+    return res.status(SUCCESS_CODE).send({ accessToken, roles });
   },
 };
 

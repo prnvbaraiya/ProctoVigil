@@ -12,8 +12,8 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
-import logo from "../../assets/logo.png";
-import avatar from "../../assets/avatar-removebg-preview.png";
+import logo from "../../../assets/logo.png";
+import avatar from "../../../assets/avatar-removebg-preview.png";
 
 const UserNavbarRoot = styled(AppBar)(({ theme }) => ({
   backgroundColor: "rgba(255, 255, 255, 0.8)",
@@ -71,17 +71,19 @@ export const UserNavbar = (props) => {
           <Link component="button" underline="hover" to="/quiz">
             <Typography sx={{ ml: 3 }}>Contact Us</Typography>
           </Link>
-          <Avatar
-            ref={settingsRef}
-            sx={{
-              backgroundColor: "black",
-              cursor: "pointer",
-              height: 40,
-              width: 40,
-              ml: 5,
-            }}
-            src={avatar}
-          ></Avatar>
+          <Link to="/login">
+            <Avatar
+              ref={settingsRef}
+              sx={{
+                backgroundColor: "black",
+                cursor: "pointer",
+                height: 40,
+                width: 40,
+                ml: 5,
+              }}
+              src={avatar}
+            ></Avatar>
+          </Link>
         </Toolbar>
       </UserNavbarRoot>
     </>

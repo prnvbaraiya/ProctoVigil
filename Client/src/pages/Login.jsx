@@ -12,9 +12,9 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
-import { useNavigate } from "react-router";
-import { SERVER_LINK } from "../../variables/constants";
-import auth from "../../auth/auth";
+import { useLocation, useNavigate } from "react-router";
+import { SERVER_LINK } from "../variables/constants";
+import auth from "../auth/auth";
 
 //Copyright Component
 function Copyright(props) {
@@ -34,6 +34,8 @@ const theme = createTheme();
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname;
 
   //Handle Form Submit
   const handleSubmit = async (event) => {
@@ -46,12 +48,14 @@ export default function Login() {
     };
     try {
       const res = await axios.post(SERVER_LINK + "admin/auth-login", data);
-      console.log(res.data.jwt);
-      auth.authenticate(res.data.jwt);
-      if (auth.isAuthenticated) {
-        navigate("dashboard");
-      } else {
-        navigate("/");
+      const accessToken = res?.data?.accessToken;
+      const roles = res?.data?.roles;
+      auth.authenticate(accessToken);
+      console.log(from || "/admin/dashboard");
+      if (roles === "admin") {
+        navigate(from || "/admin/dashboard", { replace: true });
+      } else if (roles === "student") {
+        navigate(from || "/", { replace: true });
       }
     } catch (err) {
       console.log("Error:", err);

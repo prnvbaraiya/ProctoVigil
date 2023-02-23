@@ -2,26 +2,27 @@ import jwt_decode from "jwt-decode";
 
 const auth = {
   isAuthenticated: false,
-  role: "",
+  roles: "",
   authenticate(token) {
-    sessionStorage.setItem("token", token);
+    localStorage.setItem("token", token);
     this.isAuthenticated = true;
     const decodedToken = jwt_decode(token);
-    this.role = decodedToken.role;
+    this.roles = decodedToken.roles;
   },
   logout() {
-    sessionStorage.removeItem("token");
+    console.log("Logout");
+    localStorage.removeItem("token");
     this.isAuthenticated = false;
-    this.role = "";
+    this.roles = "";
   },
   getToken() {
-    return sessionStorage.getItem("token");
+    return localStorage.getItem("token");
   },
-  getRole() {
+  getRoles() {
     const token = this.getToken();
     if (token) {
       const decodedToken = jwt_decode(token);
-      return decodedToken.role;
+      return decodedToken.roles;
     }
     return "";
   },

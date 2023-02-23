@@ -1,9 +1,12 @@
 import "./App.css";
-import { Outlet, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import UserRoutes from "./routes/UserRoutes";
 import AdminRoutes from "./routes/AdminRoutes";
 import { ThemeProvider } from "@emotion/react";
 import { theme } from "./theme/index";
+import Login from "./pages/Login";
+import Unauthorized from "./pages/Unauthorized";
+import PageNotFound from "./pages/PageNotFound";
 
 function App() {
   const handleContextMenu = (e) => {
@@ -20,8 +23,12 @@ function App() {
     >
       <ThemeProvider theme={theme}>
         <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />
+          <Route path="/page-not-found" element={<PageNotFound />} />
           {UserRoutes}
           {AdminRoutes}
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
         <Outlet />
       </ThemeProvider>

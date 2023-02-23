@@ -2,11 +2,11 @@ import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import BasicTable from "../../components/form/BasicTable";
-import { SERVER_LINK } from "../../variables/constants";
+import BasicTable from "../../../components/form/BasicTable";
+import { SERVER_LINK } from "../../../variables/constants";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import SnackbarDisplay from "../../components/SnackbarDisplay";
+import SnackbarDisplay from "../../../components/SnackbarDisplay";
 
 function Quiz() {
   const [data, setData] = useState([]);

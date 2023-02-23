@@ -1,18 +1,20 @@
 import { Route } from "react-router-dom";
-import Dashboard from "../admin/dashboard/Dashboard";
-import Login from "../admin/login/Login";
-import User from "../admin/user/User";
-import ViewStream from "../admin/stream/ViewStream";
-import Quiz from "../admin/quiz/Quiz";
-import Stream from "../admin/stream/Stream";
-import AddQuiz from "../admin/quiz/AddQuiz";
-import EditQuiz from "../admin/quiz/EditQuiz";
-import EditUser from "../admin/user/EditUser";
-import AdminLayout from "../admin/AdminLayout";
+import Dashboard from "../pages/admin/dashboard/Dashboard";
+import ViewStream from "../pages/admin/stream/ViewStream";
+import Quiz from "../pages/admin/quiz/Quiz";
+import Stream from "../pages/admin/stream/Stream";
+import AdminLayout from "../pages/admin/AdminLayout";
+import User from "../pages/admin/user/User";
+import AddQuiz from "../pages/admin/quiz/AddQuiz";
+import EditQuiz from "../pages/admin/quiz/EditQuiz";
+import EditUser from "../pages/admin/user/EditUser";
+import PageNotFound from "../pages/PageNotFound";
+import RequireAuth from "../pages/RequireAuth";
+import auth from "../auth/auth";
 
 const AdminRoutes = (
-  <Route path="/admin" key="Admin">
-    <Route index element={<Login />} />
+  <Route path="/admin" element={<RequireAuth />} key="Admin">
+    <Route element={<PageNotFound />} index />
     <Route element={<AdminLayout />}>
       <Route path="dashboard" element={<Dashboard />} />
       <Route path="user">

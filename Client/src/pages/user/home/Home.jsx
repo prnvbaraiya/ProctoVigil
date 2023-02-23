@@ -1,5 +1,5 @@
 import { Box, Container, Divider, Grid, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 
 const numberStyle = {
   backgroundImage:

@@ -5,3 +5,9 @@ export const SERVER_LINK = "http://192.168.29.34:1322/api/"; //for wifi
 
 export const JWT_SEC_KEY =
   "2844ace3919e1f12b610f5128ad657f1cc912c47b4b9b85265dc0f45eb5be12e";
+
+const ROLES = {
+  User: 2001,
+  Editor: 1984,
+  Admin: 5150,
+};

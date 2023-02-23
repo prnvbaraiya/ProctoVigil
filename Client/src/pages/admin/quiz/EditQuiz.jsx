@@ -2,12 +2,12 @@ import { Box, Stack, Button, Divider, Typography } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import DateTime from "../../components/form/DateTime";
-import QuestionAdd from "../../components/form/QuestionAdd";
-import SelectChip from "../../components/form/SelectChip";
-import TextBox from "../../components/form/TextBox";
-import { useFormInput } from "../../hooks/useFormInput";
-import { SERVER_LINK } from "../../variables/constants";
+import DateTime from "../../../components/form/DateTime";
+import QuestionAdd from "../../../components/form/QuestionAdd";
+import SelectChip from "../../../components/form/SelectChip";
+import TextBox from "../../../components/form/TextBox";
+import { useFormInput } from "../../../hooks/useFormInput";
+import { SERVER_LINK } from "../../../variables/constants";
 
 const names = [
   "Oliver Hansen",

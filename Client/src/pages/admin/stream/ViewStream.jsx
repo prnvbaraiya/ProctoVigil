@@ -2,9 +2,9 @@ import { Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { Box } from "@mui/system";
 import { useLocation } from "react-router-dom";
-import { zegoInstance } from "../../config/ZegoConfig";
+import { zegoInstance } from "../../../config/ZegoConfig";
 import axios from "axios";
-import { SERVER_LINK } from "../../variables/constants";
+import { SERVER_LINK } from "../../../variables/constants";
 
 function ViewStream() {
   const location = useLocation();

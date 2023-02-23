@@ -2,9 +2,9 @@ import { Box, Grid } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import ExamHeader from "../../components/ExamHeader";
-import QuestionNavigation from "../../components/QuestionNavigation";
-import { zegoInstance } from "../../config/ZegoConfig";
+import ExamHeader from "../../../components/ExamHeader";
+import QuestionNavigation from "../../../components/QuestionNavigation";
+import { zegoInstance } from "../../../config/ZegoConfig";
 
 function AttemptQuiz() {
   const [questions, setQuestions] = useState([]);
