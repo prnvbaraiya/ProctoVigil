@@ -8,6 +8,7 @@ export const JWT_SEC_KEY =
   "2844ace3919e1f12b610f5128ad657f1cc912c47b4b9b85265dc0f45eb5be12e";
 
 const ROLES = {
-  User: 2001,
+  User: 2002,
+  Teacher: 2017,
   Admin: 5150,
 };

@@ -1,7 +1,7 @@
 const express = require("express");
 const { json } = require("express");
 const { config } = require("dotenv");
-const { connect } = require("mongoose");
+const mongoose = require("mongoose");
 const cors = require("cors");
 const AuthRoute = require("./Routes/AuthRoute.js");
 const bodyParser = require("body-parser");
@@ -15,7 +15,9 @@ app.use(cors());
 app.use(bodyParser.raw({ type: "video/webm", limit: "10mb" }));
 app.use("/api", AuthRoute);
 
-connect(process.env.MONGO_URL)
+mongoose.set("strictQuery", false);
+mongoose
+  .connect(process.env.MONGO_URL)
   .then(() => console.log("Connected with Database Successfull"))
   .catch((e) => console.log("Database Connection Failed:", e));
 

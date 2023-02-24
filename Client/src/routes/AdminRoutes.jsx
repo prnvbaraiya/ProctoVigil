@@ -10,10 +10,13 @@ import EditQuiz from "../pages/admin/quiz/EditQuiz";
 import EditUser from "../pages/admin/user/EditUser";
 import PageNotFound from "../pages/PageNotFound";
 import RequireAuth from "../pages/RequireAuth";
-import auth from "../auth/auth";
 
 const AdminRoutes = (
-  <Route path="/admin" element={<RequireAuth />} key="Admin">
+  <Route
+    path="/admin"
+    element={<RequireAuth allowedRoles={["admin"]} />}
+    key="Admin"
+  >
     <Route element={<PageNotFound />} index />
     <Route element={<AdminLayout />}>
       <Route path="dashboard" element={<Dashboard />} />

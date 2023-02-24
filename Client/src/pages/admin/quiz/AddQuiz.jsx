@@ -8,6 +8,7 @@ import SelectChip from "../../../components/form/SelectChip";
 import QuestionAdd from "../../../components/form/QuestionAdd";
 import axios from "axios";
 import { SERVER_LINK } from "../../../variables/constants";
+import auth from "../../../auth/auth";
 
 const names = [
   "Oliver Hansen",
@@ -23,6 +24,7 @@ const names = [
 ];
 
 function AddQuiz() {
+  const author = useFormInput(auth.name);
   const name = useFormInput("");
   const description = useFormInput("");
   const [startDate, setStartDate] = useState(new Date());
@@ -37,6 +39,7 @@ function AddQuiz() {
 
   const handleSubmit = async () => {
     const data = {
+      author: auth.email,
       name: name.value,
       description: description.value,
       startDate: startDate,
@@ -81,6 +84,7 @@ function AddQuiz() {
         {/* Body  */}
         <form>
           <Stack spacing={3}>
+            <TextBox label="Author" disabled={true} {...author} />
             <TextBox label="Name" {...name} />
             <TextBox label="Description" {...description} />
             <Stack

@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 const QuizSchema = new mongoose.Schema(
   {
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     name: {
       type: String,
       required: true,

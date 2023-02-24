@@ -15,6 +15,7 @@ import LiveTvIcon from "@mui/icons-material/LiveTv";
 import SettingsIcon from "@mui/icons-material/Settings";
 import logo from "../assets/logo.png";
 import { NavItem } from "./nav-item";
+import auth from "../auth/auth";
 
 const items = [
   {
@@ -45,6 +46,7 @@ const items = [
 ];
 
 export const DashboardSidebar = (props) => {
+  const name = auth.name;
   const { open, onClose } = props;
   const theme = useTheme();
   const lgUp = useMediaQuery(theme.breakpoints.up("lg"), {
@@ -64,7 +66,7 @@ export const DashboardSidebar = (props) => {
         <div>
           <Box sx={{ p: 3, display: "flex", alignItems: "center", gap: 5 }}>
             <Avatar src={logo}></Avatar>
-            <Typography>Pranav Baraiya</Typography>
+            <Typography>{name}</Typography>
           </Box>
         </div>
         <Divider

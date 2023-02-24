@@ -25,6 +25,7 @@ const names = [
 function EditQuiz() {
   const location = useLocation();
   const { id } = location.state;
+  const author = useFormInput("");
   const name = useFormInput("");
   const description = useFormInput("");
   const [startDate, setStartDate] = useState(new Date());
@@ -39,6 +40,10 @@ function EditQuiz() {
   useEffect(() => {
     const getData = async () => {
       const res = await axios.get(SERVER_LINK + "quiz/" + id);
+      console.log(res.data.author);
+      author.onChange(
+        res.data.author.firstName + " " + res.data.author.lastName
+      );
       name.onChange(res.data.name);
       description.onChange(res.data.description);
       setStartDate(res.data.startDate);
@@ -104,6 +109,7 @@ function EditQuiz() {
           {/* Body  */}
           <form>
             <Stack spacing={3}>
+              <TextBox label="Author" disabled={true} {...author} />
               <TextBox label="Name" {...name} />
               <TextBox label="Description" {...description} />
               <Stack

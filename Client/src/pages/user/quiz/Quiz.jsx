@@ -97,7 +97,9 @@ function Quiz() {
                 )}
               </Grid>
               <Divider style={{ width: "100%", margin: "10px 0" }} />
-              <Typography>By: Pranav Baraiya</Typography>
+              <Typography>
+                By: {item.author.firstName + " " + item.author.lastName}
+              </Typography>
             </Grid>
           </Box>
         );

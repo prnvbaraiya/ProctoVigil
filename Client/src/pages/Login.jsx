@@ -47,13 +47,15 @@ export default function Login() {
       rememberMe: formData.get("rememberMe") !== null,
     };
     try {
-      const res = await axios.post(SERVER_LINK + "admin/auth-login", data);
+      const res = await axios.post(SERVER_LINK + "login", data);
       const accessToken = res?.data?.accessToken;
       const roles = res?.data?.roles;
       auth.authenticate(accessToken);
       if (roles === "admin") {
         navigate(from || "/admin/dashboard", { replace: true });
       } else if (roles === "student") {
+        navigate(from || "/", { replace: true });
+      } else if (roles === "teacher") {
         navigate(from || "/", { replace: true });
       }
     } catch (err) {
@@ -143,7 +145,7 @@ export default function Login() {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link href="/register" variant="body2">
                     Don't have an account? Sign Up
                   </Link>
                 </Grid>

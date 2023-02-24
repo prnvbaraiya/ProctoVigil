@@ -1,5 +1,6 @@
 const { generateToken04 } = require("../zgocloud/zegoServerAssistant.js");
 const QuizModel = require("../model/QuizModel.js");
+const UserModel = require("../model/UserModel.js");
 const { PythonShell } = require("python-shell");
 const jwt = require("jsonwebtoken");
 
@@ -7,8 +8,12 @@ const ERROR_CODE = 500;
 const SUCCESS_CODE = 202;
 
 const JWT = {
-  generateToken: (email, roles) => {
-    const payload = { email, roles };
+  generateToken: (user) => {
+    const payload = {
+      email: user.email,
+      roles: user.roles,
+      name: user.firstName + " " + user.lastName,
+    };
     const token = jwt.sign(payload, process.env.JWT_SEC_KEY);
     return token;
   },
@@ -20,13 +25,25 @@ const JWT = {
 
 const User = {
   register: async (req, res) => {
-    console.log("lol");
-    return res.send("YAY");
+    try {
+      const result = await UserModel.create(req.body);
+      return res.status(SUCCESS_CODE).send("User Created Succesfully");
+    } catch (err) {
+      return res.status(ERROR_CODE).send("Server Error: " + err);
+    }
   },
   login: async (req, res) => {
-    const roles = "admin";
-    const accessToken = JWT.generateToken(req.body.email, roles);
-    return res.status(SUCCESS_CODE).send({ accessToken, roles });
+    const user = await UserModel.findOne({ email: req.body.email });
+    if (user.email === req.body.email && user.password === req.body.password) {
+      const accessToken = JWT.generateToken(user);
+      return res.status(SUCCESS_CODE).send({ accessToken, roles: user.roles });
+    } else {
+      return res.status(ERROR_CODE).send("Password Doesn't Match");
+    }
+  },
+  delete: async (req, res) => {
+    const user = await UserModel.findById(req.params.id);
+    await user.remove();
   },
 };
 
@@ -47,7 +64,8 @@ const ZegocloudTokenGenerator = {
 
 const Quiz = {
   add: async (req, res) => {
-    const data = req.body;
+    const user = await UserModel.findOne({ email: req.body.author });
+    const data = { ...req.body, author: user._id };
     try {
       await QuizModel.create(data);
       return res.status(SUCCESS_CODE).send("Quiz Added");
@@ -57,7 +75,10 @@ const Quiz = {
   },
   get: async (req, res) => {
     try {
-      const quizzes = await QuizModel.find();
+      const quizzes = await QuizModel.find().populate({
+        path: "author",
+        select: "firstName lastName",
+      });
       return res.status(SUCCESS_CODE).send(quizzes);
     } catch (err) {
       return res.status(ERROR_CODE).send("There is some error: " + err);
@@ -66,7 +87,10 @@ const Quiz = {
   getById: async (req, res) => {
     try {
       const id = req.params.id;
-      const quiz = await QuizModel.findById(id);
+      const quiz = await QuizModel.findById(id).populate({
+        path: "author",
+        select: "firstName lastName",
+      });
       return res.status(SUCCESS_CODE).send(quiz);
     } catch (err) {
       return res.status(ERROR_CODE).send("There is some error: " + err);

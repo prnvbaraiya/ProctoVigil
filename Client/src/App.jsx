@@ -7,6 +7,7 @@ import { theme } from "./theme/index";
 import Login from "./pages/Login";
 import Unauthorized from "./pages/Unauthorized";
 import PageNotFound from "./pages/PageNotFound";
+import Register from "./pages/Register";
 
 function App() {
   const handleContextMenu = (e) => {
@@ -23,6 +24,7 @@ function App() {
     >
       <ThemeProvider theme={theme}>
         <Routes>
+          <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/page-not-found" element={<PageNotFound />} />

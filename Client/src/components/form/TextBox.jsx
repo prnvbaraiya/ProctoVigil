@@ -8,6 +8,7 @@ function TextBox({
   fullWidth = true,
   multiline = false,
   rows = 2,
+  disabled = false,
   ...props
 }) {
   return (
@@ -20,6 +21,7 @@ function TextBox({
           variant={variant}
           multiline={multiline}
           rows={rows}
+          disabled={disabled}
           {...props}
         />
       </FormControl>

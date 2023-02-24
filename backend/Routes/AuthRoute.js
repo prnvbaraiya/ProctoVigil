@@ -12,7 +12,8 @@ router.get("/", a.test);
 router.get("/yay", a.sc);
 router.post("/generateToken", ZegocloudTokenGenerator.getToken);
 
-router.post("/admin/auth-login", User.login);
+router.post("/register", User.register);
+router.post("/login", User.login);
 
 //Quiz
 router.get("/quizzes", Quiz.get);

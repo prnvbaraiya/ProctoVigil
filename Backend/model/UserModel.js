@@ -1,42 +1,40 @@
 const mongoose = require("mongoose");
+const QuizModel = require("./QuizModel");
 
 const UserSchema = new mongoose.Schema(
   {
-    username: {
+    roles: {
       type: String,
       required: true,
-      min: 3,
-      max: 20,
-      unique: true,
     },
     firstName: {
       type: String,
       required: true,
-      min: 3,
-      max: 20,
     },
     lastName: {
       type: String,
-      required: true,
-      min: 3,
-      max: 20,
     },
     email: {
       type: String,
       required: true,
       unique: true,
-      max: 50,
     },
-    mobile: {
+    password: {
       type: String,
       required: true,
-      unique: true,
-      minLength: 10,
-      maxLength: 10,
     },
   },
   { timestamps: true }
 );
+
+UserSchema.pre("remove", async function (next) {
+  try {
+    await QuizModel.deleteMany({ author: this._id });
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
 
 const UserModel = mongoose.model("User", UserSchema);
 module.exports = UserModel;
