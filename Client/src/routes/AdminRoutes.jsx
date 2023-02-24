@@ -10,6 +10,7 @@ import EditQuiz from "../pages/admin/quiz/EditQuiz";
 import EditUser from "../pages/admin/user/EditUser";
 import PageNotFound from "../pages/PageNotFound";
 import RequireAuth from "../pages/RequireAuth";
+import Settings from "../pages/admin/settings/Settings";
 
 const AdminRoutes = (
   <Route
@@ -32,6 +33,9 @@ const AdminRoutes = (
       <Route path="stream">
         <Route index element={<Stream />} />
         <Route path="view" element={<ViewStream />} />
+      </Route>
+      <Route path="settings">
+        <Route index element={<Settings />} />
       </Route>
     </Route>
   </Route>

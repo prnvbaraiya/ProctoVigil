@@ -34,16 +34,30 @@ const User = {
   },
   login: async (req, res) => {
     const user = await UserModel.findOne({ email: req.body.email });
-    if (user.email === req.body.email && user.password === req.body.password) {
-      const accessToken = JWT.generateToken(user);
-      return res.status(SUCCESS_CODE).send({ accessToken, roles: user.roles });
+    if (user) {
+      if (
+        user.email === req.body.email &&
+        user.password === req.body.password
+      ) {
+        const accessToken = JWT.generateToken(user);
+        return res
+          .status(SUCCESS_CODE)
+          .send({ accessToken, roles: user.roles });
+      } else {
+        return res.status(ERROR_CODE).send("Password Doesn't Match");
+      }
     } else {
-      return res.status(ERROR_CODE).send("Password Doesn't Match");
+      return res.status(ERROR_CODE).send("User Not Found");
     }
   },
   delete: async (req, res) => {
-    const user = await UserModel.findById(req.params.id);
-    await user.remove();
+    try {
+      const user = await UserModel.findOneAndRemove({ email: req.body.email });
+      const result = await QuizModel.deleteMany({ author: user._id });
+      return res.status(SUCCESS_CODE).send("User Delted Successfully");
+    } catch (err) {
+      return res.status(ERROR_CODE).send("User Delted Error: " + err);
+    }
   },
 };
 
