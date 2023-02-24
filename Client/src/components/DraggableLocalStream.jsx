@@ -71,7 +71,7 @@ function DraggableLocalStream({ instance }) {
         localView.play("local-stream");
       }
     } catch (err) {
-      alert("Error: ", err);
+      alert("Error in createRoom: ", err);
     }
   };
 

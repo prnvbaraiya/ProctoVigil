@@ -12,7 +12,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AlertDialogBox from "./AlertDialogBox";
 
-export default function ExamHeader({ instance, duration }) {
+export default function ExamHeader({
+  instance,
+  duration,
+  handleSuccess,
+  setSubmitOpen,
+}) {
   const Ref = useRef(null);
   const navigate = useNavigate();
   const [cancelOpen, setCancelOpen] = useState(false);
@@ -60,7 +65,7 @@ export default function ExamHeader({ instance, duration }) {
     return deadline;
   };
 
-  const handleSuccess = () => {
+  const handleCancel = () => {
     navigate("/quiz");
   };
 
@@ -75,12 +80,13 @@ export default function ExamHeader({ instance, duration }) {
         <AlertDialogBox
           open={cancelOpen}
           setOpen={setCancelOpen}
-          handleSuccess={handleSuccess}
+          handleSuccess={handleCancel}
           title={"You really want to quit?"}
           data={
             "If You Exit now your quiz will not be submmited and you will not be able to reapeare in the exam are you really sure you want to exit ?"
           }
         />
+
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Avatar src={Logo}></Avatar>
@@ -113,7 +119,11 @@ export default function ExamHeader({ instance, duration }) {
               >
                 Cancel
               </Button>
-              <Button color="secondary" variant="contained">
+              <Button
+                color="secondary"
+                variant="contained"
+                onClick={() => setSubmitOpen(true)}
+              >
                 Submit
               </Button>
             </Box>

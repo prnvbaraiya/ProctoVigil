@@ -1,3 +1,9 @@
+### To start Project
+
+- 1. Install all the packages for frontend & backend.
+- 2. Open two terminal and run `npm run frontend` and in second terminal run `npm run backend`
+- 3. Your project is running 5173 for frontend port and 1322 for backend port.
+
 ### Todo
 
 - [ ] Database setup mongo

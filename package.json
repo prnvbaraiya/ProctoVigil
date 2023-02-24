@@ -1,0 +1,22 @@
+{
+  "name": "procto-vigil",
+  "version": "1.0.0",
+  "description": "- [ ] Database setup mongo - [ ] Admin collection - [ ] User collection - [x] Quiz collection - [ ] Result Quiz collection",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "frontend": "cd Client && npm run dev",
+    "backend":"cd Backend && nodemon main"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prnvbaraiya/ProctoVigil.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/prnvbaraiya/ProctoVigil/issues"
+  },
+  "homepage": "https://github.com/prnvbaraiya/ProctoVigil#readme"
+}

@@ -13,7 +13,6 @@ import PersonIcon from "@mui/icons-material/Person";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import LiveTvIcon from "@mui/icons-material/LiveTv";
 import SettingsIcon from "@mui/icons-material/Settings";
-import LogoutIcon from "@mui/icons-material/Logout";
 import logo from "../assets/logo.png";
 import { NavItem } from "./nav-item";
 
@@ -42,11 +41,6 @@ const items = [
     href: "/settings",
     icon: <SettingsIcon fontSize="small" />,
     title: "Settings",
-  },
-  {
-    href: "/logout",
-    icon: <LogoutIcon fontSize="small" />,
-    title: "Log Out",
   },
 ];
 

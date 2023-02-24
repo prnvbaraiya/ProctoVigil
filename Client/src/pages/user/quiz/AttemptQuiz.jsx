@@ -2,6 +2,7 @@ import { Box, Grid } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import AlertDialogBox from "../../../components/AlertDialogBox";
 import ExamHeader from "../../../components/ExamHeader";
 import QuestionNavigation from "../../../components/QuestionNavigation";
 import { zegoInstance } from "../../../config/ZegoConfig";
@@ -11,13 +12,12 @@ function AttemptQuiz() {
   const [data, setData] = useState({});
   const [questions, setQuestions] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState(1);
-  const [selectedAnswers, setSelectedAnswers] = useState(
-    Array.from({ length: 30 }, () => null)
-  );
+  const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   // eslint-disable-next-line
   const [answerKey, setAnswerKey] = useState([]);
   const [warningCount, setWarningCount] = useState(0);
+  const [submitOpen, setSubmitOpen] = useState(false);
   const location = useLocation();
   const id = location.state?.id;
   const instance = zegoInstance();
@@ -44,7 +44,6 @@ function AttemptQuiz() {
   useEffect(() => {
     // Fetch data from API
     getData();
-    console.log("QID:", id);
     // if (!document.fullscreenElement) {
     //   document.documentElement.requestFullscreen();
     // }
@@ -77,6 +76,9 @@ function AttemptQuiz() {
 
     // Set the updated questions and set isLoading to false
     setQuestions(updatedQuestions);
+    setSelectedAnswers(
+      Array.from({ length: res.data.questions.length }, () => null)
+    );
     setIsLoading(false);
   };
 
@@ -89,12 +91,33 @@ function AttemptQuiz() {
     });
   };
 
+  const handleSuccess = () => {
+    const answeredQuestions = selectedAnswers.filter(
+      (item) => item !== null
+    ).length;
+    console.log(`Question Attempted: ${answeredQuestions}/${questions.length}`);
+  };
+
   return (
     <>
+      <AlertDialogBox
+        open={submitOpen}
+        setOpen={setSubmitOpen}
+        handleSuccess={handleSuccess}
+        title={"You really want to Submit?"}
+        data={`Question Attempted: ${
+          selectedAnswers.filter((item) => item !== null).length
+        }/${questions.length}`}
+      />
       <Box>
         <Box>
           {data.duration && (
-            <ExamHeader instance={instance} duration={data.duration * 60} />
+            <ExamHeader
+              instance={instance}
+              duration={data.duration * 60}
+              handleSuccess={handleSuccess}
+              setSubmitOpen={setSubmitOpen}
+            />
           )}
         </Box>
         <Box>

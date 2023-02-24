@@ -1,8 +1,10 @@
-import PropTypes from "prop-types";
 import { Box, MenuItem, MenuList, Popover, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import auth from "../auth/auth";
 
 export const AccountPopover = (props) => {
   const { anchorEl, onClose, open, ...other } = props;
+  const navigate = useNavigate();
 
   return (
     <Popover
@@ -26,7 +28,7 @@ export const AccountPopover = (props) => {
       >
         <Typography variant="overline">Account</Typography>
         <Typography color="text.secondary" variant="body2">
-          John Doe
+          Pranav Baraiya
         </Typography>
       </Box>
       <MenuList
@@ -42,7 +44,14 @@ export const AccountPopover = (props) => {
           },
         }}
       >
-        <MenuItem>Sign out</MenuItem>
+        <MenuItem
+          onClick={() => {
+            auth.logout();
+            navigate("/", { replace: true });
+          }}
+        >
+          Sign out
+        </MenuItem>
       </MenuList>
     </Popover>
   );

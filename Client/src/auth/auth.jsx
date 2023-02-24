@@ -1,30 +1,33 @@
 import jwt_decode from "jwt-decode";
+import Cookies from "js-cookie";
 
 const auth = {
   isAuthenticated: false,
   roles: "",
   authenticate(token) {
-    localStorage.setItem("token", token);
+    Cookies.set("token", token, { expires: 7, sameSite: "strict" });
     this.isAuthenticated = true;
     const decodedToken = jwt_decode(token);
     this.roles = decodedToken.roles;
   },
   logout() {
-    localStorage.removeItem("token");
+    Cookies.remove("token");
     this.isAuthenticated = false;
     this.roles = "";
   },
   getToken() {
-    return localStorage.getItem("token");
+    return Cookies.get("token");
   },
-  getRoles() {
+  init() {
     const token = this.getToken();
     if (token) {
       const decodedToken = jwt_decode(token);
-      return decodedToken.roles;
+      this.roles = decodedToken.roles;
+      this.isAuthenticated = true;
     }
-    return "";
   },
 };
+
+auth.init();
 
 export default auth;
