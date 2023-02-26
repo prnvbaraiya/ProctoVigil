@@ -44,12 +44,16 @@ function AttemptQuiz() {
   useEffect(() => {
     // Fetch data from API
     getData();
+
     // if (!document.fullscreenElement) {
     //   document.documentElement.requestFullscreen();
     // }
     // window.addEventListener("offline", offlineEvent);
     // window.addEventListener("blur", blueEvent);
     // return () => {
+    // if (document.fullscreenElement) {
+    //   document.exitFullscreen();
+    // }
     //   window.removeEventListener("blur", blueEvent);
     //   window.removeEventListener("offline", offlineEvent);
     // };
@@ -117,6 +121,7 @@ function AttemptQuiz() {
               duration={data.duration * 60}
               handleSuccess={handleSuccess}
               setSubmitOpen={setSubmitOpen}
+              setIsLoading={setIsLoading}
             />
           )}
         </Box>

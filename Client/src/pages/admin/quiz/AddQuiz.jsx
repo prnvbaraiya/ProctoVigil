@@ -1,29 +1,16 @@
 import { Box, Button, Divider, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TextBox from "../../../components/form/TextBox";
 import { useFormInput } from "../../../hooks/useFormInput";
 import DateTime from "../../../components/form/DateTime";
 import SelectChip from "../../../components/form/SelectChip";
 import QuestionAdd from "../../../components/form/QuestionAdd";
-import axios from "axios";
-import { SERVER_LINK } from "../../../variables/constants";
 import auth from "../../../auth/auth";
-
-const names = [
-  "Oliver Hansen",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder",
-];
+import { QuizService, User } from "../../../services/ServerRequest";
 
 function AddQuiz() {
+  const [names, setNames] = useState([]);
   const author = useFormInput(auth.name);
   const name = useFormInput("");
   const description = useFormInput("");
@@ -34,8 +21,16 @@ function AddQuiz() {
   const [questions, setQuestions] = useState([
     { question: "", incorrect_answer: ["", "", ""], correct_answer: "" },
   ]);
-
   const navigate = useNavigate();
+
+  const getData = async () => {
+    const res = await User.getStudents();
+    setNames(res.data.map((item) => item.firstName + " " + item.lastName));
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const handleSubmit = async () => {
     const data = {
@@ -48,7 +43,7 @@ function AddQuiz() {
       personName,
       questions,
     };
-    const res = await axios.post(SERVER_LINK + "quiz/add", data);
+    const res = await QuizService.set(data);
     if (res.status === 202) {
       navigate(window.history.back());
     } else {

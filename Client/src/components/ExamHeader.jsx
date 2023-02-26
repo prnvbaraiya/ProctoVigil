@@ -17,6 +17,7 @@ export default function ExamHeader({
   duration,
   handleSuccess,
   setSubmitOpen,
+  setIsLoading,
 }) {
   const Ref = useRef(null);
   const navigate = useNavigate();

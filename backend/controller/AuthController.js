@@ -21,6 +21,16 @@ const JWT = {
     const decoded = jwt.verify(token, process.env.JWT_SEC_KEY);
     return decoded;
   },
+  authenticateToken: (req, res, next) => {
+    const token = req.headers["authorization"];
+    if (token == null) return res.sendStatus(401);
+
+    jwt.verify(token, process.env.JWT_SEC_KEY, (err, user) => {
+      if (err) return res.sendStatus(403);
+      req.user = user;
+      next();
+    });
+  },
 };
 
 const User = {
@@ -48,6 +58,14 @@ const User = {
       }
     } else {
       return res.status(ERROR_CODE).send("User Not Found");
+    }
+  },
+  get: async (req, res) => {
+    try {
+      const users = await UserModel.find({ roles: "student" });
+      return res.status(SUCCESS_CODE).send(users);
+    } catch (err) {
+      return res.status(ERROR_CODE).send("User Getting Error: " + err);
     }
   },
   delete: async (req, res) => {
@@ -89,7 +107,7 @@ const Quiz = {
   },
   get: async (req, res) => {
     try {
-      const quizzes = await QuizModel.find().populate({
+      const quizzes = await QuizModel.find().sort({ name: 1 }).populate({
         path: "author",
         select: "firstName lastName",
       });
@@ -113,8 +131,7 @@ const Quiz = {
   update: async (req, res) => {
     try {
       const data = req.body;
-      const id = req.params.id;
-      await QuizModel.findByIdAndUpdate(id, data);
+      await QuizModel.findByIdAndUpdate(data._id, data);
       return res.status(SUCCESS_CODE).send("Quiz Updated");
     } catch (err) {
       return res.status(ERROR_CODE).send("There is some error: " + err);
@@ -122,8 +139,7 @@ const Quiz = {
   },
   delete: async (req, res) => {
     try {
-      const id = req.params.id;
-      await QuizModel.findByIdAndDelete(id);
+      const data = await QuizModel.findByIdAndDelete(req.body.id);
       return res
         .status(SUCCESS_CODE)
         .send({ message: "Quiz Deleted", type: "success" });
@@ -168,4 +184,4 @@ function requireAdmin(req, res, next) {
 //   // Render the admin page
 // });
 
-module.exports = { User, ZegocloudTokenGenerator, Quiz, a, requireAdmin };
+module.exports = { JWT, User, ZegocloudTokenGenerator, Quiz, a, requireAdmin };

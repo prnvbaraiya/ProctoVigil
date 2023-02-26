@@ -6,11 +6,16 @@ import {
   Select,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { SERVER_LINK } from "../../../variables/constants";
 
 function Stream() {
+  const [result, setResult] = useState("");
+  const [quizLabel, setQuizLabel] = React.useState([]);
   const [quiz, setQuiz] = React.useState("");
+  const [studentLabel, setStudentLabel] = React.useState([]);
   const [student, setStudent] = React.useState("");
   const navigate = useNavigate();
 
@@ -18,6 +23,17 @@ function Stream() {
     const data = { quiz, student };
     navigate("view", { state: data });
   };
+
+  const getData = async () => {
+    const res = await axios.get(SERVER_LINK + "quizzes");
+    console.log(res);
+    setResult(res.data);
+    setQuizLabel(res.data.map((item) => item.name));
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <>
@@ -30,11 +46,23 @@ function Stream() {
               id="demo-simple-select"
               value={quiz}
               label="Quiz"
-              onChange={(e) => setQuiz(e.target.value)}
+              onChange={(e) => {
+                setQuiz(e.target.value);
+                result.map(
+                  (item) =>
+                    item.name === e.target.value &&
+                    setStudentLabel(item.personName)
+                );
+              }}
             >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              {quizLabel &&
+                quizLabel.map((item) => {
+                  return (
+                    <MenuItem key={item} value={item}>
+                      {item}
+                    </MenuItem>
+                  );
+                })}
             </Select>
           </FormControl>
 
@@ -47,9 +75,14 @@ function Stream() {
               label="Student"
               onChange={(e) => setStudent(e.target.value)}
             >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              {studentLabel &&
+                studentLabel.map((item) => {
+                  return (
+                    <MenuItem key={item} value={item}>
+                      {item}
+                    </MenuItem>
+                  );
+                })}
             </Select>
           </FormControl>
           <Button variant="contained" onClick={handleSubmit}>

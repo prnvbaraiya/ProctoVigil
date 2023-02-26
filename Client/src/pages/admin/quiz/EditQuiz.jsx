@@ -1,5 +1,4 @@
 import { Box, Stack, Button, Divider, Typography } from "@mui/material";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import DateTime from "../../../components/form/DateTime";
@@ -7,24 +6,12 @@ import QuestionAdd from "../../../components/form/QuestionAdd";
 import SelectChip from "../../../components/form/SelectChip";
 import TextBox from "../../../components/form/TextBox";
 import { useFormInput } from "../../../hooks/useFormInput";
-import { SERVER_LINK } from "../../../variables/constants";
-
-const names = [
-  "Oliver Hansen",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder",
-];
+import { QuizService, User } from "../../../services/ServerRequest";
 
 function EditQuiz() {
   const location = useLocation();
   const { id } = location.state;
+  const [names, setNames] = useState([]);
   const author = useFormInput("");
   const name = useFormInput("");
   const description = useFormInput("");
@@ -37,10 +24,18 @@ function EditQuiz() {
   ]);
   const navigate = useNavigate();
 
+  const getData = async () => {
+    const res = await User.getStudents();
+    setNames(res.data.map((item) => item.firstName + " " + item.lastName));
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   useEffect(() => {
     const getData = async () => {
-      const res = await axios.get(SERVER_LINK + "quiz/" + id);
-      console.log(res.data.author);
+      const res = await QuizService.getById(id);
       author.onChange(
         res.data.author.firstName + " " + res.data.author.lastName
       );
@@ -59,6 +54,7 @@ function EditQuiz() {
 
   const handleSubmit = async () => {
     const data = {
+      _id: id,
       name: name.value,
       description: description.value,
       startDate: startDate,
@@ -67,7 +63,7 @@ function EditQuiz() {
       personName,
       questions,
     };
-    const res = await axios.post(SERVER_LINK + "quiz/update/" + id, data);
+    const res = await QuizService.update(data);
     if (res.status === 202) {
       navigate("/admin/quiz");
     } else {

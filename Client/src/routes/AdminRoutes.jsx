@@ -4,7 +4,7 @@ import ViewStream from "../pages/admin/stream/ViewStream";
 import Quiz from "../pages/admin/quiz/Quiz";
 import Stream from "../pages/admin/stream/Stream";
 import AdminLayout from "../pages/admin/AdminLayout";
-import User from "../pages/admin/user/User";
+import ViewUser from "../pages/admin/user/ViewUser";
 import AddQuiz from "../pages/admin/quiz/AddQuiz";
 import EditQuiz from "../pages/admin/quiz/EditQuiz";
 import EditUser from "../pages/admin/user/EditUser";
@@ -22,7 +22,7 @@ const AdminRoutes = (
     <Route element={<AdminLayout />}>
       <Route path="dashboard" element={<Dashboard />} />
       <Route path="user">
-        <Route index element={<User />} />
+        <Route index element={<ViewUser />} />
         <Route path="edit" element={<EditUser />} />
       </Route>
       <Route path="quiz">

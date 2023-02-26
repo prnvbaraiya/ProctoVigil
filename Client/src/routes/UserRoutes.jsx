@@ -1,5 +1,6 @@
 import { Route } from "react-router-dom";
 import Login from "../pages/Login";
+import Test from "../pages/Test";
 import Home from "../pages/user/home/Home";
 import AttemptQuiz from "../pages/user/quiz/AttemptQuiz";
 import Quiz from "../pages/user/quiz/Quiz";
@@ -10,6 +11,7 @@ const UserRoutes = [
     <Route path="/" element={<Home />} key="home"></Route>,
     <Route path="/login" element={<Login />} key="login"></Route>,
   </Route>,
+  <Route element={<Test />} path="/test" key="test" />,
   <Route path="/quiz" key="quiz">
     <Route element={<UserLayout />}>
       <Route index element={<Quiz />}></Route>

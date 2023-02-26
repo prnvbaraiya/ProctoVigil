@@ -76,6 +76,9 @@ export const UserNavbar = (props) => {
             <Link component="button" underline="hover" to="/quiz">
               <Typography sx={{ ml: 3 }}>Contact Us</Typography>
             </Link>
+            <Link component="button" underline="hover" to="/test">
+              <Typography sx={{ ml: 3 }}>Test Page</Typography>
+            </Link>
           </Box>
           <Link to="/login">
             <Avatar

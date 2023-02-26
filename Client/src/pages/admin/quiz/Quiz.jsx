@@ -1,12 +1,11 @@
 import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BasicTable from "../../../components/form/BasicTable";
-import { SERVER_LINK } from "../../../variables/constants";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SnackbarDisplay from "../../../components/SnackbarDisplay";
+import { QuizService } from "../../../services/ServerRequest";
 
 function Quiz() {
   const [data, setData] = useState([]);
@@ -17,7 +16,7 @@ function Quiz() {
   });
 
   const handleDelete = async (id) => {
-    const res = await axios.post(SERVER_LINK + "quiz/delete/" + id);
+    const res = await QuizService.delete({ id });
     if (res.status === 202) {
       setSnackbarData({
         open: true,
@@ -71,7 +70,7 @@ function Quiz() {
   const hideColumns = ["_id"];
 
   const getData = async () => {
-    const res = await axios.get(SERVER_LINK + "/quizzes");
+    const res = await QuizService.get();
     setData(res.data);
   };
 

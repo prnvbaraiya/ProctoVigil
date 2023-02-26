@@ -1,7 +1,16 @@
 import { Box, Divider, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
+import { User } from "../../../services/ServerRequest";
 
-function User() {
+function ViewUser() {
+  const getData = async () => {
+    const i = await User.getUsers();
+    console.log(i);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <>
       <Box>
@@ -23,4 +32,4 @@ function User() {
   );
 }
 
-export default User;
+export default ViewUser;
