@@ -1,10 +1,7 @@
 import React, { useEffect } from "react";
 import Draggable from "react-draggable";
-import axios from "axios";
-
-import { SERVER_LINK } from "../variables/constants";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@mui/material";
+import { JWTService } from "../services/ServerRequest";
 
 function DraggableLocalStream({ instance }) {
   const zconf = {
@@ -36,7 +33,7 @@ function DraggableLocalStream({ instance }) {
 
   const createRoom = async () => {
     try {
-      const { data } = await axios.post(SERVER_LINK + "generateToken", {
+      const { data } = await JWTService.generateToken({
         userId: zconf.userId,
       });
       zconf.token = data;

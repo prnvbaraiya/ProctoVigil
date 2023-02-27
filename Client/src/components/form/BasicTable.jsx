@@ -4,20 +4,18 @@ import React, { useState } from "react";
 
 function BasicTable({ rows, columns, hideColumns }) {
   const [pageSize, setPageSize] = useState(20);
-  const [columnVisibilityModel, setColumnVisibilityModel] = useState(() => {
-    const initialState = {};
-    hideColumns.forEach((field) => {
-      initialState[field] = false;
-    });
-    return initialState;
-  });
+  const [columnsState, setColumns] = useState(columns);
 
   const handleColumnVisibilityChange = (params) => {
-    setColumnVisibilityModel((prev) => ({
-      ...prev,
-      [params.field]: params.isVisible,
-    }));
+    const newColumns = columnsState.map((col) =>
+      col.field === params.field ? { ...col, hide: !params.isVisible } : col
+    );
+    setColumns(newColumns);
   };
+
+  const visibleColumns = columnsState.filter(
+    (col) => !hideColumns.includes(col.field)
+  );
 
   return (
     <Box sx={{ height: 400, width: 1 }}>
@@ -28,8 +26,7 @@ function BasicTable({ rows, columns, hideColumns }) {
         pageSize={pageSize}
         rowsPerPageOptions={[10, 20, 30, 40, 50, 100]}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-        columns={columns}
-        columnVisibilityModel={columnVisibilityModel}
+        columns={visibleColumns}
         onColumnVisibilityChange={handleColumnVisibilityChange}
         components={{ Toolbar: GridToolbar }}
       />

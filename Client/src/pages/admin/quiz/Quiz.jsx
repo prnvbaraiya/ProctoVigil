@@ -6,6 +6,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SnackbarDisplay from "../../../components/SnackbarDisplay";
 import { QuizService } from "../../../services/ServerRequest";
+import AlertDialogBox from "../../../components/AlertDialogBox";
 
 function Quiz() {
   const [data, setData] = useState([]);
@@ -14,14 +15,16 @@ function Quiz() {
     message: "",
     type: "success",
   });
+  const [deleteDialogBox, setDeleteDialogBox] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
 
   const handleDelete = async (id) => {
     const res = await QuizService.delete({ id });
     if (res.status === 202) {
+      setDeleteDialogBox(false);
       setSnackbarData({
         open: true,
         message: res.data.message,
-        type: res.data.type,
       });
     } else {
       alert("There is some error try again after some time");
@@ -30,9 +33,9 @@ function Quiz() {
 
   const columns = [
     { field: "_id", headerName: "Id", width: 50 },
-    { field: "name", headerName: "Name", width: 220 },
-    { field: "description", headerName: "Description", width: 220 },
-    { field: "personName", headerName: "Students", width: 220 },
+    { field: "name", headerName: "Name", width: 100 },
+    { field: "description", headerName: "Description", width: 200 },
+    { field: "personName", headerName: "Students", width: 250 },
     {
       field: "numberOfQuestions",
       headerName: "No. of Questions",
@@ -58,7 +61,13 @@ function Quiz() {
             >
               <EditIcon />
             </IconButton>
-            <IconButton onClick={() => handleDelete(row._id)} color="error">
+            <IconButton
+              onClick={() => {
+                setDeleteId(row._id);
+                setDeleteDialogBox(true);
+              }}
+              color="error"
+            >
               <DeleteIcon />
             </IconButton>
           </>
@@ -81,6 +90,13 @@ function Quiz() {
   return (
     <>
       <Box>
+        <AlertDialogBox
+          open={deleteDialogBox}
+          setOpen={setDeleteDialogBox}
+          handleSuccess={() => handleDelete(deleteId)}
+          title="Are Your You want to delete quiz ?"
+          data="Ok Delete it"
+        />
         <Box
           sx={{
             display: "flex",

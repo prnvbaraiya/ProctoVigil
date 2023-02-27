@@ -8,8 +8,7 @@ import {
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { SERVER_LINK } from "../../../variables/constants";
+import { QuizService } from "../../../services/ServerRequest";
 
 function Stream() {
   const [result, setResult] = useState("");
@@ -25,8 +24,7 @@ function Stream() {
   };
 
   const getData = async () => {
-    const res = await axios.get(SERVER_LINK + "quizzes");
-    console.log(res);
+    const res = await QuizService.get();
     setResult(res.data);
     setQuizLabel(res.data.map((item) => item.name));
   };

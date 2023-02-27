@@ -1,12 +1,11 @@
 import { Box, Grid } from "@mui/material";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import AlertDialogBox from "../../../components/AlertDialogBox";
 import ExamHeader from "../../../components/ExamHeader";
 import QuestionNavigation from "../../../components/QuestionNavigation";
 import { zegoInstance } from "../../../config/ZegoConfig";
-import { SERVER_LINK } from "../../../variables/constants";
+import { QuizService } from "../../../services/ServerRequest";
 
 function AttemptQuiz() {
   const [data, setData] = useState({});
@@ -42,7 +41,6 @@ function AttemptQuiz() {
   };
 
   useEffect(() => {
-    // Fetch data from API
     getData();
 
     // if (!document.fullscreenElement) {
@@ -61,8 +59,7 @@ function AttemptQuiz() {
   }, []);
 
   const getData = async () => {
-    // Get 30 questions from API
-    const res = await axios.get(SERVER_LINK + "quiz/" + id);
+    const res = await QuizService.getById(id);
     setData(res.data);
 
     // Shuffle the options for each question and set the answer key

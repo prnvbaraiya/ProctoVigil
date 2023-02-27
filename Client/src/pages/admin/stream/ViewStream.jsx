@@ -3,8 +3,7 @@ import React, { useEffect } from "react";
 import { Box } from "@mui/system";
 import { useLocation } from "react-router-dom";
 import { zegoInstance } from "../../../config/ZegoConfig";
-import axios from "axios";
-import { SERVER_LINK } from "../../../variables/constants";
+import { JWTService } from "../../../services/ServerRequest";
 
 function ViewStream() {
   const location = useLocation();
@@ -44,12 +43,10 @@ function ViewStream() {
   }, []);
 
   const createRoom = async () => {
-    await axios
-      .post(SERVER_LINK + "generateToken", {
-        userId: zconf.userId,
-      })
-      .then((res) => (zconf.token = res.data))
-      .catch((err) => alert("Error:", err));
+    const res = await JWTService.generateToken({
+      userId: zconf.userId,
+    });
+    zconf.token = res.data;
 
     try {
       await instance.loginRoom(zconf.roomId, zconf.token, {

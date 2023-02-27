@@ -14,12 +14,24 @@ const sendRequest = async (type, link, data = null) => {
   return await axios(config);
 };
 
-const User = {
-  getUsers: async () => {
-    return sendRequest("get", "users");
+const UserService = {
+  get: async () => {
+    return sendRequest("get", "user");
   },
   getStudents: async () => {
-    return sendRequest("get", "users");
+    return sendRequest("get", "student");
+  },
+  getById: async (id) => {
+    return sendRequest("get", "user/" + id);
+  },
+  set: async (data) => {
+    return sendRequest("post", "user", data);
+  },
+  update: async (data) => {
+    return sendRequest("put", "user", data);
+  },
+  delete: async (data) => {
+    return sendRequest("delete", "user", data);
   },
 };
 
@@ -37,9 +49,14 @@ const QuizService = {
     return sendRequest("put", "quiz", data);
   },
   delete: (data) => {
-    console.log(data);
     return sendRequest("delete", "quiz", data);
   },
 };
 
-export { User, QuizService };
+const JWTService = {
+  generateToken: (data) => {
+    return sendRequest("post", "generateToken", data);
+  },
+};
+
+export { UserService, QuizService, JWTService };

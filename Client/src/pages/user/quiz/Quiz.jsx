@@ -1,10 +1,9 @@
 import { Box, Button, Divider, Grid, Typography } from "@mui/material";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { theme } from "../../../theme";
-import { SERVER_LINK } from "../../../variables/constants";
 import { format } from "date-fns";
+import { QuizService } from "../../../services/ServerRequest";
 
 function Quiz() {
   const [quizzes, setQuizzes] = useState([]);
@@ -17,7 +16,7 @@ function Quiz() {
   };
 
   const getData = async () => {
-    const res = await axios.get(SERVER_LINK + "quizzes");
+    const res = await QuizService.get();
     setQuizzes(
       res.data.map((item) => {
         return {

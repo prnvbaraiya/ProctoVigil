@@ -6,7 +6,7 @@ import QuestionAdd from "../../../components/form/QuestionAdd";
 import SelectChip from "../../../components/form/SelectChip";
 import TextBox from "../../../components/form/TextBox";
 import { useFormInput } from "../../../hooks/useFormInput";
-import { QuizService, User } from "../../../services/ServerRequest";
+import { QuizService, UserService } from "../../../services/ServerRequest";
 
 function EditQuiz() {
   const location = useLocation();
@@ -25,7 +25,7 @@ function EditQuiz() {
   const navigate = useNavigate();
 
   const getData = async () => {
-    const res = await User.getStudents();
+    const res = await UserService.getStudents();
     setNames(res.data.map((item) => item.firstName + " " + item.lastName));
   };
 

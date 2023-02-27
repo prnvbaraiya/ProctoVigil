@@ -1,11 +1,11 @@
 import { Box, Divider, Typography } from "@mui/material";
 import React, { useEffect } from "react";
-import { User } from "../../../services/ServerRequest";
+import { UserService } from "../../../services/ServerRequest";
 
 function ViewUser() {
   const getData = async () => {
-    const i = await User.getUsers();
-    console.log(i);
+    const res = await UserService.get();
+    console.log(res.data);
   };
 
   useEffect(() => {

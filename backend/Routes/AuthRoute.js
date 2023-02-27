@@ -4,22 +4,23 @@ const {
   ZegocloudTokenGenerator,
   Quiz,
   a,
-  requireAdmin,
   JWT,
 } = require("../controller/AuthController");
 const router = express.Router();
 
 router.get("/", a.test);
 router.get("/yay", a.sc);
-router.post("/generateToken", ZegocloudTokenGenerator.getToken);
 
 router.post("/register", User.register);
 router.post("/login", User.login);
-router.delete("/delete", User.delete);
-router.get("/users", User.get);
 
-//Quiz
+//Authenticate Routes
 router.use(JWT.authenticateToken);
+router.post("/generateToken", ZegocloudTokenGenerator.getToken);
+router
+  .get("/user", User.get)
+  .get("/student", User.getStudent)
+  .delete("/delete", User.delete);
 router
   .get("/quiz", Quiz.get)
   .get("/quiz/:id", Quiz.getById)

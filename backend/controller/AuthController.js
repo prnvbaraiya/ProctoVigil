@@ -68,6 +68,14 @@ const User = {
       return res.status(ERROR_CODE).send("User Getting Error: " + err);
     }
   },
+  getStudent: async (req, res) => {
+    try {
+      const users = await UserModel.find({ roles: "student" });
+      return res.status(SUCCESS_CODE).send(users);
+    } catch (err) {
+      return res.status(ERROR_CODE).send("User Getting Error: " + err);
+    }
+  },
   delete: async (req, res) => {
     try {
       const user = await UserModel.findOneAndRemove({ email: req.body.email });
@@ -167,21 +175,8 @@ const a = {
   },
 };
 
-function requireAdmin(req, res, next) {
-  const token = req.headers.authorization.split(" ")[1];
-  const decoded = jwt.verify(token, secret);
-
-  if (decoded.role !== "admin") {
-    return res
-      .status(403)
-      .json({ error: "You do not have permission to access this resource." });
-  }
-
-  next();
-}
-
 // app.get('/admin', requireAuth, requireAdmin, (req, res) => {
 //   // Render the admin page
 // });
 
-module.exports = { JWT, User, ZegocloudTokenGenerator, Quiz, a, requireAdmin };
+module.exports = { JWT, User, ZegocloudTokenGenerator, Quiz, a };

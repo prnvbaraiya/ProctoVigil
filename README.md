@@ -20,6 +20,7 @@
 - [x] Admin Quiz Page
 - [x] Admin Add Update Quiz Page
 - [ ] Admin Add Quiz Using csv file
+- [ ] In Add Quiz add random number question
 - [x] Admin Stream Page
 - [x] Admin watch Stream Page
 - [x] Set up watch Stream with watching data
@@ -38,8 +39,8 @@
 - [x] Account setup in zegocloud
 - [x] Add JWT token both side
 
-- [ ] In basic table hide is not working
-- [ ] JWT token null on page refresh so store in cookie
+- [x] In basic table hide is not working
+- [x] JWT token null on page refresh so store in cookie
 
 - [x] 20% webrtc module & quiz module & frontend layout
 - [ ] 40% admin can add users & quiz & admin profile setting

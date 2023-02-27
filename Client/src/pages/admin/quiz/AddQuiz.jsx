@@ -7,7 +7,7 @@ import DateTime from "../../../components/form/DateTime";
 import SelectChip from "../../../components/form/SelectChip";
 import QuestionAdd from "../../../components/form/QuestionAdd";
 import auth from "../../../auth/auth";
-import { QuizService, User } from "../../../services/ServerRequest";
+import { QuizService, UserService } from "../../../services/ServerRequest";
 
 function AddQuiz() {
   const [names, setNames] = useState([]);
@@ -24,7 +24,7 @@ function AddQuiz() {
   const navigate = useNavigate();
 
   const getData = async () => {
-    const res = await User.getStudents();
+    const res = await UserService.getStudents();
     setNames(res.data.map((item) => item.firstName + " " + item.lastName));
   };
 
