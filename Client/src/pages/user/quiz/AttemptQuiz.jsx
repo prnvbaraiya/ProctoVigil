@@ -79,6 +79,18 @@ function AttemptQuiz() {
 
     // Set the updated questions and set isLoading to false
     setQuestions(updatedQuestions);
+    // setQuestions((prevQuestions) => {
+    //   const shuffledQuestions = [...updatedQuestions];
+    //   for (let i = shuffledQuestions.length - 1; i > 0; i--) {
+    //     const j = Math.floor(Math.random() * (i + 1));
+    //     [shuffledQuestions[i], shuffledQuestions[j]] = [
+    //       shuffledQuestions[j],
+    //       shuffledQuestions[i],
+    //     ];
+    //     answerKey
+    //   }
+    //   return shuffledQuestions;
+    // });
     setSelectedAnswers(
       Array.from({ length: res.data.questions.length }, () => null)
     );

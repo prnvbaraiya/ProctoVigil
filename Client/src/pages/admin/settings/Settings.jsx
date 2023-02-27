@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
 import AlertDialogBox from "../../../components/AlertDialogBox";
-import axios from "axios";
-import { SERVER_LINK } from "../../../variables/constants";
 import auth from "../../../auth/auth";
 import { useNavigate } from "react-router-dom";
+import { UserService } from "../../../services/ServerRequest";
 
 function Settings() {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleSuccess = async () => {
-    const res = await axios.post(SERVER_LINK + "delete", {
-      email: auth.email,
-    });
+    // const res = await axios.post(SERVER_LINK + "delete", {
+    //   email: auth.email,
+    // });
+    const res = await UserService.delete({ email: auth.email });
     auth.logout();
     if (res.status === 202) {
       navigate("/");

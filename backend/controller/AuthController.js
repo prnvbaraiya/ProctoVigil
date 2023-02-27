@@ -62,7 +62,7 @@ const User = {
   },
   get: async (req, res) => {
     try {
-      const users = await UserModel.find({ roles: "student" });
+      const users = await UserModel.find();
       return res.status(SUCCESS_CODE).send(users);
     } catch (err) {
       return res.status(ERROR_CODE).send("User Getting Error: " + err);

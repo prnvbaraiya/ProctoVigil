@@ -16,7 +16,7 @@
 - [x] Admin Login Page
 - [x] Admin Layout
 - [ ] Admin Dashboard Page
-- [ ] Admin Student Page
+- [x] Admin Student Page
 - [x] Admin Quiz Page
 - [x] Admin Add Update Quiz Page
 - [ ] Admin Add Quiz Using csv file

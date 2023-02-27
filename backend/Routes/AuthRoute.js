@@ -20,7 +20,7 @@ router.post("/generateToken", ZegocloudTokenGenerator.getToken);
 router
   .get("/user", User.get)
   .get("/student", User.getStudent)
-  .delete("/delete", User.delete);
+  .delete("/user", User.delete);
 router
   .get("/quiz", Quiz.get)
   .get("/quiz/:id", Quiz.getById)
