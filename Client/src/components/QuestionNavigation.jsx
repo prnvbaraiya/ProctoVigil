@@ -10,8 +10,9 @@ export default function QuestionNavigation(props) {
     selectedAnswers,
     setSelectedQuestion,
     instance,
+    visitedQuestions,
+    setVisitedQuestions,
   } = props;
-  const [visitedQuestions, setVisitedQuestions] = useState([]);
 
   const getQueNav = () =>
     [...Array(numQuestions)].map((_, i) => {
@@ -32,7 +33,9 @@ export default function QuestionNavigation(props) {
           textAlign="center"
           onClick={() => {
             setSelectedQuestion(i + 1);
-            setVisitedQuestions((prev) => [...prev, selectedQuestion]);
+            if (!isVisited) {
+              setVisitedQuestions((prev) => [...prev, i + 1]);
+            }
           }}
           key={i}
           id={i + 1}

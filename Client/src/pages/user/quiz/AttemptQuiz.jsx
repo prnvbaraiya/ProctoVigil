@@ -1,4 +1,5 @@
-import { Box, Grid } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
+import { Stack } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import AlertDialogBox from "../../../components/AlertDialogBox";
@@ -12,6 +13,7 @@ function AttemptQuiz() {
   const [questions, setQuestions] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState(1);
   const [selectedAnswers, setSelectedAnswers] = useState([]);
+  const [visitedQuestions, setVisitedQuestions] = useState([1]);
   const [isLoading, setIsLoading] = useState(true);
   // eslint-disable-next-line
   const [answerKey, setAnswerKey] = useState([]);
@@ -125,41 +127,85 @@ function AttemptQuiz() {
         <Box>
           <Grid container>
             <Grid item xs={9} p={3}>
-              {!isLoading && (
-                <div>
-                  {/* Display the current question */}
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html:
-                        selectedQuestion +
-                        ") " +
-                        questions[selectedQuestion - 1].question,
-                    }}
-                  />
-                  {/* Display the options for the current question */}
-                  {["A", "B", "C", "D"].map((choice, index) => {
-                    const answer =
-                      questions[selectedQuestion - 1].suffeledOptions[index];
-                    return (
-                      <div key={choice} style={{ marginTop: 5 }}>
-                        <label>
-                          <input
-                            type="radio"
-                            value={choice}
-                            name={`question-${selectedQuestion}`}
-                            checked={
-                              choice === selectedAnswers[selectedQuestion - 1]
-                            }
-                            onChange={(e) => handleAnswerChange(e)}
-                          />
+              <Stack sx={{ position: "relative" }}>
+                <Box>
+                  {!isLoading && (
+                    <div>
+                      {/* Display the current question */}
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            selectedQuestion +
+                            ") " +
+                            questions[selectedQuestion - 1].question,
+                        }}
+                      />
+                      {/* Display the options for the current question */}
+                      {["A", "B", "C", "D"].map((choice, index) => {
+                        const answer =
+                          questions[selectedQuestion - 1].suffeledOptions[
+                            index
+                          ];
+                        return (
+                          <div key={choice} style={{ marginTop: 5 }}>
+                            <label>
+                              <input
+                                type="radio"
+                                value={choice}
+                                name={`question-${selectedQuestion}`}
+                                checked={
+                                  choice ===
+                                  selectedAnswers[selectedQuestion - 1]
+                                }
+                                onChange={(e) => handleAnswerChange(e)}
+                              />
 
-                          {`${choice}) ${answer}`}
-                        </label>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
+                              {`${choice}) ${answer}`}
+                            </label>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </Box>
+                <Box
+                  sx={{
+                    position: "fixed",
+                    bottom: 0,
+                    display: "flex",
+                    justifyContent: "space-between",
+                    width: "70%",
+                    padding: "10px",
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    disabled={selectedQuestion === 1}
+                    onClick={() => {
+                      setVisitedQuestions((prev) => [
+                        ...prev,
+                        selectedQuestion,
+                      ]);
+                      setSelectedQuestion((prev) => prev - 1);
+                    }}
+                  >
+                    Previous
+                  </Button>
+                  <Button
+                    variant="contained"
+                    disabled={selectedQuestion === questions.length}
+                    onClick={() => {
+                      setVisitedQuestions((prev) => [
+                        ...prev,
+                        selectedQuestion,
+                      ]);
+                      setSelectedQuestion((prev) => prev + 1);
+                    }}
+                  >
+                    Next
+                  </Button>
+                </Box>
+              </Stack>
             </Grid>
             <Grid item xs={3}>
               {/* Display the question navigation panel */}
@@ -177,6 +223,8 @@ function AttemptQuiz() {
                   selectedAnswers={selectedAnswers}
                   numQuestions={questions.length}
                   instance={instance}
+                  setVisitedQuestions={setVisitedQuestions}
+                  visitedQuestions={visitedQuestions}
                 />
               </Box>
             </Grid>
