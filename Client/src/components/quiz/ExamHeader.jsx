@@ -7,18 +7,12 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import Logo from "../assets/logo.png";
+import Logo from "../../assets/logo.png";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AlertDialogBox from "./AlertDialogBox";
+import AlertDialogBox from "../AlertDialogBox";
 
-export default function ExamHeader({
-  instance,
-  duration,
-  handleSuccess,
-  setSubmitOpen,
-  setIsLoading,
-}) {
+export default function ExamHeader({ duration, setSubmitOpen }) {
   const Ref = useRef(null);
   const navigate = useNavigate();
   const [cancelOpen, setCancelOpen] = useState(false);

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import DraggableLocalStream from "../components/DraggableLocalStream";
+import React from "react";
+import DraggableLocalStream from "./DraggableLocalStream";
 import { Grid } from "@mui/material";
 import SectionAccordion from "./SectionAccordion";
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Draggable from "react-draggable";
 import { useNavigate } from "react-router-dom";
-import { JWTService } from "../services/ServerRequest";
+import { JWTService } from "../../services/ServerRequest";
 
 function DraggableLocalStream({ instance }) {
   const zconf = {

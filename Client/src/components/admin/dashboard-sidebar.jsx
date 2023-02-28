@@ -13,9 +13,9 @@ import PersonIcon from "@mui/icons-material/Person";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import LiveTvIcon from "@mui/icons-material/LiveTv";
 import SettingsIcon from "@mui/icons-material/Settings";
-import logo from "../assets/logo.png";
+import logo from "../../assets/logo.png";
 import { NavItem } from "./nav-item";
-import auth from "../auth/auth";
+import auth from "../../auth/auth";
 
 const items = [
   {

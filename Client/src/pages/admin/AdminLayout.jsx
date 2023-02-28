@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Box, Card, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { DashboardNavbar } from "../../components/dashboard-navbar";
-import { DashboardSidebar } from "../../components/dashboard-sidebar";
+import { DashboardNavbar } from "../../components/admin/dashboard-navbar";
+import { DashboardSidebar } from "../../components/admin/dashboard-sidebar";
 import { theme } from "../../theme/index";
-import BreadcrumbsItem from "../../components/BreadcrumbsItem";
+import BreadcrumbsItem from "../../components/admin/BreadcrumbsItem";
 import { Outlet } from "react-router-dom";
 
 const DashboardLayoutRoot = styled("div")(({ theme }) => ({

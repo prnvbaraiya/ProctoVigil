@@ -3,8 +3,8 @@ import { Stack } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import AlertDialogBox from "../../../components/AlertDialogBox";
-import ExamHeader from "../../../components/ExamHeader";
-import QuestionNavigation from "../../../components/QuestionNavigation";
+import ExamHeader from "../../../components/quiz/ExamHeader";
+import QuestionNavigation from "../../../components/quiz/QuestionNavigation";
 import { zegoInstance } from "../../../config/ZegoConfig";
 import { QuizService } from "../../../services/ServerRequest";
 

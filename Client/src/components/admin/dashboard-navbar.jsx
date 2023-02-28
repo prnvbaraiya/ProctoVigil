@@ -15,7 +15,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import GroupIcon from "@mui/icons-material/Group";
 import { AccountPopover } from "./account-popover";
-import avatar from "../assets/avatar-removebg-preview.png";
+import avatar from "../../assets/avatar-removebg-preview.png";
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
