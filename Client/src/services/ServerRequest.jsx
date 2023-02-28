@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Navigate } from "react-router-dom";
 import auth from "../auth/auth";
 import { SERVER_LINK } from "../variables/constants";
 
@@ -11,7 +12,12 @@ const sendRequest = async (type, link, data = null) => {
     },
     ...(data && { data }),
   };
-  return await axios(config);
+  try {
+    const res = await axios(config);
+    return res;
+  } catch (err) {
+    console.log(err.response.status);
+  }
 };
 
 const UserService = {
