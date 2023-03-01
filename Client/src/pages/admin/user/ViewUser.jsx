@@ -11,7 +11,6 @@ function ViewUser() {
   const getData = async () => {
     const res = await UserService.get();
     setData(res.data);
-    console.log(res.data);
   };
 
   useEffect(() => {

@@ -8,8 +8,10 @@ import SelectChip from "../../../components/form/SelectChip";
 import QuestionAdd from "../../../components/form/QuestionAdd";
 import auth from "../../../auth/auth";
 import { QuizService, UserService } from "../../../services/ServerRequest";
+import axios from "axios";
 
 function AddQuiz() {
+  const randomQuestionNumber = useFormInput("");
   const [names, setNames] = useState([]);
   const author = useFormInput(auth.name);
   const name = useFormInput("");
@@ -31,6 +33,22 @@ function AddQuiz() {
   useEffect(() => {
     getData();
   }, []);
+
+  const handleRandomQuestions = async () => {
+    const data = await axios.get(
+      `https://opentdb.com/api.php?amount=${randomQuestionNumber.value}&type=multiple`
+    );
+
+    const res = data.data.results.map((item) => {
+      return {
+        question: item.question,
+        incorrect_answer: item.incorrect_answers,
+        correct_answer: item.correct_answer,
+      };
+    });
+    setQuestions(res);
+    console.log(res);
+  };
 
   const handleSubmit = async () => {
     const data = {
@@ -110,7 +128,22 @@ function AddQuiz() {
               personName={personName}
               setPersonName={setPersonName}
             />
-
+            <Stack
+              spacing={{ sm: 3 }}
+              direction={{ lg: "row", sm: "column" }}
+              sx={{ alignItems: "center" }}
+            >
+              <Typography>Enter Number of Random Questions</Typography>
+              <TextBox
+                label="Number of Questions"
+                type="number"
+                fullWidth={false}
+                {...randomQuestionNumber}
+              />
+              <Button variant="contained" onClick={handleRandomQuestions}>
+                Submit
+              </Button>
+            </Stack>
             <QuestionAdd questions={questions} setQuestions={setQuestions} />
           </Stack>
         </form>

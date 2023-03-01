@@ -27,7 +27,7 @@ function BarChart({ title, labels, values }) {
     datasets: [
       {
         data: values,
-        backgroundColor: "rgba(90, 200, 132, 0.5)",
+        backgroundColor: "#5048E2",
       },
     ],
   };

@@ -1,4 +1,5 @@
 import { Box, Stack, Button, Divider, Typography } from "@mui/material";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import DateTime from "../../../components/form/DateTime";
@@ -11,6 +12,7 @@ import { QuizService, UserService } from "../../../services/ServerRequest";
 function EditQuiz() {
   const location = useLocation();
   const { id } = location.state;
+  const randomQuestionNumber = useFormInput("");
   const [names, setNames] = useState([]);
   const author = useFormInput("");
   const name = useFormInput("");
@@ -51,6 +53,22 @@ function EditQuiz() {
 
     // eslint-disable-next-line
   }, [id]);
+
+  const handleRandomQuestions = async () => {
+    const data = await axios.get(
+      `https://opentdb.com/api.php?amount=${randomQuestionNumber.value}&type=multiple`
+    );
+
+    const res = data.data.results.map((item) => {
+      return {
+        question: item.question,
+        incorrect_answer: item.incorrect_answers,
+        correct_answer: item.correct_answer,
+      };
+    });
+    setQuestions(res);
+    console.log(res);
+  };
 
   const handleSubmit = async () => {
     const data = {
@@ -136,7 +154,22 @@ function EditQuiz() {
                 personName={personName}
                 setPersonName={setPersonName}
               />
-
+              <Stack
+                spacing={{ sm: 3 }}
+                direction={{ lg: "row", sm: "column" }}
+                sx={{ alignItems: "center" }}
+              >
+                <Typography>Enter Number of Random Questions</Typography>
+                <TextBox
+                  label="Number of Questions"
+                  type="number"
+                  fullWidth={false}
+                  {...randomQuestionNumber}
+                />
+                <Button variant="contained" onClick={handleRandomQuestions}>
+                  Submit
+                </Button>
+              </Stack>
               <QuestionAdd questions={questions} setQuestions={setQuestions} />
             </Stack>
           </form>
