@@ -68,12 +68,29 @@ const User = {
       return res.status(ERROR_CODE).send("User Getting Error: " + err);
     }
   },
+  find: async (req, res) => {
+    try {
+      const user = await UserModel.find(req.body);
+      return res.status(SUCCESS_CODE).send(user);
+    } catch (err) {
+      return res.status(ERROR_CODE).send("User Getting Error: " + err);
+    }
+  },
   getStudent: async (req, res) => {
     try {
       const users = await UserModel.find({ roles: "student" });
       return res.status(SUCCESS_CODE).send(users);
     } catch (err) {
       return res.status(ERROR_CODE).send("User Getting Error: " + err);
+    }
+  },
+  update: async (req, res) => {
+    try {
+      const data = req.body;
+      const tmp = await UserModel.findByIdAndUpdate(data._id, data);
+      return res.status(SUCCESS_CODE).send("Updated Successfully");
+    } catch (err) {
+      return res.status(ERROR_CODE).send("User Update Error: " + err);
     }
   },
   delete: async (req, res) => {

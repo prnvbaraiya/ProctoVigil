@@ -27,8 +27,8 @@ const UserService = {
   getStudents: async () => {
     return sendRequest("get", "student");
   },
-  getById: async (id) => {
-    return sendRequest("get", "user/" + id);
+  find: async (data) => {
+    return sendRequest("post", "user/find", data);
   },
   set: async (data) => {
     return sendRequest("post", "user", data);
