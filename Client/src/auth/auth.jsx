@@ -2,8 +2,8 @@ import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
 
 const auth = {
+  username: "",
   name: "",
-  email: "",
   isAuthenticated: false,
   roles: "",
   authenticate(token) {
@@ -11,7 +11,6 @@ const auth = {
     this.isAuthenticated = true;
     const decodedToken = jwt_decode(token);
     this.name = decodedToken.name;
-    this.email = decodedToken.email;
     this.roles = decodedToken.roles;
   },
   logout() {
@@ -29,7 +28,6 @@ const auth = {
       this.roles = decodedToken.roles;
       this.isAuthenticated = true;
       this.name = decodedToken.name;
-      this.email = decodedToken.email;
     }
   },
 };

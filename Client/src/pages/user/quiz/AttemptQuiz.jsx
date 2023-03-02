@@ -2,6 +2,7 @@ import { Box, Button, Grid } from "@mui/material";
 import { Stack } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import auth from "../../../auth/auth";
 import AlertDialogBox from "../../../components/AlertDialogBox";
 import ExamHeader from "../../../components/quiz/ExamHeader";
 import QuestionNavigation from "../../../components/quiz/QuestionNavigation";
@@ -9,18 +10,24 @@ import { zegoInstance } from "../../../config/ZegoConfig";
 import { QuizService } from "../../../services/ServerRequest";
 
 function AttemptQuiz() {
+  const location = useLocation();
+  const id = location.state?.id;
   const [data, setData] = useState({});
   const [questions, setQuestions] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState(1);
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [visitedQuestions, setVisitedQuestions] = useState([1]);
   const [isLoading, setIsLoading] = useState(true);
+  const [zConfig, setZConfig] = useState({
+    roomId: id + "-" + auth.name,
+    userId: auth.name,
+    token: "",
+    userName: auth.name,
+  });
   // eslint-disable-next-line
   const [answerKey, setAnswerKey] = useState([]);
   const [warningCount, setWarningCount] = useState(0);
   const [submitOpen, setSubmitOpen] = useState(false);
-  const location = useLocation();
-  const id = location.state?.id;
   const instance = zegoInstance();
 
   // Function to shuffle an array
@@ -230,6 +237,7 @@ function AttemptQuiz() {
                 }}
               >
                 <QuestionNavigation
+                  zConfig={zConfig}
                   selectedQuestion={selectedQuestion}
                   setSelectedQuestion={setSelectedQuestion}
                   selectedAnswers={selectedAnswers}

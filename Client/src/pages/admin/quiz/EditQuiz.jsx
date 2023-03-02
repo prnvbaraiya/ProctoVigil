@@ -28,7 +28,7 @@ function EditQuiz() {
 
   const getData = async () => {
     const res = await UserService.getStudents();
-    setNames(res.data.map((item) => item.firstName + " " + item.lastName));
+    setNames(res.data.map((item) => item.username));
   };
 
   useEffect(() => {

@@ -46,7 +46,6 @@ const items = [
 ];
 
 export const DashboardSidebar = (props) => {
-  const name = auth.name;
   const { open, onClose } = props;
   const theme = useTheme();
   const lgUp = useMediaQuery(theme.breakpoints.up("lg"), {
@@ -66,7 +65,7 @@ export const DashboardSidebar = (props) => {
         <div>
           <Box sx={{ p: 3, display: "flex", alignItems: "center", gap: 5 }}>
             <Avatar src={logo}></Avatar>
-            <Typography>{name}</Typography>
+            <Typography>Procto Vigil</Typography>
           </Box>
         </div>
         <Divider

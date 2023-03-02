@@ -27,7 +27,7 @@ function AddQuiz() {
 
   const getData = async () => {
     const res = await UserService.getStudents();
-    setNames(res.data.map((item) => item.firstName + " " + item.lastName));
+    setNames(res.data.map((item) => item.username));
   };
 
   useEffect(() => {
@@ -52,7 +52,7 @@ function AddQuiz() {
 
   const handleSubmit = async () => {
     const data = {
-      author: auth.email,
+      author: auth.name,
       name: name.value,
       description: description.value,
       startDate: startDate,

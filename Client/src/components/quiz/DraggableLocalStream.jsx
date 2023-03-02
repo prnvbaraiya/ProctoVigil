@@ -3,14 +3,7 @@ import Draggable from "react-draggable";
 import { useNavigate } from "react-router-dom";
 import { JWTService } from "../../services/ServerRequest";
 
-function DraggableLocalStream({ instance }) {
-  const zconf = {
-    roomId: "678",
-    userId: "prnv",
-    token: "",
-    userName: "Pranav",
-  };
-
+function DraggableLocalStream({ instance, zConfig }) {
   const navigate = useNavigate();
   let localStream = null;
   let localView = null;
@@ -19,13 +12,13 @@ function DraggableLocalStream({ instance }) {
   useEffect(() => {
     createRoom();
     window.addEventListener("beforeunload", () => {
-      instance.logoutRoom(zconf.roomId);
+      instance.logoutRoom(zConfig.roomId);
     });
 
     return () => {
       if (instance) {
         instance.enableVideoCaptureDevice(localStream, false);
-        instance.logoutRoom(zconf.roomId);
+        instance.logoutRoom(zConfig.roomId);
       }
     };
     // eslint-disable-next-line
@@ -34,9 +27,9 @@ function DraggableLocalStream({ instance }) {
   const createRoom = async () => {
     try {
       const { data } = await JWTService.generateToken({
-        userId: zconf.userId,
+        userId: zConfig.userId,
       });
-      zconf.token = data;
+      zConfig.token = data;
 
       const deviceInfo = await instance.enumDevices();
       if (deviceInfo.microphones.length === 0) {
@@ -46,9 +39,9 @@ function DraggableLocalStream({ instance }) {
         alert("Camera Not Found");
         navigate("/quiz");
       } else {
-        await instance.loginRoom(zconf.roomId, zconf.token, {
-          userID: zconf.userId,
-          userName: zconf.userName,
+        await instance.loginRoom(zConfig.roomId, zConfig.token, {
+          userID: zConfig.userId,
+          userName: zConfig.userName,
         });
 
         localStream = await instance.createStream({

@@ -19,6 +19,7 @@ function ViewUser() {
 
   const columns = [
     { field: "_id", headerName: "Id", width: 50 },
+    { field: "username", headerName: "Username", width: 150 },
     {
       field: "name",
       headerName: "Name",

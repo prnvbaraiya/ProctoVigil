@@ -10,9 +10,8 @@ const SUCCESS_CODE = 202;
 const JWT = {
   generateToken: (user) => {
     const payload = {
-      email: user.email,
       roles: user.roles,
-      name: user.firstName + " " + user.lastName,
+      name: user.username,
     };
     const token = jwt.sign(payload, process.env.JWT_SEC_KEY);
     return token;
@@ -121,7 +120,7 @@ const ZegocloudTokenGenerator = {
 
 const Quiz = {
   add: async (req, res) => {
-    const user = await UserModel.findOne({ email: req.body.author });
+    const user = await UserModel.findOne({ username: req.body.author });
     const data = { ...req.body, author: user._id };
     try {
       await QuizModel.create(data);

@@ -3,6 +3,11 @@ const QuizModel = require("./QuizModel");
 
 const UserSchema = new mongoose.Schema(
   {
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     roles: {
       type: String,
       required: true,

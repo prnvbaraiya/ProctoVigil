@@ -20,9 +20,10 @@
 - [x] Admin Quiz Page
 - [x] Admin Add Update Quiz Page
 - [ ] Admin Add Quiz Using csv file
-- [ ] In Add Quiz add random number question
+- [x] In Add Quiz add random number question
 - [x] Admin Stream Page
 - [x] Admin watch Stream Page
+- [ ] Admin watch Stream of more than one student
 - [x] Set up watch Stream with watching data
 - [x] Add zegocloud sdk for proctaring custom ui
 - [x] Admin Proctar Student Page

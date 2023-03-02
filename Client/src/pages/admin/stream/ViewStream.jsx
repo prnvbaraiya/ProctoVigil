@@ -4,15 +4,16 @@ import { Box } from "@mui/system";
 import { useLocation } from "react-router-dom";
 import { zegoInstance } from "../../../config/ZegoConfig";
 import { JWTService } from "../../../services/ServerRequest";
+import auth from "../../../auth/auth";
 
 function ViewStream() {
   const location = useLocation();
   const data = location.state;
   const zconf = {
-    roomId: "678",
+    roomId: data.roomId,
     token: "",
-    userId: "admin",
-    userName: "admin",
+    userId: auth.name,
+    userName: auth.name,
   };
 
   const instance = zegoInstance();

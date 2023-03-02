@@ -6,6 +6,7 @@ import SectionAccordion from "./SectionAccordion";
 export default function QuestionNavigation(props) {
   const {
     selectedQuestion,
+    zConfig,
     numQuestions,
     selectedAnswers,
     setSelectedQuestion,
@@ -80,7 +81,7 @@ export default function QuestionNavigation(props) {
 
   return (
     <div>
-      <DraggableLocalStream instance={instance} />
+      <DraggableLocalStream instance={instance} zConfig={zConfig} />
       <SectionAccordion title="Section 01" data={getQueNav()} />
       <SectionAccordion title="Section 02" data={"LOL"} disabled={true} />
 

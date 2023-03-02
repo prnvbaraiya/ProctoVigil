@@ -14,12 +14,13 @@ function Stream() {
   const [result, setResult] = useState("");
   const [quizLabel, setQuizLabel] = React.useState([]);
   const [quiz, setQuiz] = React.useState("");
+  const [quizId, setQuizId] = React.useState("");
   const [studentLabel, setStudentLabel] = React.useState([]);
   const [student, setStudent] = React.useState("");
   const navigate = useNavigate();
 
   const handleSubmit = () => {
-    const data = { quiz, student };
+    const data = { roomId: quizId + "-" + student };
     navigate("view", { state: data });
   };
 
@@ -46,11 +47,12 @@ function Stream() {
               label="Quiz"
               onChange={(e) => {
                 setQuiz(e.target.value);
-                result.map(
-                  (item) =>
-                    item.name === e.target.value &&
-                    setStudentLabel(item.personName)
-                );
+                result.map((item) => {
+                  if (item.name === e.target.value) {
+                    setQuizId(item._id);
+                    setStudentLabel(item.personName);
+                  }
+                });
               }}
             >
               {quizLabel &&

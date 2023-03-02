@@ -18,7 +18,8 @@ import { SERVER_LINK } from "../variables/constants";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
-  const roles = useFormInput("");
+  const roles = useFormInput("student");
+  const username = useFormInput("");
   const fname = useFormInput("");
   const lname = useFormInput("");
   const email = useFormInput("");
@@ -28,6 +29,7 @@ function Register() {
 
   const handleSubmit = async () => {
     const data = {
+      username: username.value,
       roles: roles.value,
       firstName: fname.value,
       lastName: lname.value,
@@ -40,7 +42,6 @@ function Register() {
     } else {
       alert("Server Error While Creating Account! Tey Again Later");
     }
-    console.log(res);
   };
 
   return (
@@ -82,6 +83,10 @@ function Register() {
                   />
                 </RadioGroup>
               </FormControl>
+              <TextBox
+                label={roles.value === "student" ? "Id Number" : "User Name"}
+                {...username}
+              />
               <Stack
                 spacing={{ sm: 3 }}
                 direction={{ lg: "row", sm: "column" }}

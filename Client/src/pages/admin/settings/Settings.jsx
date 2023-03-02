@@ -12,6 +12,7 @@ function Settings() {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [saveOpen, setSaveOpen] = useState(false);
   const [data, setData] = useState({});
+  const username = useFormInput("");
   const firstName = useFormInput("");
   const lastName = useFormInput("");
   const email = useFormInput("");
@@ -20,6 +21,7 @@ function Settings() {
     const res = await UserService.find({ email: auth.email });
     const resData = res.data[0];
     setData(resData);
+    username.onChange(resData.username);
     firstName.onChange(resData.firstName);
     lastName.onChange(resData.lastName);
     email.onChange(resData.email);
@@ -30,7 +32,7 @@ function Settings() {
   }, []);
 
   const handleDeleteSuccess = async () => {
-    const res = await UserService.delete({ email: auth.email });
+    const res = await UserService.delete({ username: auth.name });
     auth.logout();
     if (res.status === 202) {
       navigate("/");
@@ -42,6 +44,7 @@ function Settings() {
   const handleSaveSuccess = async () => {
     const dataTmp = {
       ...data,
+      username: username.value,
       firstName: firstName.value,
       lastName: lastName.value,
       email: email.value,
@@ -72,6 +75,7 @@ function Settings() {
         {/* Body  */}
         <form>
           <Stack spacing={3}>
+            <TextBox label="Username" {...username} />
             <Stack
               spacing={{ sm: 3 }}
               direction={{ lg: "row", sm: "column" }}
