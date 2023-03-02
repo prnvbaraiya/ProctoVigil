@@ -15,20 +15,7 @@ import axios from "axios";
 import { useLocation, useNavigate } from "react-router";
 import { SERVER_LINK } from "../variables/constants";
 import auth from "../auth/auth";
-
-//Copyright Component
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" {...props}>
-      {"Copyright © "}
-      <Link color="inherit" href="http://localhost:3000/">
-        Procto Vigil
-      </Link>{" "}
-      2023
-      {"."}
-    </Typography>
-  );
-}
+import side from "../assets/side.jpg";
 
 const theme = createTheme();
 
@@ -71,16 +58,24 @@ export default function Login() {
         <Grid
           item
           xs={false}
-          sm={4}
+          sm={0}
           md={7}
           sx={{
-            backgroundImage: "url(https://source.unsplash.com/random)",
+            backgroundImage: `url(${side})`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
         />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={5}
+          component={Paper}
+          elevation={6}
+          square
+        >
           <Box
             sx={{
               my: 8,
@@ -150,7 +145,6 @@ export default function Login() {
                   </Link>
                 </Grid>
               </Grid>
-              <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
         </Grid>

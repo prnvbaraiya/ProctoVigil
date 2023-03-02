@@ -1,11 +1,12 @@
 import React from "react";
 import {
-  Box,
   Button,
+  CssBaseline,
   FormControl,
   FormControlLabel,
   FormLabel,
   Grid,
+  Paper,
   Radio,
   RadioGroup,
   Stack,
@@ -16,6 +17,8 @@ import { useFormInput } from "../hooks/useFormInput";
 import axios from "axios";
 import { SERVER_LINK } from "../variables/constants";
 import { useNavigate } from "react-router-dom";
+import side from "../assets/side.jpg";
+import { Box } from "@mui/system";
 
 function Register() {
   const roles = useFormInput("student");
@@ -46,67 +49,97 @@ function Register() {
 
   return (
     <>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          xs=8
-        </Grid>
-        <Grid item xs={6}>
-          <Typography textAlign="center" m={3}>
-            Register
-          </Typography>
-          <form>
-            <Stack spacing={3} m={1}>
-              <FormControl>
-                <FormLabel id="demo-row-radio-buttons-group-label">
-                  Who are you ?
-                </FormLabel>
-                <RadioGroup
-                  row
-                  aria-labelledby="demo-row-radio-buttons-group-label"
-                  name="row-radio-buttons-group"
-                  {...roles}
+      <Grid container component="main" sx={{ height: "100vh" }}>
+        <CssBaseline />
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundImage: `url(${side})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={5}
+          component={Paper}
+          elevation={6}
+          square
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Typography textAlign="center" m={3}>
+              Register
+            </Typography>
+            <form>
+              <Stack spacing={3} m={1}>
+                <FormControl>
+                  <FormLabel id="demo-row-radio-buttons-group-label">
+                    Who are you ?
+                  </FormLabel>
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    name="row-radio-buttons-group"
+                    {...roles}
+                  >
+                    <FormControlLabel
+                      value="admin"
+                      control={<Radio />}
+                      label="Admin"
+                    />
+                    <FormControlLabel
+                      value="teacher"
+                      control={<Radio />}
+                      label="Teacher"
+                    />
+                    <FormControlLabel
+                      value="student"
+                      control={<Radio />}
+                      label="Student"
+                    />
+                  </RadioGroup>
+                </FormControl>
+                <TextBox
+                  label={roles.value === "student" ? "Id Number" : "User Name"}
+                  {...username}
+                />
+                <Stack
+                  spacing={{ sm: 3 }}
+                  direction={{ lg: "row", sm: "column" }}
+                  sx={{ justifyContent: "space-between" }}
                 >
-                  <FormControlLabel
-                    value="admin"
-                    control={<Radio />}
-                    label="Admin"
-                  />
-                  <FormControlLabel
-                    value="teacher"
-                    control={<Radio />}
-                    label="Teacher"
-                  />
-                  <FormControlLabel
-                    value="student"
-                    control={<Radio />}
-                    label="Student"
-                  />
-                </RadioGroup>
-              </FormControl>
-              <TextBox
-                label={roles.value === "student" ? "Id Number" : "User Name"}
-                {...username}
-              />
-              <Stack
-                spacing={{ sm: 3 }}
-                direction={{ lg: "row", sm: "column" }}
-                sx={{ justifyContent: "space-between" }}
-              >
-                <TextBox label="First Name" {...fname}></TextBox>
-                <TextBox label="Last Name" {...lname}></TextBox>
+                  <TextBox label="First Name" {...fname}></TextBox>
+                  <TextBox label="Last Name" {...lname}></TextBox>
+                </Stack>
+                <TextBox label="E-mail" type="email" {...email}></TextBox>
+                <TextBox
+                  label="Password"
+                  type="password"
+                  {...password}
+                ></TextBox>
+                <TextBox
+                  label="Confirm Password"
+                  type="password"
+                  {...cnfPassword}
+                ></TextBox>
+                <Button variant="contained" onClick={handleSubmit}>
+                  Submit
+                </Button>
               </Stack>
-              <TextBox label="E-mail" type="email" {...email}></TextBox>
-              <TextBox label="Password" type="password" {...password}></TextBox>
-              <TextBox
-                label="Confirm Password"
-                type="password"
-                {...cnfPassword}
-              ></TextBox>
-              <Button variant="contained" onClick={handleSubmit}>
-                Submit
-              </Button>
-            </Stack>
-          </form>
+            </form>
+          </Box>
         </Grid>
       </Grid>
     </>
