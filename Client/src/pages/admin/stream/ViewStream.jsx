@@ -1,6 +1,5 @@
-import { Typography } from "@mui/material";
 import React, { useEffect } from "react";
-import { Box } from "@mui/system";
+import { Box, Grid } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { zegoInstance } from "../../../config/ZegoConfig";
 import { JWTService } from "../../../services/ServerRequest";
@@ -24,14 +23,18 @@ function ViewStream() {
       "roomStreamUpdate",
       async (roomID, updateType, streamList, extendedData) => {
         if (updateType === "ADD") {
-          const streamID = streamList[0].streamID;
-          const remoteStream = await instance.startPlayingStream(streamID);
+          streamList.map(async (item) => {
+            if (data.students.includes(item.user.userID)) {
+              const streamID = item.streamID;
 
-          const remoteView = instance.createRemoteStreamView(remoteStream);
-          remoteView.play("remote-stream", { enableAutoplayDialog: true });
-        } else if (updateType === "DELETE") {
-          const streamID = streamList[0].streamID;
-          instance.stopPlayingStream(streamID);
+              const remoteStream = await instance.startPlayingStream(streamID);
+              const remoteView = instance.createRemoteStreamView(remoteStream);
+
+              remoteView.play("remote-stream-" + item.user.userID, {
+                enableAutoplayDialog: true,
+              });
+            }
+          });
         }
       }
     );
@@ -55,16 +58,30 @@ function ViewStream() {
         userName: zconf.userName,
       });
     } catch (err) {
-      alert("Create Room Err: ", err);
+      alert("Create Room Err: ", JSON.stringify(err));
     }
   };
 
   return (
     <>
-      <Box align="center">
-        <Typography variant="h3">View {data.student}</Typography>
-        <div style={{ width: "60vw", height: "60vh" }} id="remote-stream"></div>
-      </Box>
+      <Grid container spacing={2}>
+        {data.students.map((item) => {
+          return (
+            <>
+              <Grid item xs={6}>
+                <center>
+                  <h1>{item}</h1>
+                </center>
+                <div
+                  key={item}
+                  style={{ height: "50vh" }}
+                  id={`remote-stream-${item}`}
+                />
+              </Grid>
+            </>
+          );
+        })}
+      </Grid>
     </>
   );
 }

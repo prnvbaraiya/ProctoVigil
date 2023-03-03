@@ -67,7 +67,6 @@ function EditQuiz() {
       };
     });
     setQuestions(res);
-    console.log(res);
   };
 
   const handleSubmit = async () => {
@@ -85,7 +84,7 @@ function EditQuiz() {
     if (res.status === 202) {
       navigate("/admin/quiz");
     } else {
-      alert("There is Some error ", res);
+      alert("There is Some error ", JSON.stringify(res));
     }
   };
 

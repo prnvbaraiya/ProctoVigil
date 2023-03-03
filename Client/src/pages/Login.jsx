@@ -46,7 +46,6 @@ export default function Login() {
         navigate(from || "/", { replace: true });
       }
     } catch (err) {
-      console.log(err);
       alert("Error Login:", JSON.stringify(err));
     }
   };

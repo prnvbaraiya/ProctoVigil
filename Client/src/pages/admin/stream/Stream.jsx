@@ -16,11 +16,11 @@ function Stream() {
   const [quiz, setQuiz] = React.useState("");
   const [quizId, setQuizId] = React.useState("");
   const [studentLabel, setStudentLabel] = React.useState([]);
-  const [student, setStudent] = React.useState("");
+  const [students, setStudents] = React.useState([]);
   const navigate = useNavigate();
 
   const handleSubmit = () => {
-    const data = { roomId: quizId + "-" + student };
+    const data = { roomId: quizId, students };
     navigate("view", { state: data });
   };
 
@@ -28,6 +28,13 @@ function Stream() {
     const res = await QuizService.get();
     setResult(res.data);
     setQuizLabel(res.data.map((item) => item.name));
+  };
+
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setStudents(typeof value === "string" ? value.split(",") : value);
   };
 
   useEffect(() => {
@@ -71,9 +78,10 @@ function Stream() {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={student}
+              value={students}
+              multiple
               label="Student"
-              onChange={(e) => setStudent(e.target.value)}
+              onChange={handleChange}
             >
               {studentLabel &&
                 studentLabel.map((item) => {

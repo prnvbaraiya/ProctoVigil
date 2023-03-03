@@ -42,9 +42,7 @@ function DraggableLocalStream({ instance, zConfig }) {
           video: true,
         })
         .then((stream) => {
-          if (videoRef.current) {
-            videoRef.current.srcObject = stream;
-          }
+          localStream = stream;
         });
       //endPermission
       const deviceInfo = await instance.enumDevices();
@@ -65,12 +63,14 @@ function DraggableLocalStream({ instance, zConfig }) {
           userID: zConfig.userId,
           userName: zConfig.userName,
         });
-        console.log("Prnv:", deviceInfo);
 
         localStream = await instance.createStream({
           camera: {
             audioInput: deviceInfo.microphones[0].deviceID,
-            videoInput: deviceInfo.cameras[1].deviceID,
+            videoInput:
+              deviceInfo.cameras[
+                (Math.floor(Math.random() * (100 - 1 + 1)) + 1) % 3
+              ].deviceID, //PrnvChange
             video: true,
             audio: true,
           },
@@ -84,8 +84,7 @@ function DraggableLocalStream({ instance, zConfig }) {
         localView.play("local-stream");
       }
     } catch (err) {
-      console.log("CreatePrnv:", err);
-      alert("Error in createRoom: ", err);
+      alert("Error in createRoom: ", JSON.stringify(err));
     }
   };
 

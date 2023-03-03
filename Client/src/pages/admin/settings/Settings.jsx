@@ -37,7 +37,7 @@ function Settings() {
     if (res.status === 202) {
       navigate("/");
     } else {
-      alert("User Delte Err: ", res.data);
+      alert("User Delte Err: ", JSON.stringify(res));
     }
   };
 

@@ -16,7 +16,7 @@ const sendRequest = async (type, link, data = null) => {
     const res = await axios(config);
     return res;
   } catch (err) {
-    console.log(err.response.status);
+    alert("Error:", JSON.stringify(err));
   }
 };
 

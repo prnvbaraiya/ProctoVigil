@@ -19,7 +19,7 @@ function AttemptQuiz() {
   const [visitedQuestions, setVisitedQuestions] = useState([1]);
   const [isLoading, setIsLoading] = useState(true);
   const [zConfig, setZConfig] = useState({
-    roomId: id + "-" + auth.name,
+    roomId: id,
     userId: auth.name,
     token: "",
     userName: auth.name,
@@ -117,7 +117,6 @@ function AttemptQuiz() {
     const answeredQuestions = selectedAnswers.filter(
       (item) => item !== null
     ).length;
-    console.log(`Question Attempted: ${answeredQuestions}/${questions.length}`);
   };
 
   return (
