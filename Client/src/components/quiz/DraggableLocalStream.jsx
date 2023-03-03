@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Draggable from "react-draggable";
 import { useNavigate } from "react-router-dom";
 import { JWTService } from "../../services/ServerRequest";
@@ -8,6 +8,9 @@ function DraggableLocalStream({ instance, zConfig }) {
   let localStream = null;
   let localView = null;
   const streamId = new Date().getTime().toString();
+  //Permission
+  const videoRef = useRef(null);
+  //endPermission
 
   useEffect(() => {
     createRoom();
@@ -17,7 +20,9 @@ function DraggableLocalStream({ instance, zConfig }) {
 
     return () => {
       if (instance) {
-        instance.enableVideoCaptureDevice(localStream, false);
+        localStream.getTracks().forEach((track) => {
+          track.stop();
+        });
         instance.logoutRoom(zConfig.roomId);
       }
     };
@@ -30,19 +35,37 @@ function DraggableLocalStream({ instance, zConfig }) {
         userId: zConfig.userId,
       });
       zConfig.token = data;
-
+      //Permission
+      navigator.mediaDevices
+        .getUserMedia({
+          audio: true,
+          video: true,
+        })
+        .then((stream) => {
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+          }
+        });
+      //endPermission
       const deviceInfo = await instance.enumDevices();
-      if (deviceInfo.microphones.length === 0) {
+      if (
+        deviceInfo.microphones.length === 0 ||
+        deviceInfo.microphones[0].deviceID === ""
+      ) {
         alert("Microphone Not Found");
-        navigate("/quiz");
-      } else if (deviceInfo.cameras.length === 0) {
+        navigate("/");
+      } else if (
+        deviceInfo.cameras.length === 0 ||
+        deviceInfo.cameras[1].deviceID === ""
+      ) {
         alert("Camera Not Found");
-        navigate("/quiz");
+        navigate("/");
       } else {
         await instance.loginRoom(zConfig.roomId, zConfig.token, {
           userID: zConfig.userId,
           userName: zConfig.userName,
         });
+        console.log("Prnv:", deviceInfo);
 
         localStream = await instance.createStream({
           camera: {
@@ -61,6 +84,7 @@ function DraggableLocalStream({ instance, zConfig }) {
         localView.play("local-stream");
       }
     } catch (err) {
+      console.log("CreatePrnv:", err);
       alert("Error in createRoom: ", err);
     }
   };

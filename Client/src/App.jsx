@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Unauthorized from "./pages/Unauthorized";
 import PageNotFound from "./pages/PageNotFound";
 import Register from "./pages/Register";
+import Test from "./pages/Test";
 
 function App() {
   const handleContextMenu = (e) => {
@@ -28,6 +29,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/page-not-found" element={<PageNotFound />} />
+          <Route path="/test" element={<Test />} />
           {UserRoutes}
           {AdminRoutes}
           <Route path="*" element={<PageNotFound />} />
