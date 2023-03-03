@@ -1,8 +1,10 @@
 ### To start Project
 
 - 1. Install all the packages for frontend & backend.
-- 2. Open two terminal and run `npm run frontend` and in second terminal run `npm run backend`
-- 3. Your project is running 5173 for frontend port and 1322 for backend port.
+- 2. If you are running first time then go to next step otherwise go to step 4.
+- 3. Open two terminal and run `npm run newFrontend` and in second terminal run `npm run newBackend`
+- 4. Open two terminal and run `npm run frontend` and in second terminal run `npm run backend`
+- 5. Your project is running localhost port for frontend 5173 and backend 1322.
 
 ### Todo
 

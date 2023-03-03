@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "frontend": "cd Client && npm run dev",
-    "backend":"cd Backend && nodemon main"
+    "newFrontend": "cd Client && npm i && npm run dev",
+    "backend":"cd Backend && nodemon main",
+    "newBackend":"cd Backend && npm i && nodemon main"
   },
   "repository": {
     "type": "git",
