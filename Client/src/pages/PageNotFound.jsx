@@ -1,10 +1,14 @@
 import React from "react";
+import { Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 function PageNotFound() {
   return (
-    <div>
-      Page Not Found Go back <a href="/">Home</a>
-    </div>
+    <center>
+      <Typography variant="h3">
+        Page Not Found Go back <Link to="/">Home</Link>
+      </Typography>
+    </center>
   );
 }
 

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { Box, Grid } from "@mui/material";
-import { useLocation } from "react-router-dom";
+import { Box, Button, Grid, Typography } from "@mui/material";
+import { Link, useLocation } from "react-router-dom";
 import { zegoInstance } from "../../../config/ZegoConfig";
 import { JWTService } from "../../../services/ServerRequest";
 import auth from "../../../auth/auth";
@@ -64,6 +64,21 @@ function ViewStream() {
 
   return (
     <>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Link to="..">
+          <Button color="error" variant="contained">
+            Back
+          </Button>
+        </Link>
+        <Typography variant="h6">View Stream</Typography>
+        <Box></Box>
+      </Box>
       <Grid container spacing={2}>
         {data.students.map((item) => {
           return (

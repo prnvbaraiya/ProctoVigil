@@ -1,5 +1,5 @@
 import "./App.css";
-import { Outlet, Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import UserRoutes from "./routes/UserRoutes";
 import AdminRoutes from "./routes/AdminRoutes";
 import { ThemeProvider } from "@emotion/react";
@@ -27,12 +27,10 @@ function App() {
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/unauthorized" element={<Unauthorized />} />
-          <Route path="/page-not-found" element={<PageNotFound />} />
           <Route path="/test" element={<Test />} />
           {UserRoutes}
           {AdminRoutes}
-          <Route path="*" element={<PageNotFound />} />
+          <Route path="*" element={<Navigate to="/page-not-found" />} />
         </Routes>
         <Outlet />
       </ThemeProvider>

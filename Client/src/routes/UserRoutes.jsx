@@ -1,7 +1,9 @@
 import { Route } from "react-router-dom";
 import AboutUs from "../pages/AboutUs";
 import ContactUs from "../pages/ContactUs";
+import PageNotFound from "../pages/PageNotFound";
 import RequireAuth from "../pages/RequireAuth";
+import Unauthorized from "../pages/Unauthorized";
 import Home from "../pages/user/home/Home";
 import AttemptQuiz from "../pages/user/quiz/AttemptQuiz";
 import Quiz from "../pages/user/quiz/Quiz";
@@ -18,6 +20,8 @@ const UserRoutes = [
     >
       <Route path="/quiz" element={<Quiz />} key="quiz"></Route>
     </Route>
+    <Route path="/unauthorized" element={<Unauthorized />} />,
+    <Route path="/page-not-found" element={<PageNotFound />} />,
   </Route>,
   <Route element={<RequireAuth allowedRoles={["student"]} />} key="Student">
     <Route path="/quiz" key="quiz">

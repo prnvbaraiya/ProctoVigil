@@ -1,10 +1,14 @@
 import React from "react";
+import { Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 function Unauthorized() {
   return (
-    <div>
-      Not Authorized Go back <a href="/">Home</a>
-    </div>
+    <center>
+      <Typography variant="h3">
+        Not Authorized Go back <Link to="/">Home</Link>
+      </Typography>
+    </center>
   );
 }
 

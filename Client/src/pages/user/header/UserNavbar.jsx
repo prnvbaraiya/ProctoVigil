@@ -17,6 +17,11 @@ import { Link, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import logo from "../../../assets/logo.png";
 import avatar from "../../../assets/avatar-removebg-preview.png";
+import {
+  userMenuItem,
+  homeMenuItem,
+  adminMenuItem,
+} from "../../../variables/Data";
 import auth from "../../../auth/auth";
 
 const UserNavbarRoot = styled(AppBar)(({ theme }) => ({
@@ -31,39 +36,11 @@ const UserNavbarRoot = styled(AppBar)(({ theme }) => ({
   width: "calc(100% - 100px)",
 }));
 
-export const UserNavbar = (props) => {
-  const { onSidebarOpen } = props;
+export const UserNavbar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const menuItem = [
-    {
-      title: "Home",
-      link: "/",
-    },
-    {
-      title: "Quiz",
-      link: "/quiz",
-    },
-    {
-      title: "About Us",
-      link: "/about-us",
-    },
-    {
-      title: "Contact Us",
-      link: "/contact-us",
-    },
-    {
-      title: "Test Page",
-      link: "/test",
-    },
-  ];
-  const settings =
-    auth.roles === "admin"
-      ? [
-          { title: "Dashboard", link: "/admin/dashboard" },
-          { title: "setting", link: "admin/settings" },
-        ]
-      : [];
+  const menuItem = homeMenuItem;
+  const settings = auth.roles === "admin" ? adminMenuItem : userMenuItem;
   const navigate = useNavigate();
 
   const handleOpenUserMenu = (event) => {
@@ -213,8 +190,4 @@ export const UserNavbar = (props) => {
       </UserNavbarRoot>
     </>
   );
-};
-
-UserNavbar.propTypes = {
-  onSidebarOpen: PropTypes.func,
 };

@@ -51,19 +51,20 @@ function AttemptQuiz() {
 
   useEffect(() => {
     getData();
-
-    // if (!document.fullscreenElement) {
-    //   document.documentElement.requestFullscreen();
-    // }
-    // window.addEventListener("offline", offlineEvent);
-    // window.addEventListener("blur", blueEvent);
-    // return () => {
-    // if (document.fullscreenElement) {
-    //   document.exitFullscreen();
-    // }
-    //   window.removeEventListener("blur", blueEvent);
-    //   window.removeEventListener("offline", offlineEvent);
-    // };
+    if (import.meta.env.VITE_PRODUCTION === "true") {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      }
+      window.addEventListener("offline", offlineEvent);
+      window.addEventListener("blur", blueEvent);
+      return () => {
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        }
+        window.removeEventListener("blur", blueEvent);
+        window.removeEventListener("offline", offlineEvent);
+      };
+    }
     // eslint-disable-next-line
   }, []);
 
@@ -177,7 +178,6 @@ function AttemptQuiz() {
                                 }
                                 onChange={(e) => handleAnswerChange(e)}
                               />
-
                               {`${choice}) ${answer}`}
                             </label>
                           </div>

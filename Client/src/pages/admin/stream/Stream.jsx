@@ -4,6 +4,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
@@ -43,6 +44,17 @@ function Stream() {
 
   return (
     <>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Box></Box>
+        <Typography variant="h6">Select Students</Typography>
+        <Box></Box>
+      </Box>
       <form>
         <Box display="flex" flexDirection="column" gap={2}>
           <FormControl fullWidth>

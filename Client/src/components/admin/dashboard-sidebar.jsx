@@ -8,42 +8,12 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import SignalCellularAltIcon from "@mui/icons-material/SignalCellularAlt";
-import PersonIcon from "@mui/icons-material/Person";
-import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
-import LiveTvIcon from "@mui/icons-material/LiveTv";
-import SettingsIcon from "@mui/icons-material/Settings";
 import logo from "../../assets/logo.png";
 import { NavItem } from "./nav-item";
-import auth from "../../auth/auth";
 
-const items = [
-  {
-    href: "/dashboard",
-    icon: <SignalCellularAltIcon fontSize="small" />,
-    title: "Dashboard",
-  },
-  {
-    href: "/user",
-    icon: <PersonIcon fontSize="small" />,
-    title: "User",
-  },
-  {
-    href: "/quiz",
-    icon: <LibraryBooksIcon fontSize="small" />,
-    title: "Quiz",
-  },
-  {
-    href: "/stream",
-    icon: <LiveTvIcon fontSize="small" />,
-    title: "Stream",
-  },
-  {
-    href: "/settings",
-    icon: <SettingsIcon fontSize="small" />,
-    title: "Settings",
-  },
-];
+import { adminSidebarItems } from "../../variables/Data";
+
+const items = adminSidebarItems;
 
 export const DashboardSidebar = (props) => {
   const { open, onClose } = props;
