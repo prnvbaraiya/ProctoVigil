@@ -69,7 +69,7 @@ function Stream() {
                 result.map((item) => {
                   if (item.name === e.target.value) {
                     setQuizId(item._id);
-                    setStudentLabel(item.personName);
+                    setStudentLabel(item.studentNames);
                   }
                 });
               }}

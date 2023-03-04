@@ -21,23 +21,23 @@ const MenuProps = {
   },
 };
 
-function getStyles(name, personName, theme) {
+function getStyles(name, studentNames, theme) {
   return {
     fontWeight:
-      personName.indexOf(name) === -1
+      studentNames.indexOf(name) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium,
   };
 }
 
-function SelectChip({ label = "Chip", names, personName, setPersonName }) {
+function SelectChip({ label = "Chip", names, studentNames, setstudentNames }) {
   const theme = useTheme();
 
   const handleChange = (event) => {
     const {
       target: { value },
     } = event;
-    setPersonName(
+    setstudentNames(
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
@@ -51,7 +51,7 @@ function SelectChip({ label = "Chip", names, personName, setPersonName }) {
           labelId="demo-multiple-chip-label"
           id="demo-multiple-chip"
           multiple
-          value={personName}
+          value={studentNames}
           onChange={handleChange}
           input={<OutlinedInput id="select-multiple-chip" label={label} />}
           renderValue={(selected) => (
@@ -67,7 +67,7 @@ function SelectChip({ label = "Chip", names, personName, setPersonName }) {
             <MenuItem
               key={name}
               value={name}
-              style={getStyles(name, personName, theme)}
+              style={getStyles(name, studentNames, theme)}
             >
               {name}
             </MenuItem>

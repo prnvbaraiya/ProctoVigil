@@ -19,7 +19,7 @@ function AddQuiz() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const duration = useFormInput("");
-  const [personName, setPersonName] = useState([]);
+  const [studentNames, setstudentNames] = useState([]);
   const [questions, setQuestions] = useState([
     { question: "", incorrect_answer: ["", "", ""], correct_answer: "" },
   ]);
@@ -57,7 +57,7 @@ function AddQuiz() {
       startDate: startDate,
       endDate: endDate,
       duration: duration.value,
-      personName,
+      studentNames,
       questions,
     };
     const res = await QuizService.set(data);
@@ -124,8 +124,8 @@ function AddQuiz() {
             <SelectChip
               label="Students"
               names={names}
-              personName={personName}
-              setPersonName={setPersonName}
+              studentNames={studentNames}
+              setstudentNames={setstudentNames}
             />
             <Stack
               spacing={{ sm: 3 }}

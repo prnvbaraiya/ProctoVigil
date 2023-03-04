@@ -20,7 +20,7 @@ function EditQuiz() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const duration = useFormInput("");
-  const [personName, setPersonName] = useState([]);
+  const [selectedStudents, setSelectedStudents] = useState([]);
   const [questions, setQuestions] = useState([
     { question: "", incorrect_answer: ["", "", ""], correct_answer: "" },
   ]);
@@ -46,7 +46,7 @@ function EditQuiz() {
       setStartDate(res.data.startDate);
       setEndDate(res.data.endDate);
       duration.onChange(res.data.duration);
-      setPersonName(res.data.personName);
+      setSelectedStudents(res.data.studentNames);
       setQuestions(res.data.questions);
     };
     getData();
@@ -77,7 +77,7 @@ function EditQuiz() {
       startDate: startDate,
       endDate: endDate,
       duration: duration.value,
-      personName,
+      studentNames: selectedStudents,
       questions,
     };
     const res = await QuizService.update(data);
@@ -150,8 +150,8 @@ function EditQuiz() {
               <SelectChip
                 label="Students"
                 names={studentNames}
-                personName={personName}
-                setPersonName={setPersonName}
+                studentNames={selectedStudents}
+                setstudentNames={setSelectedStudents}
               />
               <Stack
                 spacing={{ sm: 3 }}

@@ -35,7 +35,7 @@ function Quiz() {
     { field: "_id", headerName: "Id", width: 50 },
     { field: "name", headerName: "Name", width: 100 },
     { field: "description", headerName: "Description", width: 200 },
-    { field: "personName", headerName: "Students", width: 250 },
+    { field: "studentNames", headerName: "Students", width: 250 },
     {
       field: "numberOfQuestions",
       headerName: "No. of Questions",

@@ -6,6 +6,7 @@ import {
   Avatar,
   Box,
   Button,
+  Divider,
   IconButton,
   Menu,
   MenuItem,
@@ -40,7 +41,7 @@ export const UserNavbar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const menuItem = homeMenuItem;
-  const settings = auth.roles === "admin" ? adminMenuItem : userMenuItem;
+  const userMenuItems = auth.roles === "admin" ? adminMenuItem : userMenuItem;
   const navigate = useNavigate();
 
   const handleOpenUserMenu = (event) => {
@@ -155,15 +156,33 @@ export const UserNavbar = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem
-                    component={Link}
-                    to={setting.link}
-                    key={setting.title}
-                    onClick={handleCloseUserMenu}
-                  >
-                    <Typography textAlign="center">{setting.title}</Typography>
-                  </MenuItem>
+                <Box
+                  sx={{
+                    py: 1.5,
+                    px: 2,
+                    width: "120px",
+                  }}
+                >
+                  <Typography variant="overline">Account</Typography>
+                  <Typography color="text.secondary" variant="body2">
+                    {auth.name}
+                  </Typography>
+                </Box>
+                <Divider />
+                {userMenuItems.map((setting) => (
+                  <div key={setting.title}>
+                    <MenuItem
+                      component={Link}
+                      to={setting.link}
+                      key={setting.title}
+                      onClick={handleCloseUserMenu}
+                    >
+                      <Typography textAlign="center">
+                        {setting.title}
+                      </Typography>
+                    </MenuItem>
+                    <Divider />
+                  </div>
                 ))}
                 <MenuItem
                   key="logout"

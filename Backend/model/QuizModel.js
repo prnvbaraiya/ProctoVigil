@@ -29,7 +29,7 @@ const QuizSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    personName: {
+    studentNames: {
       type: Array,
       required: true,
     },
