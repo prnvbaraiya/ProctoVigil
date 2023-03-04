@@ -13,7 +13,7 @@ function EditQuiz() {
   const location = useLocation();
   const { id } = location.state;
   const randomQuestionNumber = useFormInput("");
-  const [names, setNames] = useState([]);
+  const [studentNames, setStudentNames] = useState([]);
   const author = useFormInput("");
   const name = useFormInput("");
   const description = useFormInput("");
@@ -28,7 +28,7 @@ function EditQuiz() {
 
   const getData = async () => {
     const res = await UserService.getStudents();
-    setNames(res.data.map((item) => item.username));
+    setStudentNames(res.data.map((item) => item.username));
   };
 
   useEffect(() => {
@@ -149,7 +149,7 @@ function EditQuiz() {
               </Stack>
               <SelectChip
                 label="Students"
-                names={names}
+                names={studentNames}
                 personName={personName}
                 setPersonName={setPersonName}
               />

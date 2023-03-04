@@ -52,3 +52,10 @@ export const adminMenuItem = [
 ];
 
 export const userMenuItem = [];
+
+export const quizPhase = [
+  { value: "init", title: "Initial" },
+  { value: "start", title: "Start" },
+  { value: "end", title: "End" },
+  { value: "result", title: "Result" },
+];

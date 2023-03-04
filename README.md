@@ -9,8 +9,8 @@
 ### Todo
 
 - [ ] Database setup mongo
-- [ ] Admin collection
-- [ ] User collection
+- [x] Admin collection
+- [x] User collection
 - [x] Quiz collection
 - [ ] Result Quiz collection
 
@@ -19,14 +19,17 @@
 - [x] Admin Layout
 - [ ] Admin Dashboard Page
 - [x] Admin Student Page
+- [ ] User Crud Operations
 - [x] Admin Quiz Page
 - [x] Admin Add Update Quiz Page
 - [ ] Admin Add Quiz Using csv file
 - [x] In Add Quiz add random number question
 - [x] Admin Stream Page
 - [x] Admin watch Stream Page
-- [ ] Admin watch Stream of more than one student
+- [x] Admin watch Stream of more than one student
 - [x] Set up watch Stream with watching data
+- [x] Change Phase for quiz
+- [ ] Result Page for quiz
 - [x] Add zegocloud sdk for proctaring custom ui
 - [x] Admin Proctar Student Page
 
@@ -36,6 +39,7 @@
 - [ ] User get all the permissions and validate do not start until all the conditions follow
 - [x] User Quiz Page
 - [x] User Attempt Quiz Page
+- [ ] User Result Quiz Page
 - [x] User send data to zegocloud Page
 - [ ] Make Zego Context
 
@@ -44,9 +48,10 @@
 
 - [x] In basic table hide is not working
 - [x] JWT token null on page refresh so store in cookie
+- [ ] Attempt Quiz not working Properly First Ask Permissions
 
 - [x] 20% webrtc module & quiz module & frontend layout
-- [ ] 40% admin can add users & quiz & admin profile setting
+- [x] 40% admin can add users & quiz & admin profile setting
 - [ ] 60% all the result will be disply & send mail & quiz with subjective and different sections
 - [ ] 75% integrate the lms system with quiz & bug fixes
 - [ ] 100% integrate ai quiz and lms system

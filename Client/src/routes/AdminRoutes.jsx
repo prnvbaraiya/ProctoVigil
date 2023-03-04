@@ -11,6 +11,8 @@ import EditUser from "../pages/admin/user/EditUser";
 import PageNotFound from "../pages/PageNotFound";
 import RequireAuth from "../pages/RequireAuth";
 import Settings from "../pages/admin/settings/Settings";
+import ViewPhase from "../pages/admin/phase/ViewPhase";
+import EditPhase from "../pages/admin/phase/EditPhase";
 
 const AdminRoutes = (
   <Route
@@ -33,6 +35,10 @@ const AdminRoutes = (
       <Route path="stream">
         <Route index element={<Stream />} />
         <Route path="view" element={<ViewStream />} />
+      </Route>
+      <Route path="phase">
+        <Route index element={<ViewPhase />} />
+        <Route path="edit" element={<EditPhase />} />
       </Route>
       <Route path="settings">
         <Route index element={<Settings />} />

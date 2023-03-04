@@ -37,6 +37,11 @@ const QuizSchema = new mongoose.Schema(
       type: Array,
       required: true,
     },
+    phase: {
+      type: String,
+      required: true,
+      default: "init",
+    },
   },
   { timestamps: true }
 );
