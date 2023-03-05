@@ -5,6 +5,7 @@ const {
   Quiz,
   a,
   JWT,
+  QuizResult,
 } = require("../controller/AuthController");
 const router = express.Router();
 
@@ -29,5 +30,6 @@ router
   .post("/quiz", Quiz.add)
   .put("/quiz", Quiz.update)
   .delete("/quiz", Quiz.delete);
+router.post("/quiz-result", QuizResult.add);
 
 module.exports = router;

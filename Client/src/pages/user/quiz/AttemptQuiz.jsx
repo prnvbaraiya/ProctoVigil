@@ -1,13 +1,16 @@
 import { Box, Button, Grid } from "@mui/material";
 import { Stack } from "@mui/system";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import auth from "../../../auth/auth";
 import AlertDialogBox from "../../../components/AlertDialogBox";
 import ExamHeader from "../../../components/quiz/ExamHeader";
 import QuestionNavigation from "../../../components/quiz/QuestionNavigation";
 import { zegoInstance } from "../../../config/ZegoConfig";
-import { QuizService } from "../../../services/ServerRequest";
+import {
+  QuizService,
+  QuizResultService,
+} from "../../../services/ServerRequest";
 
 function AttemptQuiz() {
   const location = useLocation();
@@ -29,6 +32,7 @@ function AttemptQuiz() {
   const [warningCount, setWarningCount] = useState(0);
   const [submitOpen, setSubmitOpen] = useState(false);
   const instance = zegoInstance();
+  const navigate = useNavigate();
 
   // Function to shuffle an array
   const suffeledArray = (len) => {
@@ -114,10 +118,23 @@ function AttemptQuiz() {
     });
   };
 
-  const handleSuccess = () => {
+  const handleSuccess = async () => {
     const answeredQuestions = selectedAnswers.filter(
       (item) => item !== null
     ).length;
+    const data = {
+      QuizId: id,
+      students: {
+        username: auth.name,
+        answerKey,
+        studentAnswer: selectedAnswers,
+        totalMarks: 0,
+      },
+    };
+    const res = await QuizResultService.set(data);
+    if (res.status === 202) {
+      navigate("/quiz");
+    }
   };
 
   return (

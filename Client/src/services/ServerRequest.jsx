@@ -58,6 +58,23 @@ const QuizService = {
     return sendRequest("delete", "quiz", data);
   },
 };
+const QuizResultService = {
+  get: () => {
+    return sendRequest("get", "quiz-result");
+  },
+  getById: (id) => {
+    return sendRequest("get", "quiz-result/" + id);
+  },
+  set: (data) => {
+    return sendRequest("post", "quiz-result", data);
+  },
+  update: (data) => {
+    return sendRequest("put", "quiz-result", data);
+  },
+  delete: (data) => {
+    return sendRequest("delete", "quiz", data);
+  },
+};
 
 const JWTService = {
   generateToken: (data) => {
@@ -65,4 +82,4 @@ const JWTService = {
   },
 };
 
-export { UserService, QuizService, JWTService };
+export { UserService, QuizService, QuizResultService, JWTService };

@@ -1,6 +1,7 @@
 const { generateToken04 } = require("../zgocloud/zegoServerAssistant.js");
-const QuizModel = require("../model/QuizModel.js");
 const UserModel = require("../model/UserModel.js");
+const QuizModel = require("../model/QuizModel.js");
+const QuizResultModel = require("../model/QuizResult");
 const { PythonShell } = require("python-shell");
 const jwt = require("jsonwebtoken");
 
@@ -29,6 +30,21 @@ const JWT = {
       req.user = user;
       next();
     });
+  },
+};
+
+const ZegocloudTokenGenerator = {
+  getToken: async (req, res) => {
+    const userId = req.body.userId;
+    const effectiveTimeInSeconds = 36000;
+
+    const token = generateToken04(
+      Number(process.env.ZCLOUD_APPID),
+      userId,
+      `${process.env.ZCLOUD_SERVERSECRET}`,
+      effectiveTimeInSeconds
+    );
+    return res.status(SUCCESS_CODE).send(token);
   },
 };
 
@@ -103,21 +119,6 @@ const User = {
   },
 };
 
-const ZegocloudTokenGenerator = {
-  getToken: async (req, res) => {
-    const userId = req.body.userId;
-    const effectiveTimeInSeconds = 36000;
-
-    const token = generateToken04(
-      Number(process.env.ZCLOUD_APPID),
-      userId,
-      `${process.env.ZCLOUD_SERVERSECRET}`,
-      effectiveTimeInSeconds
-    );
-    return res.status(SUCCESS_CODE).send(token);
-  },
-};
-
 const Quiz = {
   add: async (req, res) => {
     const user = await UserModel.findOne({ username: req.body.author });
@@ -173,6 +174,55 @@ const Quiz = {
   },
 };
 
+const QuizResult = {
+  add: async (req, res) => {
+    const { QuizId, students } = req.body;
+
+    // Find the quiz result document by QuizId
+    let quizResult = await QuizResultModel.findOne({ QuizId });
+
+    // If the document does not exist, create a new one
+    if (!quizResult) {
+      quizResult = new QuizResultModel({ QuizId });
+    }
+
+    // Iterate through the students and add or update the quiz result
+    const { username, answerKey, studentAnswer, totalMarks } = students;
+
+    // Find the user by username
+    const user = await UserModel.findOne({ username });
+
+    if (user) {
+      // Check if the student already has a quiz result in the document
+      const existingStudent = quizResult.students.find(
+        (s) => s.user.toString() === user._id.toString()
+      );
+
+      if (existingStudent) {
+        // Update the existing quiz result
+        existingStudent.answerKey = answerKey;
+        existingStudent.studentAnswer = studentAnswer;
+        existingStudent.totalMarks = totalMarks;
+      } else {
+        // Add a new quiz result for the student
+        quizResult.students.push({
+          user: user._id,
+          answerKey,
+          studentAnswer,
+          totalMarks,
+        });
+      }
+    }
+
+    // Save the quiz result document
+    await quizResult.save();
+
+    res
+      .status(SUCCESS_CODE)
+      .send({ message: "Quiz result added successfully" });
+  },
+};
+
 const a = {
   sc: async (req, res) => {
     // return res.status(201).send("YAY PRabac");
@@ -195,4 +245,4 @@ const a = {
 //   // Render the admin page
 // });
 
-module.exports = { JWT, User, ZegocloudTokenGenerator, Quiz, a };
+module.exports = { JWT, ZegocloudTokenGenerator, User, Quiz, QuizResult, a };
