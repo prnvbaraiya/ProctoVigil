@@ -19,6 +19,7 @@
 - [x] Admin Layout
 - [ ] Admin Dashboard Page
 - [x] Admin Student Page
+- [ ] Add/Edit User Page
 - [ ] User Crud Operations
 - [x] Admin Quiz Page
 - [x] Admin Add Update Quiz Page
@@ -45,10 +46,16 @@
 
 - [x] Account setup in zegocloud
 - [x] Add JWT token both side
+- [ ] Add Mailing system
+- [ ] Forget Password Mail link
+- [ ] Once user verify email then only start quiz
+- [ ] Sending Results
+- [ ] Make Feedback Database
 
 - [x] In basic table hide is not working
 - [x] JWT token null on page refresh so store in cookie
-- [ ] Attempt Quiz not working Properly First Ask Permissions
+- [x] Attempt Quiz not working Properly First Ask Permissions(Test Page)
+- [ ] Add online status for admin to check which student online
 
 - [x] 20% webrtc module & quiz module & frontend layout
 - [x] 40% admin can add users & quiz & admin profile setting

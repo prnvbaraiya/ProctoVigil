@@ -144,6 +144,7 @@ function AttemptQuiz() {
         answerKey,
         studentAnswer: answeredQuestions,
         obtainedMarks: tMarks,
+        warningCount,
       },
     };
     const res = await QuizResultService.set(data);

@@ -187,7 +187,8 @@ const QuizResult = {
     }
 
     // Iterate through the students and add or update the quiz result
-    const { username, answerKey, studentAnswer, obtainedMarks } = students;
+    const { username, answerKey, studentAnswer, obtainedMarks, warningCount } =
+      students;
 
     // Find the user by username
     const user = await UserModel.findOne({ username });
@@ -203,6 +204,7 @@ const QuizResult = {
         existingStudent.answerKey = answerKey;
         existingStudent.studentAnswer = studentAnswer;
         existingStudent.obtainedMarks = obtainedMarks;
+        existingStudent.warningCount = warningCount;
       } else {
         // Add a new quiz result for the student
         quizResult.students.push({
@@ -210,6 +212,7 @@ const QuizResult = {
           answerKey,
           studentAnswer,
           obtainedMarks,
+          warningCount,
         });
       }
     }

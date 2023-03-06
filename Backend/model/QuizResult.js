@@ -18,6 +18,7 @@ const QuizResultSchema = new mongoose.Schema(
         answerKey: [],
         studentAnswer: [],
         obtainedMarks: Number,
+        warningCount: Number,
       },
     ],
   },
