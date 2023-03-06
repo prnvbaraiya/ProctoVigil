@@ -7,6 +7,7 @@ const QuizResultSchema = new mongoose.Schema(
       ref: "Quiz",
       required: true,
     },
+    totalMarks: Number,
     students: [
       {
         user: {
@@ -16,7 +17,7 @@ const QuizResultSchema = new mongoose.Schema(
         },
         answerKey: [],
         studentAnswer: [],
-        totalMarks: Number,
+        obtainedMarks: Number,
       },
     ],
   },

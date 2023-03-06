@@ -39,7 +39,6 @@ function EditPhase() {
       phase,
     };
     const res = await QuizService.update(data);
-    console.log(res);
     if (res.status === 202) {
       navigate("/admin/phase");
     } else {

@@ -176,18 +176,18 @@ const Quiz = {
 
 const QuizResult = {
   add: async (req, res) => {
-    const { QuizId, students } = req.body;
+    const { QuizId, totalMarks, students } = req.body;
 
     // Find the quiz result document by QuizId
     let quizResult = await QuizResultModel.findOne({ QuizId });
 
     // If the document does not exist, create a new one
     if (!quizResult) {
-      quizResult = new QuizResultModel({ QuizId });
+      quizResult = new QuizResultModel({ QuizId, totalMarks });
     }
 
     // Iterate through the students and add or update the quiz result
-    const { username, answerKey, studentAnswer, totalMarks } = students;
+    const { username, answerKey, studentAnswer, obtainedMarks } = students;
 
     // Find the user by username
     const user = await UserModel.findOne({ username });
@@ -202,14 +202,14 @@ const QuizResult = {
         // Update the existing quiz result
         existingStudent.answerKey = answerKey;
         existingStudent.studentAnswer = studentAnswer;
-        existingStudent.totalMarks = totalMarks;
+        existingStudent.obtainedMarks = obtainedMarks;
       } else {
         // Add a new quiz result for the student
         quizResult.students.push({
           user: user._id,
           answerKey,
           studentAnswer,
-          totalMarks,
+          obtainedMarks,
         });
       }
     }
@@ -220,6 +220,30 @@ const QuizResult = {
     res
       .status(SUCCESS_CODE)
       .send({ message: "Quiz result added successfully" });
+  },
+  get: async (req, res) => {
+    try {
+      const quizzes = await QuizResultModel.find().populate({
+        path: "QuizId",
+        select: "name",
+      });
+      return res.status(SUCCESS_CODE).send(quizzes);
+    } catch (err) {
+      return res.status(ERROR_CODE).send("There is some error: " + err);
+    }
+  },
+  getById: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const quiz = await QuizResultModel.findOne({ QuizId: id }).populate({
+        path: "students.user",
+        select: "username firstName lastName",
+      });
+      return res.status(SUCCESS_CODE).send(quiz);
+    } catch (err) {
+      console.log(err);
+      return res.status(ERROR_CODE).send("There is some error: " + err);
+    }
   },
 };
 

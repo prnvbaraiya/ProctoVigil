@@ -14,14 +14,14 @@ const UserRoutes = [
     <Route path="/" element={<Home />} key="home"></Route>,
     <Route path="/about-us" element={<AboutUs />} key="about"></Route>,
     <Route path="/contact-us" element={<ContactUs />} key="contact"></Route>,
+    <Route path="/unauthorized" element={<Unauthorized />} />,
+    <Route path="/page-not-found" element={<PageNotFound />} />,
     <Route
       element={<RequireAuth allowedRoles={["student", "admin"]} />}
       key="Student"
     >
       <Route path="/quiz" element={<Quiz />} key="quiz"></Route>
     </Route>
-    <Route path="/unauthorized" element={<Unauthorized />} />,
-    <Route path="/page-not-found" element={<PageNotFound />} />,
   </Route>,
   <Route element={<RequireAuth allowedRoles={["student"]} />} key="Student">
     <Route path="/quiz" key="quiz">

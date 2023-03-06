@@ -3,6 +3,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import LiveTvIcon from "@mui/icons-material/LiveTv";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 export const adminSidebarItems = [
@@ -30,6 +31,11 @@ export const adminSidebarItems = [
     href: "/phase",
     icon: <AutorenewIcon fontSize="small" />,
     title: "Change Phase",
+  },
+  {
+    href: "/result",
+    icon: <EmojiEventsIcon fontSize="small" />,
+    title: "Result",
   },
   {
     href: "/settings",

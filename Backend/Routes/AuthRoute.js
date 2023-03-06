@@ -30,6 +30,9 @@ router
   .post("/quiz", Quiz.add)
   .put("/quiz", Quiz.update)
   .delete("/quiz", Quiz.delete);
-router.post("/quiz-result", QuizResult.add);
+router
+  .get("/quiz-result", QuizResult.get)
+  .get("/quiz-result/:id", QuizResult.getById)
+  .post("/quiz-result", QuizResult.add);
 
 module.exports = router;

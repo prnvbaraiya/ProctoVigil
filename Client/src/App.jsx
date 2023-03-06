@@ -30,7 +30,7 @@ function App() {
           <Route path="/test" element={<Test />} />
           {UserRoutes}
           {AdminRoutes}
-          <Route path="*" element={<Navigate to="/page-not-found" />} />
+          <Route path="*" element={<Navigate to="/page-not-found" replace />} />
         </Routes>
         <Outlet />
       </ThemeProvider>

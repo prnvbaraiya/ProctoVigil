@@ -13,6 +13,7 @@ import RequireAuth from "../pages/RequireAuth";
 import Settings from "../pages/admin/settings/Settings";
 import ViewPhase from "../pages/admin/phase/ViewPhase";
 import EditPhase from "../pages/admin/phase/EditPhase";
+import ViewResult from "../pages/admin/Result/ViewResult";
 
 const AdminRoutes = (
   <Route
@@ -39,6 +40,9 @@ const AdminRoutes = (
       <Route path="phase">
         <Route index element={<ViewPhase />} />
         <Route path="edit" element={<EditPhase />} />
+      </Route>
+      <Route path="result">
+        <Route index element={<ViewResult />} />
       </Route>
       <Route path="settings">
         <Route index element={<Settings />} />

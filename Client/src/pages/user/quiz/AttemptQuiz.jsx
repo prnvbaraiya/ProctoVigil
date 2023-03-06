@@ -119,16 +119,31 @@ function AttemptQuiz() {
   };
 
   const handleSuccess = async () => {
-    const answeredQuestions = selectedAnswers.filter(
-      (item) => item !== null
-    ).length;
+    const answeredQuestions = selectedAnswers.map((item) => {
+      return item === "A"
+        ? 0
+        : item === "B"
+        ? 1
+        : item === "C"
+        ? 2
+        : item === "D"
+        ? 3
+        : null;
+    });
+    let tMarks = 0;
+    for (let i = 0; i < selectedAnswers.length; i++) {
+      if (answeredQuestions[i] === answerKey[i]) {
+        tMarks += 1;
+      }
+    }
     const data = {
       QuizId: id,
+      totalMarks: selectedAnswers.length,
       students: {
         username: auth.name,
         answerKey,
-        studentAnswer: selectedAnswers,
-        totalMarks: 0,
+        studentAnswer: answeredQuestions,
+        obtainedMarks: tMarks,
       },
     };
     const res = await QuizResultService.set(data);
