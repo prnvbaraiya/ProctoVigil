@@ -26,12 +26,11 @@ function EditQuiz() {
   ]);
   const navigate = useNavigate();
 
-  const getData = async () => {
-    const res = await UserService.getStudents();
-    setStudentNames(res.data.map((item) => item.username));
-  };
-
   useEffect(() => {
+    const getData = async () => {
+      const res = await UserService.getStudents();
+      setStudentNames(res.data.map((item) => item.username));
+    };
     getData();
   }, []);
 

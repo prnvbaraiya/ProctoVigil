@@ -12,7 +12,7 @@ const JWT = {
   generateToken: (user) => {
     const payload = {
       roles: user.roles,
-      name: user.username,
+      username: user.username,
     };
     const token = jwt.sign(payload, process.env.JWT_SEC_KEY);
     return token;
@@ -110,9 +110,9 @@ const User = {
   },
   delete: async (req, res) => {
     try {
-      const user = await UserModel.findOneAndRemove({ email: req.body.email });
+      const user = await UserModel.findOneAndRemove(req.body);
       const result = await QuizModel.deleteMany({ author: user._id });
-      return res.status(SUCCESS_CODE).send("User Delted Successfully");
+      return res.status(SUCCESS_CODE).send("User Deleted Successfully");
     } catch (err) {
       return res.status(ERROR_CODE).send("User Delted Error: " + err);
     }

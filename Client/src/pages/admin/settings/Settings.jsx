@@ -17,22 +17,21 @@ function Settings() {
   const lastName = useFormInput("");
   const email = useFormInput("");
 
-  const getData = async () => {
-    const res = await UserService.find({ email: auth.email });
-    const resData = res.data[0];
-    setData(resData);
-    username.onChange(resData.username);
-    firstName.onChange(resData.firstName);
-    lastName.onChange(resData.lastName);
-    email.onChange(resData.email);
-  };
-
   useEffect(() => {
+    const getData = async () => {
+      const res = await UserService.find({ username: auth.username });
+      const resData = res.data[0];
+      setData(resData);
+      username.onChange(resData.username);
+      firstName.onChange(resData.firstName);
+      lastName.onChange(resData.lastName);
+      email.onChange(resData.email);
+    };
     getData();
   }, []);
 
   const handleDeleteSuccess = async () => {
-    const res = await UserService.delete({ username: auth.name });
+    const res = await UserService.delete({ username: auth.username });
     auth.logout();
     if (res.status === 202) {
       navigate("/");

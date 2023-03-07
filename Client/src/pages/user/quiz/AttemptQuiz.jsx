@@ -23,9 +23,9 @@ function AttemptQuiz() {
   const [isLoading, setIsLoading] = useState(true);
   const [zConfig, setZConfig] = useState({
     roomId: id,
-    userId: auth.name,
+    userId: auth.username,
     token: "",
-    userName: auth.name,
+    userName: auth.username,
   });
   // eslint-disable-next-line
   const [answerKey, setAnswerKey] = useState([]);
@@ -140,7 +140,7 @@ function AttemptQuiz() {
       QuizId: id,
       totalMarks: selectedAnswers.length,
       students: {
-        username: auth.name,
+        username: auth.username,
         answerKey,
         studentAnswer: answeredQuestions,
         obtainedMarks: tMarks,

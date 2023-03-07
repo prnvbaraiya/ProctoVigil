@@ -19,6 +19,8 @@ import { SERVER_LINK } from "../variables/constants";
 import { useNavigate } from "react-router-dom";
 import side from "../assets/side.jpg";
 import { Box } from "@mui/system";
+import { userRoles } from "../variables/Data";
+import RadioButton from "../components/form/RadioButton";
 
 function Register() {
   const roles = useFormInput("student");
@@ -49,7 +51,7 @@ function Register() {
 
   return (
     <>
-      <Grid container component="main" sx={{ height: "100vh" }}>
+      <Grid container component="main" sx={{ height: "100vh" }} spacing={2}>
         <CssBaseline />
         <Grid
           item
@@ -84,33 +86,12 @@ function Register() {
             </Typography>
             <form>
               <Stack spacing={3} m={1}>
-                <FormControl>
-                  <FormLabel id="demo-row-radio-buttons-group-label">
-                    Who are you ?
-                  </FormLabel>
-                  <RadioGroup
-                    row
-                    aria-labelledby="demo-row-radio-buttons-group-label"
-                    name="row-radio-buttons-group"
-                    {...roles}
-                  >
-                    <FormControlLabel
-                      value="admin"
-                      control={<Radio />}
-                      label="Admin"
-                    />
-                    <FormControlLabel
-                      value="teacher"
-                      control={<Radio />}
-                      label="Teacher"
-                    />
-                    <FormControlLabel
-                      value="student"
-                      control={<Radio />}
-                      label="Student"
-                    />
-                  </RadioGroup>
-                </FormControl>
+                <RadioButton
+                  row={true}
+                  title="Who are You ?"
+                  items={userRoles}
+                  {...roles}
+                />
                 <TextBox
                   label={roles.value === "student" ? "Id Number" : "User Name"}
                   {...username}

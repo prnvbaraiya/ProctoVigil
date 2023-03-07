@@ -165,7 +165,7 @@ export const UserNavbar = () => {
                 >
                   <Typography variant="overline">Account</Typography>
                   <Typography color="text.secondary" variant="body2">
-                    {auth.name}
+                    {auth.username}
                   </Typography>
                 </Box>
                 <Divider />

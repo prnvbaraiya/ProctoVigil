@@ -65,7 +65,7 @@ function Dashboard() {
       <Grid container spacing={2}>
         {cardItems.map((item) => {
           return (
-            <Grid item xs={12} sm={6} lg={3}>
+            <Grid item key={item.title} xs={12} sm={6} lg={3}>
               <Box
                 sx={{
                   background: item.gradiant,

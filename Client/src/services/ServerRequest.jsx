@@ -1,5 +1,4 @@
 import axios from "axios";
-import { Navigate } from "react-router-dom";
 import auth from "../auth/auth";
 import { SERVER_LINK } from "../variables/constants";
 
@@ -58,6 +57,7 @@ const QuizService = {
     return sendRequest("delete", "quiz", data);
   },
 };
+
 const QuizResultService = {
   get: () => {
     return sendRequest("get", "quiz-result");

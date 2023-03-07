@@ -13,14 +13,15 @@
 - [x] User collection
 - [x] Quiz collection
 - [ ] Result Quiz collection
+- [ ] Notification collection
 
 - [ ] Complete Admin Side
 - [x] Admin Login Page
 - [x] Admin Layout
 - [ ] Admin Dashboard Page
 - [x] Admin Student Page
-- [ ] Add/Edit User Page
-- [ ] User Crud Operations
+- [x] Add/Edit User Page
+- [x] User Crud Operations
 - [x] Admin Quiz Page
 - [x] Admin Add Update Quiz Page
 - [ ] Admin Add Quiz Using csv file

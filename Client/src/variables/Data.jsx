@@ -6,6 +6,12 @@ import AutorenewIcon from "@mui/icons-material/Autorenew";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import SettingsIcon from "@mui/icons-material/Settings";
 
+export const userRoles = [
+  { title: "Admin", value: "admin" },
+  { title: "Teacher", value: "teacher" },
+  { title: "Student", value: "student" },
+];
+
 export const adminSidebarItems = [
   {
     href: "/dashboard",

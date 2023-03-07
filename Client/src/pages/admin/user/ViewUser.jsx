@@ -1,21 +1,43 @@
-import { Box, Divider, IconButton, Typography } from "@mui/material";
+import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BasicTable from "../../../components/form/BasicTable";
 import { UserService } from "../../../services/ServerRequest";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import SnackbarDisplay from "../../../components/SnackbarDisplay";
+import AlertDialogBox from "../../../components/AlertDialogBox";
 
 function ViewUser() {
   const [data, setData] = useState([]);
-  const getData = async () => {
-    const res = await UserService.get();
-    setData(res.data);
-  };
+  const [snackbarData, setSnackbarData] = useState({
+    open: false,
+    message: "",
+    type: "success",
+  });
+  const [deleteDialogBox, setDeleteDialogBox] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
 
   useEffect(() => {
+    const getData = async () => {
+      const res = await UserService.get();
+      setData(res.data);
+    };
     getData();
-  }, []);
+  }, [snackbarData]);
+
+  const handleDelete = async (id) => {
+    const res = await UserService.delete({ _id: id });
+    if (res.status === 202) {
+      setDeleteDialogBox(false);
+      setSnackbarData({
+        open: true,
+        message: res.data,
+      });
+    } else {
+      alert("There is some error try again after some time");
+    }
+  };
 
   const columns = [
     { field: "_id", headerName: "Id", width: 50 },
@@ -69,6 +91,13 @@ function ViewUser() {
   return (
     <>
       <Box>
+        <AlertDialogBox
+          open={deleteDialogBox}
+          setOpen={setDeleteDialogBox}
+          handleSuccess={() => handleDelete(deleteId)}
+          title="Are Your You want to delete quiz ?"
+          data="Ok Delete it"
+        />
         <Box
           sx={{
             display: "flex",
@@ -78,13 +107,21 @@ function ViewUser() {
         >
           <Box></Box>
           <Typography variant="h6">Student</Typography>
-          <Box></Box>
+          <Box>
+            <Link to="add">
+              <Button variant="contained">Add Student</Button>
+            </Link>
+          </Box>
         </Box>
         <Divider sx={{ margin: "10px 0 20px" }} />
         <Box textAlign="center">
           {" "}
           <BasicTable rows={data} columns={columns} hideColumns={hideColumns} />
         </Box>
+        <SnackbarDisplay
+          snackbarData={snackbarData}
+          setSnackbarData={setSnackbarData}
+        />
       </Box>
     </>
   );

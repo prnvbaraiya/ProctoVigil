@@ -13,7 +13,7 @@ import axios from "axios";
 function AddQuiz() {
   const randomQuestionNumber = useFormInput("");
   const [names, setNames] = useState([]);
-  const author = useFormInput(auth.name);
+  const author = useFormInput(auth.username);
   const name = useFormInput("");
   const description = useFormInput("");
   const [startDate, setStartDate] = useState(new Date());
@@ -51,7 +51,7 @@ function AddQuiz() {
 
   const handleSubmit = async () => {
     const data = {
-      author: auth.name,
+      author: auth.username,
       name: name.value,
       description: description.value,
       startDate: startDate,

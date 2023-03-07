@@ -11,8 +11,8 @@ function ViewStream() {
   const zconf = {
     roomId: data.roomId,
     token: "",
-    userId: auth.name,
-    userName: auth.name,
+    userId: auth.username,
+    userName: auth.username,
   };
 
   const instance = zegoInstance();

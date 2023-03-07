@@ -14,6 +14,7 @@ import Settings from "../pages/admin/settings/Settings";
 import ViewPhase from "../pages/admin/phase/ViewPhase";
 import EditPhase from "../pages/admin/phase/EditPhase";
 import ViewResult from "../pages/admin/Result/ViewResult";
+import AddUser from "../pages/admin/user/AddUser";
 
 const AdminRoutes = (
   <Route
@@ -26,6 +27,7 @@ const AdminRoutes = (
       <Route path="dashboard" element={<Dashboard />} />
       <Route path="user">
         <Route index element={<ViewUser />} />
+        <Route path="add" element={<AddUser />} />
         <Route path="edit" element={<EditUser />} />
       </Route>
       <Route path="quiz">
