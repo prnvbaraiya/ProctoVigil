@@ -14,6 +14,8 @@ function Quiz() {
     open: false,
     message: "",
     type: "success",
+    vertical: "top",
+    horizontal: "left",
   });
   const [deleteDialogBox, setDeleteDialogBox] = useState(false);
   const [deleteId, setDeleteId] = useState("");
@@ -23,6 +25,7 @@ function Quiz() {
     if (res.status === 202) {
       setDeleteDialogBox(false);
       setSnackbarData({
+        ...snackbarData,
         open: true,
         message: res.data.message,
       });

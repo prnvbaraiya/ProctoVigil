@@ -3,30 +3,11 @@ import React, { useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import { quizPhase } from "../../../variables/Data";
 import BasicTable from "../../../components/form/BasicTable";
-import SnackbarDisplay from "../../../components/SnackbarDisplay";
 import { QuizService } from "../../../services/ServerRequest";
 import { Link } from "react-router-dom";
 
 function ViewPhase() {
   const [data, setData] = useState([]);
-  const [snackbarData, setSnackbarData] = useState({
-    open: false,
-    message: "",
-    type: "success",
-  });
-
-  const handleDelete = async (id) => {
-    const res = await QuizService.delete({ id });
-    if (res.status === 202) {
-      setDeleteDialogBox(false);
-      setSnackbarData({
-        open: true,
-        message: res.data.message,
-      });
-    } else {
-      alert("There is some error try again after some time");
-    }
-  };
 
   const columns = [
     { field: "_id", headerName: "Id", width: 50 },
@@ -76,7 +57,7 @@ function ViewPhase() {
 
   useEffect(() => {
     getData();
-  }, [snackbarData]);
+  }, []);
 
   return (
     <>
@@ -97,10 +78,6 @@ function ViewPhase() {
           <BasicTable rows={data} columns={columns} hideColumns={hideColumns} />
         </Box>
       </Box>
-      <SnackbarDisplay
-        snackbarData={snackbarData}
-        setSnackbarData={setSnackbarData}
-      />
     </>
   );
 }

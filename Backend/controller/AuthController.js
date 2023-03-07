@@ -132,6 +132,7 @@ const Quiz = {
   },
   get: async (req, res) => {
     try {
+      // const quizzes = await QuizModel.find({ startDate: { $gt: Date.now() } })
       const quizzes = await QuizModel.find().sort({ name: 1 }).populate({
         path: "author",
         select: "firstName lastName",

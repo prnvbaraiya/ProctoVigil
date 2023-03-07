@@ -6,11 +6,15 @@ function SnackbarDisplay({ snackbarData, setSnackbarData }) {
     if (reason === "clickaway") {
       return;
     }
-    setSnackbarData({ open: false, message: "", type: "success" });
+    setSnackbarData({ ...snackbarData, open: false });
   };
   return (
     <>
       <Snackbar
+        anchorOrigin={{
+          vertical: snackbarData.vertical,
+          horizontal: snackbarData.horizontal,
+        }}
         open={snackbarData.open}
         autoHideDuration={5000}
         onClose={handleClose}

@@ -57,6 +57,8 @@
 - [x] JWT token null on page refresh so store in cookie
 - [x] Attempt Quiz not working Properly First Ask Permissions(Test Page)
 - [ ] Add online status for admin to check which student online
+- [ ] End date Never be less than start Date
+- [ ] Exam starts close edit quiz option
 
 - [x] 20% webrtc module & quiz module & frontend layout
 - [x] 40% admin can add users & quiz & admin profile setting
