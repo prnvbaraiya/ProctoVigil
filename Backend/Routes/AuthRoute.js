@@ -9,7 +9,7 @@ const {
 } = require("../controller/AuthController");
 const router = express.Router();
 
-router.get("/", a.test);
+router.get("/test-mail", a.testMailSend);
 router.get("/yay", a.sc);
 
 router.post("/register", User.register);

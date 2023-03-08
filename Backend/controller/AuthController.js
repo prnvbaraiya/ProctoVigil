@@ -1,9 +1,10 @@
+const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 const { generateToken04 } = require("../zgocloud/zegoServerAssistant.js");
 const UserModel = require("../model/UserModel.js");
 const QuizModel = require("../model/QuizModel.js");
 const QuizResultModel = require("../model/QuizResult");
 const { PythonShell } = require("python-shell");
-const jwt = require("jsonwebtoken");
 
 const ERROR_CODE = 500;
 const SUCCESS_CODE = 202;
@@ -48,10 +49,120 @@ const ZegocloudTokenGenerator = {
   },
 };
 
+const MailingSystem = {
+  sendMail: (mailOption) => {
+    const mailOptions = {
+      from: process.env.AUTH_EMAIL,
+      ...mailOption,
+    };
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.AUTH_EMAIL,
+        pass: process.env.AUTH_PASS,
+      },
+    });
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+  },
+};
+
 const User = {
   register: async (req, res) => {
     try {
-      const result = await UserModel.create(req.body);
+      const user = await UserModel.create(req.body);
+      const html = ` <body
+      style="
+        margin: 0;
+        padding: 0;
+        background-color: #f6f9fc;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+      "
+    >
+      <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td style="padding: 20px">
+            <table
+              align="center"
+              border="0"
+              cellpadding="0"
+              cellspacing="0"
+              width="600"
+              style="
+                background-color: #ffffff;
+                border-radius: 4px;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+              "
+            >
+              <tr>
+                <td style="padding: 20px; text-align: center">
+                  <h1 style="margin: 0; color: #3f51b5">
+                    Welcome to Procto Vigil
+                  </h1>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 20px">
+                  <p>Dear ${user.firstName + " " + user.lastName},</p>
+                  <p>
+                    Thank you for joining Procto Vigil. We are excited to have you
+                    as a part of our community.
+                  </p>
+                  <p>
+                    With Procto Vigil, you can take exams and assessments with
+                    complete security and confidence. Our state-of-the-art
+                    proctoring system uses advanced technologies to ensure that 
+                    your identity is verified and your test is monitored in real-time.
+                  </p>
+                  <p>
+                    To get started, simply log in to your account and begin your
+                    exam. If you have any questions or concerns, please do not
+                    hesitate to contact us at youuuu1322@gmail.com.
+                  </p>
+                  <p>
+                    Thank you again for choosing Procto Vigil. We look forward to
+                    serving you.
+                  </p>
+                  <p>Best regards,</p>
+                  <p>Pranav Baraiya</p>
+                  <p>The Procto Vigil Team</p>
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style="
+                    padding: 20px;
+                    text-align: center;
+                    background-color: #f6f9fc;
+                    border-top: 1px solid #e0e0e0;
+                  "
+                >
+                  <p style="margin: 0; font-size: 14px; color: #888888">
+                    You are receiving this email because you signed up for Procto
+                    Vigil. If you believe you received this email in error, please
+                    disregard it.
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>`;
+
+      MailingSystem.sendMail({
+        to: user.email,
+        subject: "Welcome To ProctoVigil",
+        html,
+      });
       return res.status(SUCCESS_CODE).send("User Created Succesfully");
     } catch (err) {
       return res.status(ERROR_CODE).send("Server Error: " + err);
@@ -252,6 +363,22 @@ const QuizResult = {
 };
 
 const a = {
+  testMailSend: async (req, res) => {
+    const mailContent = "Testing Mail is delivered successfully";
+    const mailSubject = "Testing Success";
+
+    if (
+      MailingSystem.sendMail({
+        text: mailContent,
+        subject: mailSubject,
+        to: "baraiyaprnv@gmail.com",
+      })
+    ) {
+      return res.status(201).send("Email Sent");
+    } else {
+      return res.status(301).send("Email Sending Failed");
+    }
+  },
   sc: async (req, res) => {
     // return res.status(201).send("YAY PRabac");
     console.log("start");
@@ -263,9 +390,6 @@ const a = {
       return res.status(201).send(messages);
     });
     console.log("End");
-  },
-  test: async (req, res) => {
-    return res.status(SUCCESS_CODE).send("Testing");
   },
 };
 
