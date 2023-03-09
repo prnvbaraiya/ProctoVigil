@@ -62,7 +62,12 @@ function AddQuiz() {
     };
     const res = await QuizService.set(data);
     if (res.status === 202) {
-      navigate(window.history.back());
+      const state = {
+        open: true,
+        message: res.data,
+        type: "success",
+      };
+      navigate("/admin/quiz", { state });
     } else {
       alert("There is Some error ", JSON.stringify(res));
     }

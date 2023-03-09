@@ -1,7 +1,7 @@
 import { Alert, Snackbar } from "@mui/material";
 import React from "react";
 
-function SnackbarDisplay({ snackbarData, setSnackbarData }) {
+function SnackbarDisplay({ snackbarData, setSnackbarData, ...others }) {
   const handleClose = (reason) => {
     if (reason === "clickaway") {
       return;
@@ -18,6 +18,7 @@ function SnackbarDisplay({ snackbarData, setSnackbarData }) {
         open={snackbarData.open}
         autoHideDuration={5000}
         onClose={handleClose}
+        {...others}
       >
         <Alert
           onClose={handleClose}

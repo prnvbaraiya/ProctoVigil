@@ -52,12 +52,17 @@ export default function Login() {
       const accessToken = res?.data?.accessToken;
       const roles = res?.data?.roles;
       auth.authenticate(accessToken);
+      const state = {
+        open: true,
+        message: "Login Successfull",
+        type: "success",
+      };
       if (roles === "admin") {
-        navigate(from || "/admin/dashboard", { replace: true });
+        navigate(from || "/admin/dashboard", { state }, { replace: true });
       } else if (roles === "student") {
-        navigate(from || "/", { replace: true });
+        navigate(from || "/", { state }, { replace: true });
       } else if (roles === "teacher") {
-        navigate(from || "/", { replace: true });
+        navigate(from || "/", { state }, { replace: true });
       }
     } catch (err) {
       setSnackbarData({

@@ -39,7 +39,12 @@ function AddUser() {
     };
     const res = await UserService.set(data);
     if (res.status === 202) {
-      navigate("..");
+      const state = {
+        open: true,
+        message: res.data,
+        type: "success",
+      };
+      navigate("/admin/user", { state });
     } else {
       alert("Server Error While Creating Account! Tey Again Later");
     }

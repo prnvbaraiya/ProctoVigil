@@ -41,7 +41,12 @@ function EditUser() {
     };
     const res = await UserService.update(dataTmp);
     if (res.status === 202) {
-      navigate("/admin/user");
+      const state = {
+        open: true,
+        message: res.data,
+        type: "success",
+      };
+      navigate("/admin/user", { state });
     } else {
       alert("There is Some error ", JSON.stringify(res));
     }

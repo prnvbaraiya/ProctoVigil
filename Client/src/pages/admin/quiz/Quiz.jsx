@@ -15,7 +15,7 @@ function Quiz() {
     message: "",
     type: "success",
     vertical: "top",
-    horizontal: "left",
+    horizontal: "right",
   });
   const [deleteDialogBox, setDeleteDialogBox] = useState(false);
   const [deleteId, setDeleteId] = useState("");
@@ -27,7 +27,7 @@ function Quiz() {
       setSnackbarData({
         ...snackbarData,
         open: true,
-        message: res.data.message,
+        message: res.data,
       });
     } else {
       alert("There is some error try again after some time");

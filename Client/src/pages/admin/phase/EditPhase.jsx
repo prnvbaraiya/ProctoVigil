@@ -40,7 +40,12 @@ function EditPhase() {
     };
     const res = await QuizService.update(data);
     if (res.status === 202) {
-      navigate("/admin/phase");
+      const state = {
+        open: true,
+        message: "Quiz Phase Updated Successfully",
+        type: "success",
+      };
+      navigate("/admin/phase", { state });
     } else {
       alert("There is Some error ", JSON.stringify(res.data));
     }

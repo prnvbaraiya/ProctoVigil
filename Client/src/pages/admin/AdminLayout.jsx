@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Card, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { DashboardNavbar } from "../../components/admin/dashboard-navbar";
 import { DashboardSidebar } from "../../components/admin/dashboard-sidebar";
 import { theme } from "../../theme/index";
 import BreadcrumbsItem from "../../components/admin/BreadcrumbsItem";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import SnackbarDisplay from "../../components/SnackbarDisplay";
 
 const DashboardLayoutRoot = styled("div")(({ theme }) => ({
   display: "flex",
@@ -19,10 +20,35 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
 
 const AdminLayout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const location = useLocation();
+  const stateData = location.state;
+  const [snackbarData, setSnackbarData] = useState({
+    open: false,
+    message: "",
+    type: "success",
+    vertical: "top",
+    horizontal: "right",
+  });
+
+  useEffect(() => {
+    stateData &&
+      setSnackbarData((prev) => {
+        return {
+          ...prev,
+          open: stateData.open,
+          message: stateData.message,
+          type: stateData.type,
+        };
+      });
+  }, [stateData]);
 
   return (
     <>
       <DashboardLayoutRoot>
+        <SnackbarDisplay
+          snackbarData={snackbarData}
+          setSnackbarData={setSnackbarData}
+        />
         <Box
           sx={{
             display: "flex",

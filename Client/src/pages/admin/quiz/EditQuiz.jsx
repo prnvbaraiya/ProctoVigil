@@ -81,7 +81,12 @@ function EditQuiz() {
     };
     const res = await QuizService.update(data);
     if (res.status === 202) {
-      navigate("/admin/quiz");
+      const state = {
+        open: true,
+        message: res.data,
+        type: "success",
+      };
+      navigate("/admin/quiz", { state });
     } else {
       alert("There is Some error ", JSON.stringify(res));
     }

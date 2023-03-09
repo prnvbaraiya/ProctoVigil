@@ -69,7 +69,7 @@ const User = {
           .status(SUCCESS_CODE)
           .send({ accessToken, roles: user.roles });
       } else {
-        return res.status(ERROR_CODE).send("Password Doesn't Match");
+        return res.status(ERROR_CODE).send("Username or Password is wrong");
       }
     } else {
       return res.status(ERROR_CODE).send("User Not Found");
@@ -103,7 +103,7 @@ const User = {
     try {
       const data = req.body;
       const tmp = await UserModel.findByIdAndUpdate(data._id, data);
-      return res.status(SUCCESS_CODE).send("Updated Successfully");
+      return res.status(SUCCESS_CODE).send("User Updated Successfully");
     } catch (err) {
       return res.status(ERROR_CODE).send("User Update Error: " + err);
     }
@@ -125,7 +125,7 @@ const Quiz = {
     const data = { ...req.body, author: user._id };
     try {
       await QuizModel.create(data);
-      return res.status(SUCCESS_CODE).send("Quiz Added");
+      return res.status(SUCCESS_CODE).send("Quiz Created Successfully");
     } catch (err) {
       return res.status(ERROR_CODE).send("There is some error: " + err);
     }
@@ -158,7 +158,7 @@ const Quiz = {
     try {
       const data = req.body;
       await QuizModel.findByIdAndUpdate(data._id, data);
-      return res.status(SUCCESS_CODE).send("Quiz Updated");
+      return res.status(SUCCESS_CODE).send("Quiz Updated Successfully");
     } catch (err) {
       return res.status(ERROR_CODE).send("There is some error: " + err);
     }
@@ -166,9 +166,7 @@ const Quiz = {
   delete: async (req, res) => {
     try {
       const data = await QuizModel.findByIdAndDelete(req.body.id);
-      return res
-        .status(SUCCESS_CODE)
-        .send({ message: "Quiz Deleted", type: "success" });
+      return res.status(SUCCESS_CODE).send("Quiz Deleted Successfully");
     } catch (err) {
       return res.status(ERROR_CODE).send("There is some error: " + err);
     }
@@ -221,9 +219,7 @@ const QuizResult = {
     // Save the quiz result document
     await quizResult.save();
 
-    res
-      .status(SUCCESS_CODE)
-      .send({ message: "Quiz result added successfully" });
+    res.status(SUCCESS_CODE).send("Quiz result added successfully");
   },
   get: async (req, res) => {
     try {

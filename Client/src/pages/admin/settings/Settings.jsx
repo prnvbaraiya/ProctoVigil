@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserService } from "../../../services/ServerRequest";
 import TextBox from "../../../components/form/TextBox";
 import { useFormInput } from "../../../hooks/useFormInput";
+import SnackbarDisplay from "../../../components/SnackbarDisplay";
 
 function Settings() {
   const navigate = useNavigate();
@@ -16,6 +17,13 @@ function Settings() {
   const firstName = useFormInput("");
   const lastName = useFormInput("");
   const email = useFormInput("");
+  const [snackbarData, setSnackbarData] = React.useState({
+    open: false,
+    message: "",
+    type: "success",
+    vertical: "top",
+    horizontal: "right",
+  });
 
   useEffect(() => {
     const getData = async () => {
@@ -49,13 +57,27 @@ function Settings() {
       email: email.value,
     };
     const res = await UserService.update(dataTmp);
-    if (res.status === 202) setSaveOpen(false);
-    else alert("There is Some Error!");
+    if (res.status === 202) {
+      setSnackbarData((prev) => {
+        return {
+          ...prev,
+          open: true,
+          message: "Profile Updated Successfully",
+          type: "success",
+        };
+      });
+      setSaveOpen(false);
+    } else alert("There is Some Error!");
   };
 
   return (
     <>
       <Box>
+        {" "}
+        <SnackbarDisplay
+          snackbarData={snackbarData}
+          setSnackbarData={setSnackbarData}
+        />
         {/* Header */}
         <Box
           sx={{
@@ -68,9 +90,7 @@ function Settings() {
           <Typography variant="h6">Edit Profile</Typography>
           <Box></Box>
         </Box>
-
         <Divider sx={{ margin: "10px" }} />
-
         {/* Body  */}
         <form>
           <Stack spacing={3}>

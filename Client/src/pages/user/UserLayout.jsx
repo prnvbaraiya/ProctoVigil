@@ -1,11 +1,12 @@
 import { Box, Paper, styled } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { UserNavbar } from "./header/UserNavbar";
 import bgImg from "../../assets/bg.jpg";
 import { theme } from "../../theme";
 import Footer from "./footer/Footer";
 import TypedEffect from "../../components/TypedEffect";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import SnackbarDisplay from "../../components/SnackbarDisplay";
 
 const UserLayoutRoot = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.body,
@@ -20,8 +21,35 @@ const sentences = [
 ];
 
 function UserLayout() {
+  const location = useLocation();
+  const stateData = location.state;
+  const [snackbarData, setSnackbarData] = React.useState({
+    open: false,
+    message: "",
+    type: "success",
+    vertical: "top",
+    horizontal: "right",
+  });
+
+  useEffect(() => {
+    stateData &&
+      setSnackbarData((prev) => {
+        return {
+          ...prev,
+          open: stateData.open,
+          message: stateData.message,
+          type: stateData.type,
+        };
+      });
+  }, [stateData]);
+
   return (
     <UserLayoutRoot>
+      <SnackbarDisplay
+        snackbarData={snackbarData}
+        setSnackbarData={setSnackbarData}
+        sx={{ marginTop: "60px" }}
+      />
       <Box
         sx={{
           display: "flex",
