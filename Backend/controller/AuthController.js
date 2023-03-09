@@ -1,5 +1,9 @@
 const jwt = require("jsonwebtoken");
+const express = require("express");
 const nodemailer = require("nodemailer");
+const hbs = require("nodemailer-express-handlebars");
+const path = require("path");
+const viewPath = path.resolve(__dirname, "./../templates/views");
 const { generateToken04 } = require("../zgocloud/zegoServerAssistant.js");
 const UserModel = require("../model/UserModel.js");
 const QuizModel = require("../model/QuizModel.js");
@@ -51,10 +55,6 @@ const ZegocloudTokenGenerator = {
 
 const MailingSystem = {
   sendMail: (mailOption) => {
-    const mailOptions = {
-      from: process.env.AUTH_EMAIL,
-      ...mailOption,
-    };
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -63,10 +63,32 @@ const MailingSystem = {
       },
     });
 
+    transporter.use(
+      "compile",
+      hbs({
+        viewEngine: {
+          extName: ".hbs",
+          defaultLayout: false,
+          express,
+        },
+        viewPath,
+        extName: ".hbs",
+      })
+    );
+
+    const mailOptions = {
+      from: '"Pranav from Proctovigil" <no-reply@proctovigil.com>',
+      ...mailOption,
+    };
+
+    console.log(mailOptions);
+
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
+        console.log(error);
         return false;
       } else {
+        console.log(info);
         return true;
       }
     });
@@ -161,7 +183,10 @@ const User = {
       MailingSystem.sendMail({
         to: user.email,
         subject: "Welcome To ProctoVigil",
-        html,
+        template: "welcome-mail",
+        context: {
+          name: user.firstName + " " + user.lastName,
+        },
       });
       return res.status(SUCCESS_CODE).send("User Created Succesfully");
     } catch (err) {
@@ -369,9 +394,12 @@ const a = {
 
     if (
       MailingSystem.sendMail({
-        text: mailContent,
         subject: mailSubject,
         to: "baraiyaprnv@gmail.com",
+        template: "welcome-mail",
+        context: {
+          name: "Pranav Baraiya",
+        },
       })
     ) {
       return res.status(201).send("Email Sent");
@@ -380,21 +408,13 @@ const a = {
     }
   },
   sc: async (req, res) => {
-    // return res.status(201).send("YAY PRabac");
-    console.log("start");
-    PythonShell.run(
-      "D:/study/Sem-8/4IT33/practical/procto-vigil/backend/controller/python_test.py",
-      null
-    ).then((messages) => {
-      console.log(messages);
-      return res.status(201).send(messages);
-    });
+    PythonShell.run(path.join(__dirname, "/python_test.py"), null).then(
+      (messages) => {
+        return res.status(201).send(messages);
+      }
+    );
     console.log("End");
   },
 };
-
-// app.get('/admin', requireAuth, requireAdmin, (req, res) => {
-//   // Render the admin page
-// });
 
 module.exports = { JWT, ZegocloudTokenGenerator, User, Quiz, QuizResult, a };
