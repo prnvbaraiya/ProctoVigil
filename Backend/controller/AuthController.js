@@ -4,9 +4,27 @@ const QuizModel = require("../model/QuizModel.js");
 const QuizResultModel = require("../model/QuizResult");
 const { PythonShell } = require("python-shell");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const ERROR_CODE = 500;
 const SUCCESS_CODE = 202;
+
+const cryptingPassword = (password, callback) => {
+  bcrypt.genSalt(10, function (err, salt) {
+    if (err) return callback(err);
+
+    bcrypt.hash(password, salt, function (err, hash) {
+      if (err) return callback(err);
+      callback(null, hash);
+    });
+  });
+};
+
+const comparePassword = (plainPass, hashword, callback) => {
+  bcrypt.compare(plainPass, hashword, function (err, isPasswordMatch) {
+    return err == null ? callback(null, isPasswordMatch) : callback(err);
+  });
+};
 
 const JWT = {
   generateToken: (user) => {
@@ -50,27 +68,41 @@ const ZegocloudTokenGenerator = {
 
 const User = {
   register: async (req, res) => {
+    var data = req.body;
     try {
-      const result = await UserModel.create(req.body);
-      return res.status(SUCCESS_CODE).send("User Created Succesfully");
+      cryptingPassword(data.password, async function (err, hash) {
+        if (err) {
+          return res.status(ERROR_CODE).send(err);
+        } else {
+          data.password = hash;
+          const result = await UserModel.create(data);
+          return res.status(SUCCESS_CODE).send("User Created Succesfully");
+        }
+      });
     } catch (err) {
       return res.status(ERROR_CODE).send("Server Error: " + err);
     }
   },
   login: async (req, res) => {
-    const user = await UserModel.findOne({ email: req.body.email });
+    const user = await UserModel.findOne({ username: req.body.username });
     if (user) {
-      if (
-        user.email === req.body.email &&
-        user.password === req.body.password
-      ) {
-        const accessToken = JWT.generateToken(user);
-        return res
-          .status(SUCCESS_CODE)
-          .send({ accessToken, roles: user.roles });
-      } else {
-        return res.status(ERROR_CODE).send("Username or Password is wrong");
-      }
+      comparePassword(
+        req.body.password,
+        user.password,
+        async function (err, isPasswordMatch) {
+          if (err) {
+            return res.status(ERROR_CODE).send(err);
+          }
+          if (isPasswordMatch) {
+            const accessToken = JWT.generateToken(user);
+            return res
+              .status(SUCCESS_CODE)
+              .send({ accessToken, roles: user.roles });
+          } else {
+            return res.status(ERROR_CODE).send("Username or Password is wrong");
+          }
+        }
+      );
     } else {
       return res.status(ERROR_CODE).send("User Not Found");
     }

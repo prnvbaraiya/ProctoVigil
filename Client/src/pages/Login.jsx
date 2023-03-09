@@ -37,7 +37,7 @@ export default function Login() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const data = {
-      email: formData.get("email"),
+      username: formData.get("username"),
       password: formData.get("password"),
       rememberMe: formData.get("rememberMe") !== null,
     };
@@ -123,10 +123,10 @@ export default function Login() {
                   margin="normal"
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  id="username"
+                  label="Username or RollNo"
+                  name="username"
+                  autoComplete="username"
                   autoFocus
                 />
                 <TextField

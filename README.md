@@ -53,12 +53,19 @@
 - [ ] Sending Results
 - [ ] Make Feedback Database
 
+### Bugs
+
 - [x] In basic table hide is not working
 - [x] JWT token null on page refresh so store in cookie
 - [x] Attempt Quiz not working Properly First Ask Permissions(Test Page)
 - [ ] Add online status for admin to check which student online
 - [ ] End date Never be less than start Date
-- [ ] Exam starts close edit quiz option
+- [ ] when Exam starts, disable edit quiz option
+- [ ] when user deleted if user is student delete from quizresult and quiz.student
+- [ ] Quiz deleted, delete from quiz Result
+- [ ] User delete modal text
+
+### Progress
 
 - [x] 20% webrtc module & quiz module & frontend layout
 - [x] 40% admin can add users & quiz & admin profile setting
