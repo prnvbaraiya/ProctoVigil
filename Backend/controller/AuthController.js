@@ -1,4 +1,3 @@
-const jwt = require("jsonwebtoken");
 const express = require("express");
 const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
@@ -7,6 +6,7 @@ const viewPath = path.resolve(__dirname, "./../templates/views");
 const { generateToken04 } = require("../zgocloud/zegoServerAssistant.js");
 const { QuizResultModel, QuizModel, UserModel } = require("../model/model.js");
 const { PythonShell } = require("python-shell");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const ERROR_CODE = 500;
@@ -97,14 +97,10 @@ const MailingSystem = {
       ...mailOption,
     };
 
-    console.log(mailOptions);
-
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
-        console.log(error);
         return false;
       } else {
-        console.log(info);
         return true;
       }
     });
@@ -114,9 +110,25 @@ const MailingSystem = {
 const User = {
   register: async (req, res) => {
     var data = req.body;
+
     try {
-      const result = await UserModel.create(req.body);
-      return res.status(SUCCESS_CODE).send("User Created Succesfully");
+      cryptingPassword(data.password, async function (err, hash) {
+        if (err) {
+          return res.status(ERROR_CODE).send(err);
+        } else {
+          data.password = hash;
+          const user = await UserModel.create(data);
+          MailingSystem.sendMail({
+            to: user.email,
+            subject: "Welcome To ProctoVigil",
+            template: "welcome-mail",
+            context: {
+              name: user.firstName + " " + user.lastName,
+            },
+          });
+          return res.status(SUCCESS_CODE).send("User Created Succesfully");
+        }
+      });
     } catch (err) {
       return res.status(ERROR_CODE).send("Server Error: " + err);
     }
@@ -311,7 +323,6 @@ const QuizResult = {
       });
       return res.status(SUCCESS_CODE).send(quiz);
     } catch (err) {
-      console.log(err);
       return res.status(ERROR_CODE).send("There is some error: " + err);
     }
   },
