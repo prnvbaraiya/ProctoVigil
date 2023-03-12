@@ -5,9 +5,7 @@ const hbs = require("nodemailer-express-handlebars");
 const path = require("path");
 const viewPath = path.resolve(__dirname, "./../templates/views");
 const { generateToken04 } = require("../zgocloud/zegoServerAssistant.js");
-const UserModel = require("../model/UserModel.js");
-const QuizModel = require("../model/QuizModel.js");
-const QuizResultModel = require("../model/QuizResult");
+const { QuizResultModel, QuizModel, UserModel } = require("../model/model.js");
 const { PythonShell } = require("python-shell");
 
 const ERROR_CODE = 500;
@@ -302,6 +300,34 @@ const QuizResult = {
     } catch (err) {
       console.log(err);
       return res.status(ERROR_CODE).send("There is some error: " + err);
+    }
+  },
+  sendMail: async (req, res) => {
+    try {
+      const quizResults = await QuizResultModel.findOne(req.body)
+        .populate("students.user", "username firstName lastName email")
+        .populate("QuizId", "name");
+
+      const { totalMarks, students } = quizResults;
+
+      for (const { user, obtainedMarks } of students) {
+        MailingSystem.sendMail({
+          to: user.email,
+          subject: "Result Notification",
+          template: "exam-result",
+          context: {
+            name: `${user.firstName} ${user.lastName}`,
+            QuizTitle: quizResults.QuizId.name,
+            obtainedMarks,
+            totalMarks,
+          },
+        });
+      }
+
+      return res.status(SUCCESS_CODE).send(quizResults);
+    } catch (err) {
+      console.error(err);
+      return res.status(ERROR_CODE).send(`There is some error: ${err}`);
     }
   },
 };
