@@ -9,7 +9,7 @@ const {
 } = require("../controller/AuthController");
 const router = express.Router();
 
-router.get("/", a.test);
+router.get("/test-mail", a.testMailSend);
 router.get("/yay", a.sc);
 
 router.post("/register", User.register);
@@ -34,6 +34,7 @@ router
 router
   .get("/quiz-result", QuizResult.get)
   .get("/quiz-result/:id", QuizResult.getById)
+  .post("/quiz-result/send-mail", QuizResult.sendMail)
   .post("/quiz-result", QuizResult.add);
 
 module.exports = router;

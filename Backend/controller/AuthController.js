@@ -1,10 +1,13 @@
+const jwt = require("jsonwebtoken");
+const express = require("express");
+const nodemailer = require("nodemailer");
+const hbs = require("nodemailer-express-handlebars");
+const path = require("path");
+const viewPath = path.resolve(__dirname, "./../templates/views");
 const { generateToken04 } = require("../zgocloud/zegoServerAssistant.js");
-const UserModel = require("../model/UserModel.js");
-const QuizModel = require("../model/QuizModel.js");
-const QuizResultModel = require("../model/QuizResult");
+const { QuizResultModel, QuizModel, UserModel } = require("../model/model.js");
 const { PythonShell } = require("python-shell");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
 
 const ERROR_CODE = 500;
 const SUCCESS_CODE = 202;
@@ -66,19 +69,54 @@ const ZegocloudTokenGenerator = {
   },
 };
 
+const MailingSystem = {
+  sendMail: (mailOption) => {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.AUTH_EMAIL,
+        pass: process.env.AUTH_PASS,
+      },
+    });
+
+    transporter.use(
+      "compile",
+      hbs({
+        viewEngine: {
+          extName: ".hbs",
+          defaultLayout: false,
+          express,
+        },
+        viewPath,
+        extName: ".hbs",
+      })
+    );
+
+    const mailOptions = {
+      from: '"Pranav from Proctovigil" <no-reply@proctovigil.com>',
+      ...mailOption,
+    };
+
+    console.log(mailOptions);
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+        return false;
+      } else {
+        console.log(info);
+        return true;
+      }
+    });
+  },
+};
+
 const User = {
   register: async (req, res) => {
     var data = req.body;
     try {
-      cryptingPassword(data.password, async function (err, hash) {
-        if (err) {
-          return res.status(ERROR_CODE).send(err);
-        } else {
-          data.password = hash;
-          const result = await UserModel.create(data);
-          return res.status(SUCCESS_CODE).send("User Created Succesfully");
-        }
-      });
+      const result = await UserModel.create(req.body);
+      return res.status(SUCCESS_CODE).send("User Created Succesfully");
     } catch (err) {
       return res.status(ERROR_CODE).send("Server Error: " + err);
     }
@@ -277,28 +315,64 @@ const QuizResult = {
       return res.status(ERROR_CODE).send("There is some error: " + err);
     }
   },
+  sendMail: async (req, res) => {
+    try {
+      const quizResults = await QuizResultModel.findOne(req.body)
+        .populate("students.user", "username firstName lastName email")
+        .populate("QuizId", "name");
+
+      const { totalMarks, students } = quizResults;
+
+      for (const { user, obtainedMarks } of students) {
+        MailingSystem.sendMail({
+          to: user.email,
+          subject: "Result Notification",
+          template: "exam-result",
+          context: {
+            name: `${user.firstName} ${user.lastName}`,
+            QuizTitle: quizResults.QuizId.name,
+            obtainedMarks,
+            totalMarks,
+          },
+        });
+      }
+
+      return res.status(SUCCESS_CODE).send(quizResults);
+    } catch (err) {
+      console.error(err);
+      return res.status(ERROR_CODE).send(`There is some error: ${err}`);
+    }
+  },
 };
 
 const a = {
+  testMailSend: async (req, res) => {
+    const mailContent = "Testing Mail is delivered successfully";
+    const mailSubject = "Testing Success";
+
+    if (
+      MailingSystem.sendMail({
+        subject: mailSubject,
+        to: "baraiyaprnv@gmail.com",
+        template: "welcome-mail",
+        context: {
+          name: "Pranav Baraiya",
+        },
+      })
+    ) {
+      return res.status(201).send("Email Sent");
+    } else {
+      return res.status(301).send("Email Sending Failed");
+    }
+  },
   sc: async (req, res) => {
-    // return res.status(201).send("YAY PRabac");
-    console.log("start");
-    PythonShell.run(
-      "D:/study/Sem-8/4IT33/practical/procto-vigil/backend/controller/python_test.py",
-      null
-    ).then((messages) => {
-      console.log(messages);
-      return res.status(201).send(messages);
-    });
+    PythonShell.run(path.join(__dirname, "/python_test.py"), null).then(
+      (messages) => {
+        return res.status(201).send(messages);
+      }
+    );
     console.log("End");
   },
-  test: async (req, res) => {
-    return res.status(SUCCESS_CODE).send("Testing");
-  },
 };
-
-// app.get('/admin', requireAuth, requireAdmin, (req, res) => {
-//   // Render the admin page
-// });
 
 module.exports = { JWT, ZegocloudTokenGenerator, User, Quiz, QuizResult, a };

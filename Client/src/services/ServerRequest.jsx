@@ -74,6 +74,9 @@ const QuizResultService = {
   delete: (data) => {
     return sendRequest("delete", "quiz", data);
   },
+  sendMail: (data) => {
+    return sendRequest("post", "quiz-result/send-mail", data);
+  },
 };
 
 const JWTService = {

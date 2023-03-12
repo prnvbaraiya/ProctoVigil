@@ -30,11 +30,25 @@ function ViewResult() {
     getData();
   }, []);
 
+  useEffect(() => {
+    console.log("LOl");
+    handleGetStudent();
+  }, [selectedQuiz.value]);
+
   const handleGetStudent = async () => {
     if (selectedQuiz.value !== "") {
       const res = await QuizResultService.getById(selectedQuiz.value);
       setRows(res.data.students);
       setTotalMarks(res.data.totalMarks);
+    }
+  };
+
+  const handleSendMail = async () => {
+    if (selectedQuiz.value !== "") {
+      const res = await QuizResultService.sendMail({
+        QuizId: selectedQuiz.value,
+      });
+      console.log(res);
     }
   };
 
@@ -114,6 +128,16 @@ function ViewResult() {
           <Button variant="contained" onClick={handleGetStudent}>
             Get Student
           </Button>
+          {selectedQuiz.value && (
+            <Button
+              sx={{ marginLeft: 3 }}
+              variant="contained"
+              color="success"
+              onClick={handleSendMail}
+            >
+              Send Result Mail
+            </Button>
+          )}
         </Grid>
       </Grid>
       <Box textAlign="center">
