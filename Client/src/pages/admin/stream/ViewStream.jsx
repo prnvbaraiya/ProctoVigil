@@ -82,18 +82,16 @@ function ViewStream() {
       <Grid container spacing={2}>
         {data.students.map((item) => {
           return (
-            <>
-              <Grid item xs={6}>
-                <center>
-                  <h1>{item}</h1>
-                </center>
-                <div
-                  key={item}
-                  style={{ height: "50vh" }}
-                  id={`remote-stream-${item}`}
-                />
-              </Grid>
-            </>
+            <Grid item xs={6} key={item}>
+              <center>
+                <h1>{item}</h1>
+              </center>
+              <div
+                key={item}
+                style={{ height: "50vh" }}
+                id={`remote-stream-${item}`}
+              />
+            </Grid>
           );
         })}
       </Grid>

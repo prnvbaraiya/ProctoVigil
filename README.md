@@ -59,11 +59,12 @@
 - [x] JWT token null on page refresh so store in cookie
 - [x] Attempt Quiz not working Properly First Ask Permissions(Test Page)
 - [ ] Add online status for admin to check which student online
-- [ ] End date Never be less than start Date
+- [x] End date Never be less than start Date
 - [ ] when Exam starts, disable edit quiz option
 - [ ] when user deleted if user is student delete from quizresult and quiz.student
 - [ ] Quiz deleted, delete from quiz Result
 - [ ] User delete modal text
+- [ ] User Update => update quiz Student
 
 ### Progress
 

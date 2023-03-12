@@ -53,6 +53,12 @@ function EditQuiz() {
     // eslint-disable-next-line
   }, [id]);
 
+  useEffect(() => {
+    if (new Date(startDate).getTime() > new Date(endDate).getTime()) {
+      setEndDate(new Date(startDate).getTime() + (duration.value * 60 || 0));
+    }
+  }, [startDate, endDate, duration]);
+
   const handleRandomQuestions = async () => {
     const data = await axios.get(
       `https://opentdb.com/api.php?amount=${randomQuestionNumber.value}&type=multiple`
@@ -143,6 +149,7 @@ function EditQuiz() {
                   label="End Date"
                   value={endDate}
                   setValue={setEndDate}
+                  minDate={startDate}
                 />
                 <TextBox
                   label="Duration (in minutes)"

@@ -8,6 +8,7 @@ function DateTime({
   inputFormat = "dd/MMM/yyyy hh:mm aa",
   value,
   setValue,
+  minDate,
 }) {
   return (
     <>
@@ -18,6 +19,7 @@ function DateTime({
           disableMaskedInput
           disablePast
           value={value}
+          minDateTime={minDate || new Date()}
           onChange={(e) => {
             setValue(e);
           }}
