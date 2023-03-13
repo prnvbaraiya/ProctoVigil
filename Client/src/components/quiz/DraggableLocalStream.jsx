@@ -16,8 +16,6 @@ function DraggableLocalStream({ InputDeviceIds, instance, zConfig }) {
   }, []);
 
   const handleLogout = () => {
-    console.log("PrnvIns:", instance);
-    console.log("Prnvls:", localStream);
     if (instance) {
       localStream.getTracks().forEach((track) => {
         track.stop();

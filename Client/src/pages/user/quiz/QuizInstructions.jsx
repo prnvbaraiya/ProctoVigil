@@ -101,10 +101,13 @@ function QuizInstructions() {
       alert("Please select camera");
       return;
     }
-    console.log("Let's Start Quiz");
+    videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
     const state = {
       id: id,
-      InputDeviceIds: { camera: selectedCamera, audio: selectedAudio },
+      InputDeviceIds: {
+        camera: selectedCamera,
+        audio: selectedAudio,
+      },
     };
     navigate("/quiz/start", { state });
   };
