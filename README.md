@@ -65,6 +65,8 @@
 - [ ] Quiz deleted, delete from quiz Result
 - [ ] User delete modal text
 - [ ] User Update => update quiz Student
+- [ ] Add Loading Spinner
+- [ ] Add Redux for passing VideoRef
 
 ### Progress
 
