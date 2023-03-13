@@ -7,8 +7,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SnackbarDisplay from "../../../components/SnackbarDisplay";
 import { QuizService } from "../../../services/ServerRequest";
 import AlertDialogBox from "../../../components/AlertDialogBox";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 
 function Quiz() {
+  const [loading, setLoading] = useState(true);
+
   const [data, setData] = useState([]);
   const [snackbarData, setSnackbarData] = useState({
     open: false,
@@ -82,8 +85,10 @@ function Quiz() {
   const hideColumns = ["_id"];
 
   const getData = async () => {
+    setLoading(true);
     const res = await QuizService.get();
     setData(res.data);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -93,6 +98,7 @@ function Quiz() {
   return (
     <>
       <Box>
+        <LoadingSpinner loading={loading} />
         <AlertDialogBox
           open={deleteDialogBox}
           setOpen={setDeleteDialogBox}
@@ -117,7 +123,13 @@ function Quiz() {
         </Box>
         <Divider sx={{ margin: "10px 0 20px" }} />
         <Box textAlign="center">
-          <BasicTable rows={data} columns={columns} hideColumns={hideColumns} />
+          {!loading && (
+            <BasicTable
+              rows={data}
+              columns={columns}
+              hideColumns={hideColumns}
+            />
+          )}
         </Box>
       </Box>
       <SnackbarDisplay

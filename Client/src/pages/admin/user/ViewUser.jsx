@@ -7,8 +7,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SnackbarDisplay from "../../../components/SnackbarDisplay";
 import AlertDialogBox from "../../../components/AlertDialogBox";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 
 function ViewUser() {
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [snackbarData, setSnackbarData] = useState({
     open: false,
@@ -22,8 +24,10 @@ function ViewUser() {
 
   useEffect(() => {
     const getData = async () => {
+      setLoading(true);
       const res = await UserService.get();
       setData(res.data);
+      setLoading(false);
     };
     getData();
   }, [snackbarData]);
@@ -94,6 +98,7 @@ function ViewUser() {
   return (
     <>
       <Box>
+        <LoadingSpinner loading={loading} />
         <AlertDialogBox
           open={deleteDialogBox}
           setOpen={setDeleteDialogBox}
@@ -118,8 +123,13 @@ function ViewUser() {
         </Box>
         <Divider sx={{ margin: "10px 0 20px" }} />
         <Box textAlign="center">
-          {" "}
-          <BasicTable rows={data} columns={columns} hideColumns={hideColumns} />
+          {!loading && (
+            <BasicTable
+              rows={data}
+              columns={columns}
+              hideColumns={hideColumns}
+            />
+          )}
         </Box>
         <SnackbarDisplay
           snackbarData={snackbarData}

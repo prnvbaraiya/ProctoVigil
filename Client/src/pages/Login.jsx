@@ -17,12 +17,14 @@ import { SERVER_LINK } from "../variables/constants";
 import auth from "../auth/auth";
 import side from "../assets/side.jpg";
 import SnackbarDisplay from "../components/SnackbarDisplay";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const theme = createTheme();
 
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [loading, setLoading] = React.useState(false);
   const from = location.state?.from?.pathname;
   const [snackbarData, setSnackbarData] = React.useState({
     open: false,
@@ -34,6 +36,7 @@ export default function Login() {
 
   //Handle Form Submit
   const handleSubmit = async (event) => {
+    setLoading(true);
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const data = {
@@ -57,6 +60,7 @@ export default function Login() {
         message: "Login Successfull",
         type: "success",
       };
+      setLoading(false);
       if (roles === "admin") {
         navigate(from || "/admin/dashboard", { state }, { replace: true });
       } else if (roles === "student") {
@@ -77,6 +81,7 @@ export default function Login() {
   return (
     <>
       <ThemeProvider theme={theme}>
+        <LoadingSpinner loading={loading} />
         <Grid container component="main" sx={{ height: "100vh" }}>
           <CssBaseline />
           <Grid

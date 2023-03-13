@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   CssBaseline,
@@ -21,8 +21,10 @@ import side from "../assets/side.jpg";
 import { Box } from "@mui/system";
 import { userRoles } from "../variables/Data";
 import RadioButton from "../components/form/RadioButton";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 function Register() {
+  const [loading, setLoading] = useState(false);
   const roles = useFormInput("student");
   const username = useFormInput("");
   const fname = useFormInput("");
@@ -33,6 +35,7 @@ function Register() {
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
+    setLoading(true);
     const data = {
       username: username.value,
       roles: roles.value,
@@ -42,6 +45,7 @@ function Register() {
       password: password.value,
     };
     const res = await axios.post(SERVER_LINK + "register", data);
+    setLoading(false);
     if (res.status === 202) {
       navigate("/login");
     } else {
@@ -51,6 +55,7 @@ function Register() {
 
   return (
     <>
+      <LoadingSpinner loading={loading} />
       <Grid container component="main" sx={{ height: "100vh" }} spacing={2}>
         <CssBaseline />
         <Grid

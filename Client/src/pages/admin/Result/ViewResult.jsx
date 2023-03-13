@@ -13,14 +13,17 @@ import {
 import { useFormInput } from "../../../hooks/useFormInput";
 import BasicTable from "../../../components/form/BasicTable";
 import { QuizResultService } from "../../../services/ServerRequest";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 
 function ViewResult() {
+  const [loading, setLoading] = useState(false);
   const [rows, setRows] = useState([]);
   const [quizzes, setQuizzes] = useState([]);
   const selectedQuiz = useFormInput("");
   const [totalMarks, setTotalMarks] = useState("");
 
   useEffect(() => {
+    setLoading((prev) => !prev);
     const getData = async () => {
       const res = await QuizResultService.get();
       const arr = res.data.map((item) => item.QuizId);
@@ -28,11 +31,13 @@ function ViewResult() {
       selectedQuiz.onChange(arr[0]._id);
     };
     getData();
+    setLoading((prev) => !prev);
   }, []);
 
   useEffect(() => {
-    console.log("LOl");
+    setLoading((prev) => !prev);
     handleGetStudent();
+    setLoading((prev) => !prev);
   }, [selectedQuiz.value]);
 
   const handleGetStudent = async () => {
@@ -44,12 +49,14 @@ function ViewResult() {
   };
 
   const handleSendMail = async () => {
+    setLoading((prev) => !prev);
     if (selectedQuiz.value !== "") {
       const res = await QuizResultService.sendMail({
         QuizId: selectedQuiz.value,
       });
       console.log(res);
     }
+    setLoading((prev) => !prev);
   };
 
   const columns = [
@@ -92,6 +99,7 @@ function ViewResult() {
 
   return (
     <Box>
+      <LoadingSpinner loading={loading} />
       <Box
         sx={{
           display: "flex",
@@ -141,7 +149,7 @@ function ViewResult() {
         </Grid>
       </Grid>
       <Box textAlign="center">
-        {selectedQuiz.value !== "" && (
+        {!loading && selectedQuiz.value !== "" && (
           <BasicTable rows={rows} columns={columns} hideColumns={hideColumns} />
         )}
       </Box>

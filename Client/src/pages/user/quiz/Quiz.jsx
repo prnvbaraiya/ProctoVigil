@@ -4,9 +4,11 @@ import { Link } from "react-router-dom";
 import { theme } from "../../../theme";
 import { format } from "date-fns";
 import { QuizService } from "../../../services/ServerRequest";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 
 function Quiz() {
   const [quizzes, setQuizzes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const isDisable = (startDate, endDate) => {
     const currentTime = new Date().getTime();
@@ -16,6 +18,7 @@ function Quiz() {
   };
 
   const getData = async () => {
+    setLoading(true);
     const res = await QuizService.get();
     setQuizzes(
       res.data.map((item) => {
@@ -27,6 +30,7 @@ function Quiz() {
         };
       })
     );
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -35,80 +39,83 @@ function Quiz() {
 
   return (
     <>
-      <Box display="flex" justifyContent="center">
-        <Typography variant="h3">Quiz</Typography>
-      </Box>
-      {quizzes.length === 0 ? (
-        <Typography textAlign="center" m={5} variant="h6">
-          There is no Quiz Available Come Back Later
-        </Typography>
-      ) : (
-        quizzes.map((item) => {
-          return (
-            <Box
-              key={item._id}
-              sx={{
-                flexGrow: 1,
-              }}
-            >
-              <Grid
-                container
+      <LoadingSpinner loading={loading} />
+      <Box>
+        <Box display="flex" justifyContent="center">
+          <Typography variant="h3">Quiz</Typography>
+        </Box>
+        {!loading && quizzes.length === 0 ? (
+          <Typography textAlign="center" m={5} variant="h6">
+            There is no Quiz Available Come Back Later
+          </Typography>
+        ) : (
+          quizzes.map((item) => {
+            return (
+              <Box
+                key={item._id}
                 sx={{
-                  background:
-                    "linear-gradient(195deg, rgba(66, 66, 74, 0.8), rgba(25, 25, 25, 0.8))",
-
-                  color: "white",
-                  marginTop: 2,
-                  padding: 3,
-                  borderRadius: "0.75rem",
+                  flexGrow: 1,
                 }}
               >
-                <Grid item xs={10}>
-                  <Typography variant="h3">
-                    {item.name} <br />
-                  </Typography>
-                  <Typography variant="h6">
-                    {item.description} <br />
-                  </Typography>
-                  <Box>
-                    From :{" "}
-                    <span style={{ color: theme.palette.success.main }}>
-                      {item.startDate}
-                    </span>{" "}
-                  </Box>
-                  <Box>
-                    To :{" "}
-                    <span style={{ color: theme.palette.error.main }}>
-                      {item.endDate}
-                    </span>
-                  </Box>
-                </Grid>
-                <Grid item xs={2} alignItems="center" display="flex">
-                  {item.isAvailable ? (
-                    <Link to="instruction" state={{ id: item._id }}>
-                      <Button variant="contained" color="secondary">
+                <Grid
+                  container
+                  sx={{
+                    background:
+                      "linear-gradient(195deg, rgba(66, 66, 74, 0.8), rgba(25, 25, 25, 0.8))",
+
+                    color: "white",
+                    marginTop: 2,
+                    padding: 3,
+                    borderRadius: "0.75rem",
+                  }}
+                >
+                  <Grid item xs={10}>
+                    <Typography variant="h3">
+                      {item.name} <br />
+                    </Typography>
+                    <Typography variant="h6">
+                      {item.description} <br />
+                    </Typography>
+                    <Box>
+                      From :{" "}
+                      <span style={{ color: theme.palette.success.main }}>
+                        {item.startDate}
+                      </span>{" "}
+                    </Box>
+                    <Box>
+                      To :{" "}
+                      <span style={{ color: theme.palette.error.main }}>
+                        {item.endDate}
+                      </span>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={2} alignItems="center" display="flex">
+                    {item.isAvailable ? (
+                      <Link to="start" state={{ id: item._id }}>
+                        <Button variant="contained" color="secondary">
+                          Start Quiz
+                        </Button>
+                      </Link>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        sx={{ opacity: 0.5 }}
+                        color="error"
+                      >
                         Start Quiz
                       </Button>
-                    </Link>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      sx={{ opacity: 0.5 }}
-                      color="error"
-                    >
-                      Start Quiz
-                    </Button>
-                  )}
+                    )}
+                  </Grid>
+                  <Divider style={{ width: "100%", margin: "10px 0" }} />
+                  <Typography>
+                    By: {item?.author?.firstName + " " + item?.author?.lastName}
+                  </Typography>
                 </Grid>
-                <Divider style={{ width: "100%", margin: "10px 0" }} />
-                <Typography>
-                  By: {item?.author?.firstName + " " + item?.author?.lastName}
-                </Typography>
-              </Grid>
-            </Box>
-          );
-        })
-      )}
+              </Box>
+            );
+          })
+        )}
+      </Box>
     </>
   );
 }

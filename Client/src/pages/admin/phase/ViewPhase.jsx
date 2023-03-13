@@ -5,8 +5,10 @@ import { quizPhase } from "../../../variables/Data";
 import BasicTable from "../../../components/form/BasicTable";
 import { QuizService } from "../../../services/ServerRequest";
 import { Link } from "react-router-dom";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 
 function ViewPhase() {
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
   const columns = [
@@ -56,12 +58,15 @@ function ViewPhase() {
   };
 
   useEffect(() => {
+    setLoading(true);
     getData();
+    setLoading(false);
   }, []);
 
   return (
     <>
       <Box>
+        <LoadingSpinner loading={loading} />
         <Box
           sx={{
             display: "flex",
@@ -75,7 +80,13 @@ function ViewPhase() {
         </Box>
         <Divider sx={{ margin: "10px 0 20px" }} />
         <Box textAlign="center">
-          <BasicTable rows={data} columns={columns} hideColumns={hideColumns} />
+          {!loading && (
+            <BasicTable
+              rows={data}
+              columns={columns}
+              hideColumns={hideColumns}
+            />
+          )}
         </Box>
       </Box>
     </>
