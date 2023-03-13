@@ -60,7 +60,6 @@ export default function Login() {
         message: "Login Successfull",
         type: "success",
       };
-      setLoading(false);
       if (roles === "admin") {
         navigate(from || "/admin/dashboard", { state }, { replace: true });
       } else if (roles === "student") {
@@ -76,6 +75,7 @@ export default function Login() {
         type: "error",
       });
     }
+    setLoading(false);
   };
 
   return (

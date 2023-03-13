@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import DraggableLocalStream from "./DraggableLocalStream";
 import { Grid } from "@mui/material";
 import SectionAccordion from "./SectionAccordion";
@@ -14,7 +14,21 @@ export default function QuestionNavigation(props) {
     visitedQuestions,
     setVisitedQuestions,
     InputDeviceIds,
+    entireScreenStream,
   } = props;
+  const screenRef = useRef(null);
+
+  useEffect(() => {
+    screenRef.current.srcObject = entireScreenStream;
+
+    return () => {
+      console.log(
+        entireScreenStream.getTracks().forEach((item) => {
+          item.stop();
+        })
+      );
+    };
+  }, []);
 
   const getQueNav = () =>
     [...Array(numQuestions)].map((_, i) => {
@@ -86,6 +100,17 @@ export default function QuestionNavigation(props) {
         instance={instance}
         InputDeviceIds={InputDeviceIds}
         zConfig={zConfig}
+      />
+      <video
+        ref={screenRef}
+        style={{
+          width: "300px",
+          height: "225px",
+          borderRadius: "10px",
+          border: "1px solid black",
+        }}
+        autoPlay
+        muted
       />
       <SectionAccordion title="Section 01" data={getQueNav()} />
       <SectionAccordion title="Section 02" data={"LOL"} disabled={true} />

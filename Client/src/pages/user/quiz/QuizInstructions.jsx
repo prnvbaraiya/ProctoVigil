@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -12,12 +12,11 @@ import {
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Stack } from "@mui/system";
 
-function QuizInstructions() {
-  const location = useLocation();
-  const id = location.state?.id;
+const QuizInstructions = forwardRef((props, ref) => {
+  const { setSections, setAttemptQuizData, setLocalS } = props;
   const [selectedCamera, setSelectedCamera] = useState("");
   const [selectedAudio, setSelectedAudio] = useState("");
   const [cameras, setCameras] = useState([]);
@@ -26,8 +25,6 @@ function QuizInstructions() {
     isCameraStart: false,
     isEntireScreenSharing: false,
   });
-  const videoRef = useRef(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const getPermission = async () => {
@@ -61,9 +58,9 @@ function QuizInstructions() {
       };
       try {
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
+        ref.current.srcObject = stream;
+        // if (videoRef.current) {
+        // }
         setIsValid({ ...isValid, isCameraStart: true });
       } catch (error) {
         console.error("Error accessing media devices.", error);
@@ -88,6 +85,7 @@ function QuizInstructions() {
           alert("Select Entire Screen");
         }
       }
+      setLocalS(stream);
     } catch (error) {
       console.error("Error accessing screen share.", error);
     }
@@ -100,16 +98,26 @@ function QuizInstructions() {
     } else if (!isValid.isCameraStart) {
       alert("Please select camera");
       return;
+    } else if (!isValid.isEntireScreenSharing) {
+      alert("Please Share Entire Screen");
+      return;
     }
-    videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
-    const state = {
-      id: id,
-      InputDeviceIds: {
-        camera: selectedCamera,
-        audio: selectedAudio,
-      },
-    };
-    navigate("/quiz/start", { state });
+    // console.log("PrnvINS:", videoRef.current.srcObject);
+    ref.current.srcObject.getTracks().forEach((track) => track.stop());
+    setAttemptQuizData((prev) => {
+      return {
+        ...prev,
+        InputDeviceIds: {
+          camera: selectedCamera,
+          audio: selectedAudio,
+        },
+      };
+    });
+    setSections((prev) => {
+      const newArr = [...prev];
+      newArr[0] = { ...newArr[0], completed: true };
+      return newArr;
+    });
   };
 
   const isStepComplete = (res) => {
@@ -125,7 +133,7 @@ function QuizInstructions() {
       <Box m={5}>
         <Paper sx={{ minHeight: "85vh" }}>
           <Typography variant="h3" textAlign="center">
-            Its Instructions Page
+            Instructions Page
           </Typography>
           <Grid container>
             <Grid item xs={6}>
@@ -186,7 +194,7 @@ function QuizInstructions() {
               <center>
                 <Typography>Preview</Typography>
                 <video
-                  ref={videoRef}
+                  ref={ref}
                   style={{
                     width: "300px",
                     height: "225px",
@@ -210,7 +218,7 @@ function QuizInstructions() {
             <Button
               component={Link}
               onClick={() =>
-                videoRef.current.srcObject
+                ref.current.srcObject
                   .getTracks()
                   .forEach((track) => track.stop())
               }
@@ -228,6 +236,6 @@ function QuizInstructions() {
       </Box>
     </div>
   );
-}
+});
 
 export default QuizInstructions;

@@ -1,8 +1,7 @@
 import { Box, Button, Grid } from "@mui/material";
 import { Stack } from "@mui/system";
-import React, { useEffect, useState } from "react";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import auth from "../../../auth/auth";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AlertDialogBox from "../../../components/AlertDialogBox";
 import ExamHeader from "../../../components/quiz/ExamHeader";
 import QuestionNavigation from "../../../components/quiz/QuestionNavigation";
@@ -12,28 +11,44 @@ import {
   QuizResultService,
 } from "../../../services/ServerRequest";
 
-function AttemptQuiz() {
-  const location = useLocation();
-  const id = location.state?.id;
-  const InputDeviceIds = location.state?.InputDeviceIds;
+const AttemptQuiz = (props) => {
+  const { zConfig, attemptQuizData, localS } = props;
+  const id = attemptQuizData.id;
+  const InputDeviceIds = attemptQuizData.InputDeviceIds;
   const [data, setData] = useState({});
   const [questions, setQuestions] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState(1);
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [visitedQuestions, setVisitedQuestions] = useState([1]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [zConfig, setZConfig] = useState({
-    roomId: id,
-    userId: auth.username,
-    token: "",
-    userName: auth.username,
-  });
+  const [loading, setLoading] = useState(true);
+  const tmpRef = useRef(new MediaStream());
+
   // eslint-disable-next-line
   const [answerKey, setAnswerKey] = useState([]);
   const [warningCount, setWarningCount] = useState(0);
   const [submitOpen, setSubmitOpen] = useState(false);
   const instance = zegoInstance();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    tmpRef.current.srcObject = localS;
+    getData();
+    if (import.meta.env.VITE_PRODUCTION === "true") {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      }
+      window.addEventListener("offline", offlineEvent);
+      window.addEventListener("blur", blueEvent);
+      return () => {
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        }
+        window.removeEventListener("blur", blueEvent);
+        window.removeEventListener("offline", offlineEvent);
+      };
+    }
+    // eslint-disable-next-line
+  }, [localS]);
 
   // Function to shuffle an array
   const suffeledArray = (len) => {
@@ -53,25 +68,6 @@ function AttemptQuiz() {
   const offlineEvent = () => {
     alert("There is Problem with your internet");
   };
-
-  useEffect(() => {
-    getData();
-    if (import.meta.env.VITE_PRODUCTION === "true") {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-      }
-      window.addEventListener("offline", offlineEvent);
-      window.addEventListener("blur", blueEvent);
-      return () => {
-        if (document.fullscreenElement) {
-          document.exitFullscreen();
-        }
-        window.removeEventListener("blur", blueEvent);
-        window.removeEventListener("offline", offlineEvent);
-      };
-    }
-    // eslint-disable-next-line
-  }, []);
 
   const getData = async () => {
     const res = await QuizService.getById(id);
@@ -107,7 +103,7 @@ function AttemptQuiz() {
     setSelectedAnswers(
       Array.from({ length: res.data.questions.length }, () => null)
     );
-    setIsLoading(false);
+    setLoading(false);
   };
 
   const handleAnswerChange = (e) => {
@@ -141,7 +137,7 @@ function AttemptQuiz() {
       QuizId: id,
       totalMarks: selectedAnswers.length,
       students: {
-        username: auth.username,
+        username: zConfig.userName,
         answerKey,
         studentAnswer: answeredQuestions,
         obtainedMarks: tMarks,
@@ -171,7 +167,7 @@ function AttemptQuiz() {
             <ExamHeader
               duration={data.duration * 60}
               setSubmitOpen={setSubmitOpen}
-              setIsLoading={setIsLoading}
+              setIsLoading={setLoading}
             />
           )}
         </Box>
@@ -180,7 +176,7 @@ function AttemptQuiz() {
             <Grid item xs={9} p={3}>
               <Stack sx={{ position: "relative" }}>
                 <Box>
-                  {!isLoading && (
+                  {!loading && (
                     <div>
                       {/* Display the current question */}
                       <div
@@ -277,6 +273,7 @@ function AttemptQuiz() {
                   instance={instance}
                   setVisitedQuestions={setVisitedQuestions}
                   visitedQuestions={visitedQuestions}
+                  entireScreenStream={localS}
                 />
               </Box>
             </Grid>
@@ -285,6 +282,6 @@ function AttemptQuiz() {
       </Box>
     </>
   );
-}
+};
 
 export default AttemptQuiz;
