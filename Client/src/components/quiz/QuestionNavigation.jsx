@@ -13,6 +13,7 @@ export default function QuestionNavigation(props) {
     instance,
     visitedQuestions,
     setVisitedQuestions,
+    InputDeviceIds,
   } = props;
 
   const getQueNav = () =>
@@ -81,7 +82,11 @@ export default function QuestionNavigation(props) {
 
   return (
     <div>
-      <DraggableLocalStream instance={instance} zConfig={zConfig} />
+      <DraggableLocalStream
+        instance={instance}
+        InputDeviceIds={InputDeviceIds}
+        zConfig={zConfig}
+      />
       <SectionAccordion title="Section 01" data={getQueNav()} />
       <SectionAccordion title="Section 02" data={"LOL"} disabled={true} />
 

@@ -7,6 +7,7 @@ import Unauthorized from "../pages/Unauthorized";
 import Home from "../pages/user/home/Home";
 import AttemptQuiz from "../pages/user/quiz/AttemptQuiz";
 import Quiz from "../pages/user/quiz/Quiz";
+import QuizInstructions from "../pages/user/quiz/QuizInstructions";
 import UserLayout from "../pages/user/UserLayout";
 
 const UserRoutes = [
@@ -26,6 +27,7 @@ const UserRoutes = [
   <Route element={<RequireAuth allowedRoles={["student"]} />} key="Student">
     <Route path="/quiz" key="quiz">
       <Route path="start" element={<AttemptQuiz />} />
+      <Route path="instruction" element={<QuizInstructions />} />
     </Route>
   </Route>,
 ];

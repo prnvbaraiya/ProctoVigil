@@ -85,7 +85,7 @@ function Quiz() {
                 </Grid>
                 <Grid item xs={2} alignItems="center" display="flex">
                   {item.isAvailable ? (
-                    <Link to="start" state={{ id: item._id }}>
+                    <Link to="instruction" state={{ id: item._id }}>
                       <Button variant="contained" color="secondary">
                         Start Quiz
                       </Button>

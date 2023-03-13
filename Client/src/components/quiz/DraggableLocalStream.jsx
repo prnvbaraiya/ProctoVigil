@@ -1,30 +1,30 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import Draggable from "react-draggable";
-import { useNavigate } from "react-router-dom";
 import { JWTService } from "../../services/ServerRequest";
 
-function DraggableLocalStream({ instance, zConfig }) {
-  const navigate = useNavigate();
+function DraggableLocalStream({ InputDeviceIds, instance, zConfig }) {
   let localStream = null;
   let localView = null;
   const streamId = new Date().getTime().toString();
 
   useEffect(() => {
     createRoom();
-    window.addEventListener("beforeunload", () => {
-      instance.logoutRoom(zConfig.roomId);
-    });
-
     return () => {
-      if (instance) {
-        localStream.getTracks().forEach((track) => {
-          track.stop();
-        });
-        instance.logoutRoom(zConfig.roomId);
-      }
+      handleLogout();
     };
     // eslint-disable-next-line
   }, []);
+
+  const handleLogout = () => {
+    console.log("PrnvIns:", instance);
+    console.log("Prnvls:", localStream);
+    if (instance) {
+      localStream.getTracks().forEach((track) => {
+        track.stop();
+      });
+      instance.logoutRoom(zConfig.roomId);
+    }
+  };
 
   const createRoom = async () => {
     try {
@@ -32,53 +32,29 @@ function DraggableLocalStream({ instance, zConfig }) {
         userId: zConfig.userId,
       });
       zConfig.token = data;
-      //Permission
-      navigator.mediaDevices
-        .getUserMedia({
-          audio: true,
+
+      await instance.loginRoom(zConfig.roomId, zConfig.token, {
+        userID: zConfig.userId,
+        userName: zConfig.userName,
+      });
+
+      localStream = await instance.createStream({
+        camera: {
+          audioInput: InputDeviceIds.audio,
+          videoInput: InputDeviceIds.camera,
           video: true,
-        })
-        .then((stream) => {
-          localStream = stream;
-        });
-      //endPermission
-      const deviceInfo = await instance.enumDevices();
-      if (
-        deviceInfo.microphones.length === 0 ||
-        deviceInfo.microphones[0].deviceID === ""
-      ) {
-        alert("Microphone Not Found");
-        navigate("/");
-      } else if (
-        deviceInfo.cameras.length === 0 ||
-        deviceInfo.cameras[1].deviceID === ""
-      ) {
-        alert("Camera Not Found");
-        navigate("/");
-      } else {
-        await instance.loginRoom(zConfig.roomId, zConfig.token, {
-          userID: zConfig.userId,
-          userName: zConfig.userName,
-        });
+          audio: true,
+        },
+      });
 
-        localStream = await instance.createStream({
-          camera: {
-            audioInput: deviceInfo.microphones[0].deviceID,
-            videoInput: deviceInfo.cameras[0].deviceID, //PrnvChange
-            video: true,
-            audio: true,
-          },
-        });
+      localView = instance.createLocalStreamView(localStream);
+      instance.startPublishingStream(streamId, localStream, {
+        videoCodec: "VP8",
+      });
 
-        localView = instance.createLocalStreamView(localStream);
-        instance.startPublishingStream(streamId, localStream, {
-          videoCodec: "VP8",
-        });
-
-        localView.play("local-stream");
-      }
+      localView.play("local-stream");
     } catch (err) {
-      console.log("Prnv:", err);
+      console.log("PrnvError:", err);
       alert("Error in createRoom: ", JSON.stringify(err));
     }
   };

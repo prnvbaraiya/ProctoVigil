@@ -15,6 +15,7 @@ import {
 function AttemptQuiz() {
   const location = useLocation();
   const id = location.state?.id;
+  const InputDeviceIds = location.state?.InputDeviceIds;
   const [data, setData] = useState({});
   const [questions, setQuestions] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState(1);
@@ -168,9 +169,7 @@ function AttemptQuiz() {
         <Box>
           {data.duration && (
             <ExamHeader
-              instance={instance}
               duration={data.duration * 60}
-              handleSuccess={handleSuccess}
               setSubmitOpen={setSubmitOpen}
               setIsLoading={setIsLoading}
             />
@@ -269,6 +268,7 @@ function AttemptQuiz() {
                 }}
               >
                 <QuestionNavigation
+                  InputDeviceIds={InputDeviceIds}
                   zConfig={zConfig}
                   selectedQuestion={selectedQuestion}
                   setSelectedQuestion={setSelectedQuestion}
