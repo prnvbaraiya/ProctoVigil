@@ -55,6 +55,7 @@
 - [ ] User Result Quiz Page
 - [x] User send data to zegocloud Page
 - [ ] Make Zego Context
+- [ ] Add Form Validation
 
 - [x] Account setup in zegocloud
 - [x] Add JWT token both side
@@ -74,7 +75,7 @@
 - [ ] when Exam starts, disable edit quiz option
 - [ ] when user deleted if user is student delete from quizresult and quiz.student
 - [ ] Quiz deleted, delete from quiz Result
-- [ ] User delete modal text
+- [x] User delete modal text
 - [ ] User Update => update quiz Student
 - [x] Add Loading Spinner
 - [ ] Add Redux for passing VideoRef

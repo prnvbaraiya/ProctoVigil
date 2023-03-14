@@ -3,6 +3,7 @@ import { Stack } from "@mui/system";
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AlertDialogBox from "../../../components/AlertDialogBox";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 import ExamHeader from "../../../components/quiz/ExamHeader";
 import QuestionNavigation from "../../../components/quiz/QuestionNavigation";
 import {
@@ -159,125 +160,128 @@ const AttemptQuiz = (props) => {
           selectedAnswers.filter((item) => item !== null).length
         }/${questions.length}`}
       />
-      <Box>
+      <LoadingSpinner loading={loading} />
+      {!loading && (
         <Box>
-          {data.duration && (
-            <ExamHeader
-              duration={data.duration * 60}
-              setSubmitOpen={setSubmitOpen}
-              setIsLoading={setLoading}
-            />
-          )}
-        </Box>
-        <Box>
-          <Grid container>
-            <Grid item xs={9} p={3}>
-              <Stack sx={{ position: "relative" }}>
-                <Box>
-                  {!loading && (
-                    <div>
-                      {/* Display the current question */}
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html:
-                            selectedQuestion +
-                            ") " +
-                            questions[selectedQuestion - 1].question,
-                        }}
-                      />
-                      {/* Display the options for the current question */}
-                      {["A", "B", "C", "D"].map((choice, index) => {
-                        const answer =
-                          questions[selectedQuestion - 1].suffeledOptions[
-                            index
-                          ];
-                        return (
-                          <div key={choice} style={{ marginTop: 5 }}>
-                            <label>
-                              <input
-                                type="radio"
-                                value={choice}
-                                name={`question-${selectedQuestion}`}
-                                checked={
-                                  choice ===
-                                  selectedAnswers[selectedQuestion - 1]
-                                }
-                                onChange={(e) => handleAnswerChange(e)}
-                              />
-                              {`${choice}) ${answer}`}
-                            </label>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                </Box>
+          <Box>
+            {data.duration && (
+              <ExamHeader
+                duration={data.duration * 60}
+                setSubmitOpen={setSubmitOpen}
+                setIsLoading={setLoading}
+              />
+            )}
+          </Box>
+          <Box>
+            <Grid container>
+              <Grid item xs={9} p={3}>
+                <Stack sx={{ position: "relative" }}>
+                  <Box>
+                    {!loading && (
+                      <div>
+                        {/* Display the current question */}
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              selectedQuestion +
+                              ") " +
+                              questions[selectedQuestion - 1].question,
+                          }}
+                        />
+                        {/* Display the options for the current question */}
+                        {["A", "B", "C", "D"].map((choice, index) => {
+                          const answer =
+                            questions[selectedQuestion - 1].suffeledOptions[
+                              index
+                            ];
+                          return (
+                            <div key={choice} style={{ marginTop: 5 }}>
+                              <label>
+                                <input
+                                  type="radio"
+                                  value={choice}
+                                  name={`question-${selectedQuestion}`}
+                                  checked={
+                                    choice ===
+                                    selectedAnswers[selectedQuestion - 1]
+                                  }
+                                  onChange={(e) => handleAnswerChange(e)}
+                                />
+                                {`${choice}) ${answer}`}
+                              </label>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </Box>
+                  <Box
+                    sx={{
+                      position: "fixed",
+                      bottom: 0,
+                      display: "flex",
+                      justifyContent: "space-between",
+                      width: "70%",
+                      padding: "10px",
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      disabled={selectedQuestion === 1}
+                      onClick={() => {
+                        setVisitedQuestions((prev) => [
+                          ...prev,
+                          selectedQuestion,
+                        ]);
+                        setSelectedQuestion((prev) => prev - 1);
+                      }}
+                    >
+                      Previous
+                    </Button>
+                    <Button
+                      variant="contained"
+                      disabled={selectedQuestion === questions.length}
+                      onClick={() => {
+                        setVisitedQuestions((prev) => [
+                          ...prev,
+                          selectedQuestion,
+                        ]);
+                        setSelectedQuestion((prev) => prev + 1);
+                      }}
+                    >
+                      Next
+                    </Button>
+                  </Box>
+                </Stack>
+              </Grid>
+              <Grid item xs={3}>
+                {/* Display the question navigation panel */}
                 <Box
+                  component="main"
                   sx={{
-                    position: "fixed",
-                    bottom: 0,
-                    display: "flex",
-                    justifyContent: "space-between",
-                    width: "70%",
-                    padding: "10px",
+                    borderLeft: "2px solid black",
+                    overflowY: "scroll",
+                    height: "calc(100vh - 65px)",
                   }}
                 >
-                  <Button
-                    variant="contained"
-                    disabled={selectedQuestion === 1}
-                    onClick={() => {
-                      setVisitedQuestions((prev) => [
-                        ...prev,
-                        selectedQuestion,
-                      ]);
-                      setSelectedQuestion((prev) => prev - 1);
-                    }}
-                  >
-                    Previous
-                  </Button>
-                  <Button
-                    variant="contained"
-                    disabled={selectedQuestion === questions.length}
-                    onClick={() => {
-                      setVisitedQuestions((prev) => [
-                        ...prev,
-                        selectedQuestion,
-                      ]);
-                      setSelectedQuestion((prev) => prev + 1);
-                    }}
-                  >
-                    Next
-                  </Button>
+                  <QuestionNavigation
+                    InputDeviceIds={InputDeviceIds}
+                    zConfig={zConfig}
+                    selectedQuestion={selectedQuestion}
+                    setSelectedQuestion={setSelectedQuestion}
+                    selectedAnswers={selectedAnswers}
+                    numQuestions={questions.length}
+                    instance={instance}
+                    setVisitedQuestions={setVisitedQuestions}
+                    visitedQuestions={visitedQuestions}
+                    entireScreenStream={localS}
+                  />
                 </Box>
-              </Stack>
+              </Grid>
             </Grid>
-            <Grid item xs={3}>
-              {/* Display the question navigation panel */}
-              <Box
-                component="main"
-                sx={{
-                  borderLeft: "2px solid black",
-                  overflowY: "scroll",
-                  height: "calc(100vh - 65px)",
-                }}
-              >
-                <QuestionNavigation
-                  InputDeviceIds={InputDeviceIds}
-                  zConfig={zConfig}
-                  selectedQuestion={selectedQuestion}
-                  setSelectedQuestion={setSelectedQuestion}
-                  selectedAnswers={selectedAnswers}
-                  numQuestions={questions.length}
-                  instance={instance}
-                  setVisitedQuestions={setVisitedQuestions}
-                  visitedQuestions={visitedQuestions}
-                  entireScreenStream={localS}
-                />
-              </Box>
-            </Grid>
-          </Grid>
+          </Box>
         </Box>
-      </Box>
+      )}
     </>
   );
 };

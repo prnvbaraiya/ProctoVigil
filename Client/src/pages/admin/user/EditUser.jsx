@@ -1,13 +1,15 @@
 import { Box, Button, Divider, Stack, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import RadioButton from "../../../components/form/RadioButton";
 import TextBox from "../../../components/form/TextBox";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 import { useFormInput } from "../../../hooks/useFormInput";
 import { UserService } from "../../../services/ServerRequest";
 import { userRoles } from "../../../variables/Data";
 
 function EditUser() {
+  const [loading, setLoading] = useState(false);
   const location = useLocation();
   const { id } = location.state;
   const roles = useFormInput("student");
@@ -19,6 +21,7 @@ function EditUser() {
 
   useEffect(() => {
     const getData = async () => {
+      setLoading(true);
       const res = await UserService.find({ _id: id });
       const resData = res.data[0];
       roles.onChange(resData.roles);
@@ -26,11 +29,13 @@ function EditUser() {
       firstName.onChange(resData.firstName);
       lastName.onChange(resData.lastName);
       email.onChange(resData.email);
+      setLoading(false);
     };
     getData();
   }, []);
 
   const handleSubmit = async () => {
+    useState(true);
     const dataTmp = {
       _id: id,
       roles: roles.value,
@@ -50,11 +55,13 @@ function EditUser() {
     } else {
       alert("There is Some error ", JSON.stringify(res));
     }
+    useState(false);
   };
 
   return (
     <Box>
       {/* Header */}
+      <LoadingSpinner loading={loading} />
       <Box
         sx={{
           display: "flex",

@@ -18,7 +18,7 @@ function BasicTable({ rows, columns, hideColumns }) {
   );
 
   return (
-    <Box sx={{ height: 400, width: 1 }}>
+    <Box sx={{ width: 1 }}>
       <DataGrid
         getRowId={(row) => row._id}
         autoHeight

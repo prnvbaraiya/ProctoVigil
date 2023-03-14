@@ -9,8 +9,10 @@ import QuestionAdd from "../../../components/form/QuestionAdd";
 import auth from "../../../auth/auth";
 import { QuizService, UserService } from "../../../services/ServerRequest";
 import axios from "axios";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 
 function AddQuiz() {
+  const [loading, setLoading] = React.useState(false);
   const randomQuestionNumber = useFormInput("");
   const [names, setNames] = useState([]);
   const author = useFormInput(auth.username);
@@ -26,8 +28,10 @@ function AddQuiz() {
   const navigate = useNavigate();
 
   const getData = async () => {
+    setLoading(true);
     const res = await UserService.getStudents();
     setNames(res.data.map((item) => item.username));
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -35,12 +39,15 @@ function AddQuiz() {
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     if (new Date(startDate).getTime() > new Date(endDate).getTime()) {
       setEndDate(new Date(startDate).getTime() + (duration.value * 60 || 0));
     }
+    setLoading(false);
   }, [startDate, endDate, duration]);
 
   const handleRandomQuestions = async () => {
+    setLoading(true);
     const data = await axios.get(
       `https://opentdb.com/api.php?amount=${randomQuestionNumber.value}&type=multiple`
     );
@@ -53,9 +60,11 @@ function AddQuiz() {
       };
     });
     setQuestions(res);
+    setLoading(false);
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     const data = {
       author: auth.username,
       name: name.value,
@@ -77,6 +86,7 @@ function AddQuiz() {
     } else {
       alert("There is Some error ", JSON.stringify(res));
     }
+    setLoading(false);
   };
 
   return (
@@ -84,6 +94,7 @@ function AddQuiz() {
       {/*Container */}
       <Box>
         {/* Header */}
+        <LoadingSpinner loading={loading} />
         <Box
           sx={{
             display: "flex",

@@ -103,7 +103,7 @@ function ViewUser() {
           open={deleteDialogBox}
           setOpen={setDeleteDialogBox}
           handleSuccess={() => handleDelete(deleteId)}
-          title="Are Your You want to delete quiz ?"
+          title="Are Your You want to delete User ?"
           data="Ok Delete it"
         />
         <Box
@@ -114,10 +114,10 @@ function ViewUser() {
           }}
         >
           <Box></Box>
-          <Typography variant="h6">Student</Typography>
+          <Typography variant="h6">User</Typography>
           <Box>
             <Link to="add">
-              <Button variant="contained">Add Student</Button>
+              <Button variant="contained">Add User</Button>
             </Link>
           </Box>
         </Box>

@@ -6,10 +6,12 @@ import DateTime from "../../../components/form/DateTime";
 import QuestionAdd from "../../../components/form/QuestionAdd";
 import SelectChip from "../../../components/form/SelectChip";
 import TextBox from "../../../components/form/TextBox";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 import { useFormInput } from "../../../hooks/useFormInput";
 import { QuizService, UserService } from "../../../services/ServerRequest";
 
 function EditQuiz() {
+  const [loading, setLoading] = React.useState(true);
   const location = useLocation();
   const { id } = location.state;
   const randomQuestionNumber = useFormInput("");
@@ -27,15 +29,18 @@ function EditQuiz() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    setLoading(true);
     const getData = async () => {
       const res = await UserService.getStudents();
       setStudentNames(res.data.map((item) => item.username));
     };
     getData();
+    setLoading(false);
   }, []);
 
   useEffect(() => {
     const getData = async () => {
+      setLoading(true);
       const res = await QuizService.getById(id);
       author.onChange(
         res.data.author.firstName + " " + res.data.author.lastName
@@ -47,19 +52,22 @@ function EditQuiz() {
       duration.onChange(res.data.duration);
       setSelectedStudents(res.data.studentNames);
       setQuestions(res.data.questions);
+      setLoading(false);
     };
     getData();
-
     // eslint-disable-next-line
   }, [id]);
 
   useEffect(() => {
+    setLoading(true);
     if (new Date(startDate).getTime() > new Date(endDate).getTime()) {
       setEndDate(new Date(startDate).getTime() + (duration.value * 60 || 0));
     }
+    setLoading(false);
   }, [startDate, endDate, duration]);
 
   const handleRandomQuestions = async () => {
+    setLoading(true);
     const data = await axios.get(
       `https://opentdb.com/api.php?amount=${randomQuestionNumber.value}&type=multiple`
     );
@@ -72,9 +80,11 @@ function EditQuiz() {
       };
     });
     setQuestions(res);
+    setLoading(false);
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     const data = {
       _id: id,
       name: name.value,
@@ -96,6 +106,7 @@ function EditQuiz() {
     } else {
       alert("There is Some error ", JSON.stringify(res));
     }
+    setLoading(false);
   };
 
   return (
@@ -105,6 +116,7 @@ function EditQuiz() {
         {/*Container */}
         <Box>
           {/* Header */}
+          <LoadingSpinner loading={loading} />
           <Box
             sx={{
               display: "flex",

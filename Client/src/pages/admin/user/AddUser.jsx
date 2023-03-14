@@ -1,24 +1,15 @@
-import {
-  Box,
-  Button,
-  Divider,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-  Stack,
-  Typography,
-} from "@mui/material";
-import React from "react";
+import { Box, Button, Divider, Stack, Typography } from "@mui/material";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import RadioButton from "../../../components/form/RadioButton";
 import TextBox from "../../../components/form/TextBox";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 import { useFormInput } from "../../../hooks/useFormInput";
 import { UserService } from "../../../services/ServerRequest";
 import { userRoles } from "../../../variables/Data";
 
 function AddUser() {
+  const [loading, setLoading] = useState(false);
   const roles = useFormInput("student");
   const username = useFormInput("");
   const fname = useFormInput("");
@@ -29,6 +20,7 @@ function AddUser() {
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
+    setLoading(true);
     const data = {
       username: username.value,
       roles: roles.value,
@@ -37,22 +29,28 @@ function AddUser() {
       email: email.value,
       password: password.value,
     };
-    const res = await UserService.set(data);
-    if (res.status === 202) {
-      const state = {
-        open: true,
-        message: res.data,
-        type: "success",
-      };
-      navigate("/admin/user", { state });
-    } else {
+    try {
+      const res = await UserService.set(data);
+      if (res.status === 202) {
+        const state = {
+          open: true,
+          message: res.data,
+          type: "success",
+        };
+        navigate("/admin/user", { state });
+      } else {
+        alert("Server Error While Creating Account! Tey Again Later");
+      }
+    } catch (err) {
       alert("Server Error While Creating Account! Tey Again Later");
     }
+    setLoading(false);
   };
 
   return (
     <Box>
       {/* Header */}
+      <LoadingSpinner loading={loading} />
       <Box
         sx={{
           display: "flex",
