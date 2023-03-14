@@ -29,11 +29,18 @@ function ViewStream() {
 
               const remoteStream = await instance.startPlayingStream(streamID);
               const remoteView = instance.createRemoteStreamView(remoteStream);
+              document.getElementById(streamID).innerHTML = "";
 
-              remoteView.play("remote-stream-" + item.user.userID, {
+              remoteView.play(streamID, {
                 enableAutoplayDialog: true,
               });
             }
+          });
+        } else {
+          streamList.map(async (item) => {
+            document.getElementById(
+              item.streamID
+            ).innerHTML = `<center>${item.user.userName} Is Already Leave</center>`;
           });
         }
       }
@@ -82,22 +89,32 @@ function ViewStream() {
       <Grid container spacing={2}>
         {data.students.map((item) => {
           return (
-            <Grid item xs={6} key={item}>
-              <center>
-                <h1>{item}</h1>
-              </center>
-              <div
-                key={item}
-                style={{ height: "50vh" }}
-                id={`remote-stream-${item}`}
-              />
-
-              <div
-                key={item}
-                style={{ height: "50vh" }}
-                id={`remote-screen-stream-${item}`}
-              />
-            </Grid>
+            <React.Fragment key={item}>
+              <Grid item xs={12} lg={6}>
+                <center>
+                  <h1>{item} Camera</h1>
+                </center>
+                <div
+                  key={item}
+                  style={{ height: "50vh" }}
+                  id={`${item}-camera`}
+                >
+                  <center>{item} is Not Joined Yet</center>
+                </div>
+              </Grid>
+              <Grid item xs={12} lg={6}>
+                <center>
+                  <h1>{item} Screen</h1>
+                </center>
+                <div
+                  key={item}
+                  style={{ height: "50vh" }}
+                  id={`${item}-screen`}
+                >
+                  <center>{item} is Not Joined Yet</center>
+                </div>
+              </Grid>
+            </React.Fragment>
           );
         })}
       </Grid>

@@ -1,6 +1,7 @@
-import React, { createRef, useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import auth from "../../../auth/auth";
+import { zegoInstance } from "../../../config/ZegoConfig";
 import AttemptQuiz from "./AttemptQuiz";
 import QuizInstructions from "./QuizInstructions";
 
@@ -18,6 +19,7 @@ function StartQuiz() {
     { title: "Instructions", completed: false },
   ]);
   const ref = useRef(null);
+  const instance = zegoInstance();
   const [attemptQuizData, setAttemptQuizData] = useState({
     id: id,
     InputDeviceIds: {
@@ -25,6 +27,7 @@ function StartQuiz() {
       audio: "",
     },
   });
+
   return (
     <>
       {!sections[0].completed ? (
@@ -33,12 +36,14 @@ function StartQuiz() {
           setSections={setSections}
           ref={ref}
           setLocalS={setLocalS}
+          instance={instance}
         />
       ) : (
         <AttemptQuiz
           attemptQuizData={attemptQuizData}
           zConfig={zConfig}
           localS={localS}
+          instance={instance}
         />
       )}
     </>

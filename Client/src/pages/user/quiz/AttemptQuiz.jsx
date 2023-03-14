@@ -5,14 +5,13 @@ import { useNavigate } from "react-router-dom";
 import AlertDialogBox from "../../../components/AlertDialogBox";
 import ExamHeader from "../../../components/quiz/ExamHeader";
 import QuestionNavigation from "../../../components/quiz/QuestionNavigation";
-import { zegoInstance } from "../../../config/ZegoConfig";
 import {
   QuizService,
   QuizResultService,
 } from "../../../services/ServerRequest";
 
 const AttemptQuiz = (props) => {
-  const { zConfig, attemptQuizData, localS } = props;
+  const { instance, zConfig, attemptQuizData, localS } = props;
   const id = attemptQuizData.id;
   const InputDeviceIds = attemptQuizData.InputDeviceIds;
   const [data, setData] = useState({});
@@ -27,7 +26,6 @@ const AttemptQuiz = (props) => {
   const [answerKey, setAnswerKey] = useState([]);
   const [warningCount, setWarningCount] = useState(0);
   const [submitOpen, setSubmitOpen] = useState(false);
-  const instance = zegoInstance();
   const navigate = useNavigate();
 
   useEffect(() => {

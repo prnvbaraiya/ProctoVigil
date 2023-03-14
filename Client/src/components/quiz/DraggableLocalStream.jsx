@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import Draggable from "react-draggable";
 import { JWTService } from "../../services/ServerRequest";
-import { zegoInstance } from "../../config/ZegoConfig";
 
 function DraggableLocalStream({
   InputDeviceIds,
@@ -14,7 +13,6 @@ function DraggableLocalStream({
   const streamId = zConfig.userName + "-camera";
   const screenStreamId = zConfig.userName + "-screen";
   const videoRef = useRef();
-  const screenRef = useRef();
 
   useEffect(() => {
     createRoom(instance, zConfig, "local-stream");
@@ -27,6 +25,9 @@ function DraggableLocalStream({
   const handleLogout = () => {
     if (instance) {
       localStream.getTracks().forEach((track) => {
+        track.stop();
+      });
+      localScreenStream.getTracks().forEach((track) => {
         track.stop();
       });
       instance.logoutRoom(zConfig.roomId);
@@ -53,12 +54,15 @@ function DraggableLocalStream({
           audio: true,
         },
       });
-      localScreenStream = await zCloudObj.createStream({ screen: true });
+      localScreenStream = await zCloudObj.createStream({
+        custom: {
+          source: entireScreenStream,
+        },
+      });
       zCloudObj.startPublishingStream(streamId, localStream);
       zCloudObj.startPublishingStream(screenStreamId, localScreenStream);
 
       videoRef.current.srcObject = localStream;
-      screenRef.current.srcObject = entireScreenStream;
     } catch (err) {
       console.log("PrnvError:", err);
       alert("Error in createRoom: ", JSON.stringify(err));
@@ -77,15 +81,7 @@ function DraggableLocalStream({
               border: "2px solid black",
             }}
             autoPlay
-          ></video>
-          <video
-            ref={localScreenStream}
-            style={{
-              width: "250px",
-              height: "170px",
-              border: "2px solid black",
-            }}
-            autoPlay
+            muted
           ></video>
         </>
       </Draggable>

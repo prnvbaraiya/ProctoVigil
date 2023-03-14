@@ -6,6 +6,12 @@
 - 4. Open two terminal and run `npm run frontend` and in second terminal run `npm run backend`
 - 5. Your project is running localhost port for frontend 5173 and backend 1322.
 
+### Scope
+
+- Only 50 can Join Quiz
+- Internet Bandwidth needs More than 5Mbps
+- Maximum number of Random Question is 50
+
 ### Todo
 
 - [ ] Database setup mongo
@@ -25,20 +31,25 @@
 - [x] Admin Quiz Page
 - [x] Admin Add Update Quiz Page
 - [ ] Admin Add Quiz Using csv file
+- [ ] Add Quiz with types
+- [ ] Add Quiz with sections(with sections time)
+- [ ] Interview Feature
+- [ ] Marking System automatic or manual
 - [x] In Add Quiz add random number question
 - [x] Admin Stream Page
 - [x] Admin watch Stream Page
 - [x] Admin watch Stream of more than one student
 - [x] Set up watch Stream with watching data
 - [x] Change Phase for quiz
-- [ ] Result Page for quiz
+- [x] Result Page for quiz
 - [x] Add zegocloud sdk for proctaring custom ui
 - [x] Admin Proctar Student Page
 
 - [ ] Complete User Side
 - [ ] User Login Page
 - [x] User Layout
-- [ ] User get all the permissions and validate do not start until all the conditions follow
+- [ ] In Instruction Page add mice sound check for checking mice working
+- [x] User get all the permissions and validate do not start until all the conditions follow
 - [x] User Quiz Page
 - [x] User Attempt Quiz Page
 - [ ] User Result Quiz Page
@@ -47,10 +58,10 @@
 
 - [x] Account setup in zegocloud
 - [x] Add JWT token both side
-- [ ] Add Mailing system
+- [x] Add Mailing system
 - [ ] Forget Password Mail link
 - [ ] Once user verify email then only start quiz
-- [ ] Sending Results
+- [x] Sending Results
 - [ ] Make Feedback Database
 
 ### Bugs
@@ -67,6 +78,8 @@
 - [ ] User Update => update quiz Student
 - [x] Add Loading Spinner
 - [ ] Add Redux for passing VideoRef
+- [ ] When Time become 00:00:00 end the quiz
+- [ ] User can only give quiz once
 
 ### Progress
 
