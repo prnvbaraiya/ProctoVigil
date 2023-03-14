@@ -1,14 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Draggable from "react-draggable";
 import { JWTService } from "../../services/ServerRequest";
+import { zegoInstance } from "../../config/ZegoConfig";
 
-function DraggableLocalStream({ InputDeviceIds, instance, zConfig }) {
+function DraggableLocalStream({
+  InputDeviceIds,
+  instance,
+  zConfig,
+  entireScreenStream,
+}) {
   let localStream = null;
-  let localView = null;
-  const streamId = new Date().getTime().toString();
+  let localScreenStream = null;
+  const streamId = zConfig.userName + "-camera";
+  const screenStreamId = zConfig.userName + "-screen";
+  const videoRef = useRef();
+  const screenRef = useRef();
 
   useEffect(() => {
-    createRoom();
+    createRoom(instance, zConfig, "local-stream");
     return () => {
       handleLogout();
     };
@@ -24,19 +33,19 @@ function DraggableLocalStream({ InputDeviceIds, instance, zConfig }) {
     }
   };
 
-  const createRoom = async () => {
+  const createRoom = async (zCloudObj, config) => {
     try {
       const { data } = await JWTService.generateToken({
-        userId: zConfig.userId,
+        userId: config.userId,
       });
-      zConfig.token = data;
+      config.token = data;
 
-      await instance.loginRoom(zConfig.roomId, zConfig.token, {
-        userID: zConfig.userId,
-        userName: zConfig.userName,
+      await zCloudObj.loginRoom(config.roomId, config.token, {
+        userID: config.userId,
+        userName: config.userName,
       });
 
-      localStream = await instance.createStream({
+      localStream = await zCloudObj.createStream({
         camera: {
           audioInput: InputDeviceIds.audio,
           videoInput: InputDeviceIds.camera,
@@ -44,13 +53,12 @@ function DraggableLocalStream({ InputDeviceIds, instance, zConfig }) {
           audio: true,
         },
       });
+      localScreenStream = await zCloudObj.createStream({ screen: true });
+      zCloudObj.startPublishingStream(streamId, localStream);
+      zCloudObj.startPublishingStream(screenStreamId, localScreenStream);
 
-      localView = instance.createLocalStreamView(localStream);
-      instance.startPublishingStream(streamId, localStream, {
-        videoCodec: "VP8",
-      });
-
-      localView.play("local-stream");
+      videoRef.current.srcObject = localStream;
+      screenRef.current.srcObject = entireScreenStream;
     } catch (err) {
       console.log("PrnvError:", err);
       alert("Error in createRoom: ", JSON.stringify(err));
@@ -61,14 +69,24 @@ function DraggableLocalStream({ InputDeviceIds, instance, zConfig }) {
     <>
       <Draggable bounds="parent" defaultPosition={{ x: 30 }}>
         <>
-          <div
-            id="local-stream"
+          <video
+            ref={videoRef}
             style={{
               width: "250px",
               height: "170px",
               border: "2px solid black",
             }}
-          ></div>
+            autoPlay
+          ></video>
+          <video
+            ref={localScreenStream}
+            style={{
+              width: "250px",
+              height: "170px",
+              border: "2px solid black",
+            }}
+            autoPlay
+          ></video>
         </>
       </Draggable>
     </>

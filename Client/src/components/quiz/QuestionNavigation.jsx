@@ -100,6 +100,7 @@ export default function QuestionNavigation(props) {
         instance={instance}
         InputDeviceIds={InputDeviceIds}
         zConfig={zConfig}
+        entireScreenStream={entireScreenStream}
       />
       <video
         ref={screenRef}

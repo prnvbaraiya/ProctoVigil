@@ -91,6 +91,12 @@ function ViewStream() {
                 style={{ height: "50vh" }}
                 id={`remote-stream-${item}`}
               />
+
+              <div
+                key={item}
+                style={{ height: "50vh" }}
+                id={`remote-screen-stream-${item}`}
+              />
             </Grid>
           );
         })}

@@ -14,6 +14,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Link } from "react-router-dom";
 import { Stack } from "@mui/system";
+import { zegoInstance } from "../../../config/ZegoConfig";
 
 const QuizInstructions = forwardRef((props, ref) => {
   const { setSections, setAttemptQuizData, setLocalS } = props;
@@ -25,6 +26,7 @@ const QuizInstructions = forwardRef((props, ref) => {
     isCameraStart: false,
     isEntireScreenSharing: false,
   });
+  const zCloudObj = zegoInstance();
 
   useEffect(() => {
     const getPermission = async () => {
@@ -70,14 +72,14 @@ const QuizInstructions = forwardRef((props, ref) => {
 
   const handleScreenShare = async () => {
     try {
-      const stream = await navigator.mediaDevices.getDisplayMedia({
-        video: { deviceId: selectedCamera },
-        audio: true,
+      const stream = await zCloudObj.createStream({
+        screen: true,
       });
       const tracks = stream.getTracks();
       if (tracks.length > 0) {
-        const track = tracks[0];
+        const track = tracks[1];
         const settings = track.getSettings();
+        console.log("Prnv:", settings);
         if (settings.displaySurface === "monitor") {
           setIsValid({ ...isValid, isEntireScreenSharing: true });
         } else {
