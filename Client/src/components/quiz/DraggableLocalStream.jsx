@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import Draggable from "react-draggable";
+import { useReactMediaRecorder } from "react-media-recorder";
 import { JWTService } from "../../services/ServerRequest";
 
 function DraggableLocalStream({
@@ -7,6 +8,7 @@ function DraggableLocalStream({
   instance,
   zConfig,
   entireScreenStream,
+  downloadVideo,
 }) {
   let localStream = null;
   let localScreenStream = null;
@@ -24,12 +26,10 @@ function DraggableLocalStream({
 
   const handleLogout = () => {
     if (instance) {
-      localStream.getTracks().forEach((track) => {
-        track.stop();
-      });
-      localScreenStream.getTracks().forEach((track) => {
-        track.stop();
-      });
+      instance.stopPublishingStream(streamId);
+      instance.destroyStream(localStream);
+      instance.stopPublishingStream(screenStreamId);
+      instance.destroyStream(localScreenStream);
       instance.logoutRoom(zConfig.roomId);
     }
   };
@@ -59,6 +59,27 @@ function DraggableLocalStream({
           source: entireScreenStream,
         },
       });
+
+      const cameraChunks = [];
+
+      const mediaRecorder = new MediaRecorder(localStream);
+
+      mediaRecorder.ondataavailable = (e) => {
+        console.log("prnvCam:", e.data);
+        if (e.data && e.data.size > 0) {
+          cameraChunks.push(e.data);
+        }
+      };
+
+      mediaRecorder.onstop = () => {
+        const videoBlob = new Blob(cameraChunks, {
+          type: "video/webm;codecs=vp9",
+        });
+        downloadVideo(videoBlob, "recorded-camera-video.mkv");
+      };
+
+      mediaRecorder.start();
+
       zCloudObj.startPublishingStream(streamId, localStream);
       zCloudObj.startPublishingStream(screenStreamId, localScreenStream);
 

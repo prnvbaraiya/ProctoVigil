@@ -28,6 +28,7 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.5",
+    "react-media-recorder": "^1.6.6",
     "react-router-dom": "^6.8.1",
     "react-scripts": "5.0.1",
     "typed.js": "^2.0.12",

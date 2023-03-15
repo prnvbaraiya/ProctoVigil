@@ -15,6 +15,7 @@ export default function QuestionNavigation(props) {
     setVisitedQuestions,
     InputDeviceIds,
     entireScreenStream,
+    downloadVideo,
   } = props;
 
   const getQueNav = () =>
@@ -88,6 +89,7 @@ export default function QuestionNavigation(props) {
         InputDeviceIds={InputDeviceIds}
         zConfig={zConfig}
         entireScreenStream={entireScreenStream}
+        downloadVideo={downloadVideo}
       />
       <SectionAccordion title="Section 01" data={getQueNav()} />
       <SectionAccordion title="Section 02" data={"LOL"} disabled={true} />

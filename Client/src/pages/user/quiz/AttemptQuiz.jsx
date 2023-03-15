@@ -13,15 +13,13 @@ import {
 
 const AttemptQuiz = (props) => {
   const { instance, zConfig, attemptQuizData, localS } = props;
-  const id = attemptQuizData.id;
-  const InputDeviceIds = attemptQuizData.InputDeviceIds;
+  const { id, InputDeviceIds } = attemptQuizData;
   const [data, setData] = useState({});
   const [questions, setQuestions] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState(1);
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [visitedQuestions, setVisitedQuestions] = useState([1]);
   const [loading, setLoading] = useState(true);
-  const tmpRef = useRef(new MediaStream());
 
   // eslint-disable-next-line
   const [answerKey, setAnswerKey] = useState([]);
@@ -30,7 +28,6 @@ const AttemptQuiz = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    tmpRef.current.srcObject = localS;
     getData();
     if (import.meta.env.VITE_PRODUCTION === "true") {
       if (!document.fullscreenElement) {
@@ -47,7 +44,18 @@ const AttemptQuiz = (props) => {
       };
     }
     // eslint-disable-next-line
-  }, [localS]);
+  }, []);
+
+  const downloadVideo = (blob, fileName) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
 
   // Function to shuffle an array
   const suffeledArray = (len) => {
@@ -275,6 +283,7 @@ const AttemptQuiz = (props) => {
                     setVisitedQuestions={setVisitedQuestions}
                     visitedQuestions={visitedQuestions}
                     entireScreenStream={localS}
+                    downloadVideo={downloadVideo}
                   />
                 </Box>
               </Grid>
