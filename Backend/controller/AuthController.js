@@ -326,7 +326,7 @@ const QuizResult = {
       return res.status(ERROR_CODE).send("There is some error: " + err);
     }
   },
-  sendMail: async (req, res) => {
+  sendResultMail: async (req, res) => {
     try {
       const quizResults = await QuizResultModel.findOne(req.body)
         .populate("students.user", "username firstName lastName email")
@@ -349,6 +349,25 @@ const QuizResult = {
       }
 
       return res.status(SUCCESS_CODE).send(quizResults);
+    } catch (err) {
+      console.error(err);
+      return res.status(ERROR_CODE).send(`There is some error: ${err}`);
+    }
+  },
+  deleteStudent: async (req, res) => {
+    try {
+      const quizResults = await QuizResultModel.findOne({
+        QuizId: req.body.quizId,
+      });
+
+      quizResults.students = quizResults.students.filter(
+        (item) => item.user.toString() !== req.body._id
+      );
+      await quizResults.save();
+
+      return res
+        .status(SUCCESS_CODE)
+        .send("User Response Removed Successfully");
     } catch (err) {
       console.error(err);
       return res.status(ERROR_CODE).send(`There is some error: ${err}`);

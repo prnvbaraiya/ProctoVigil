@@ -72,8 +72,8 @@ const QuizResultService = {
   update: (data) => {
     return sendRequest("put", "quiz-result", data);
   },
-  delete: (data) => {
-    return sendRequest("delete", "quiz", data);
+  deleteUserResponse: (data) => {
+    return sendRequest("delete", "quiz-result/student", data);
   },
   sendMail: (data) => {
     return sendRequest("post", "quiz-result/send-mail", data);

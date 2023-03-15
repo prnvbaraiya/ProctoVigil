@@ -34,7 +34,8 @@ router
 router
   .get("/quiz-result", QuizResult.get)
   .get("/quiz-result/:id", QuizResult.getById)
-  .post("/quiz-result/send-mail", QuizResult.sendMail)
-  .post("/quiz-result", QuizResult.add);
+  .post("/quiz-result/send-mail", QuizResult.sendResultMail)
+  .post("/quiz-result", QuizResult.add)
+  .delete("/quiz-result/student", QuizResult.deleteStudent);
 
 module.exports = router;

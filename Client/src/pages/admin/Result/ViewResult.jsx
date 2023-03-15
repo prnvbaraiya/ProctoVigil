@@ -5,6 +5,7 @@ import {
   Divider,
   FormControl,
   Grid,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
@@ -14,6 +15,9 @@ import { useFormInput } from "../../../hooks/useFormInput";
 import BasicTable from "../../../components/form/BasicTable";
 import { QuizResultService } from "../../../services/ServerRequest";
 import LoadingSpinner from "../../../components/LoadingSpinner";
+import AlertDialogBox from "../../../components/AlertDialogBox";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SnackbarDisplay from "../../../components/SnackbarDisplay";
 
 function ViewResult() {
   const [loading, setLoading] = useState(false);
@@ -21,6 +25,15 @@ function ViewResult() {
   const [quizzes, setQuizzes] = useState([]);
   const selectedQuiz = useFormInput("");
   const [totalMarks, setTotalMarks] = useState("");
+  const [deleteDialogBox, setDeleteDialogBox] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
+  const [snackbarData, setSnackbarData] = useState({
+    open: false,
+    message: "",
+    type: "success",
+    vertical: "top",
+    horizontal: "right",
+  });
 
   useEffect(() => {
     setLoading((prev) => !prev);
@@ -38,7 +51,7 @@ function ViewResult() {
     setLoading((prev) => !prev);
     handleGetStudent();
     setLoading((prev) => !prev);
-  }, [selectedQuiz.value]);
+  }, [snackbarData]);
 
   const handleGetStudent = async () => {
     if (selectedQuiz.value !== "") {
@@ -57,6 +70,23 @@ function ViewResult() {
       console.log(res);
     }
     setLoading((prev) => !prev);
+  };
+
+  const handleDelete = async (id) => {
+    const res = await QuizResultService.deleteUserResponse({
+      quizId: selectedQuiz.value,
+      _id: id,
+    });
+    if (res.status === 202) {
+      setDeleteDialogBox(false);
+      setSnackbarData({
+        ...snackbarData,
+        open: true,
+        message: res.data,
+      });
+    } else {
+      alert("There is some error try again after some time");
+    }
   };
 
   const columns = [
@@ -93,12 +123,41 @@ function ViewResult() {
         return params.row.answerKey.length;
       },
     },
+    {
+      field: "actions",
+      headerName: "Actions",
+      sortable: false,
+      width: 150,
+      renderCell: (params) => {
+        const row = params.row;
+        return (
+          <>
+            <IconButton
+              onClick={() => {
+                setDeleteId(row.user._id);
+                setDeleteDialogBox(true);
+              }}
+              color="error"
+            >
+              <DeleteIcon />
+            </IconButton>
+          </>
+        );
+      },
+    },
   ];
 
   const hideColumns = ["_id"];
 
   return (
     <Box>
+      <AlertDialogBox
+        open={deleteDialogBox}
+        setOpen={setDeleteDialogBox}
+        handleSuccess={() => handleDelete(deleteId)}
+        title="Are you sure you want to delete"
+        data="Deleting User's Response It is ireversible ?"
+      />
       <LoadingSpinner loading={loading} />
       <Box
         sx={{
@@ -153,6 +212,10 @@ function ViewResult() {
           <BasicTable rows={rows} columns={columns} hideColumns={hideColumns} />
         )}
       </Box>
+      <SnackbarDisplay
+        snackbarData={snackbarData}
+        setSnackbarData={setSnackbarData}
+      />
     </Box>
   );
 }
