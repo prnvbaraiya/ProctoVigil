@@ -9,6 +9,7 @@ import QuestionNavigation from "../../../components/quiz/QuestionNavigation";
 import {
   QuizService,
   QuizResultService,
+  UserRecordingService,
 } from "../../../services/ServerRequest";
 
 const AttemptQuiz = (props) => {
@@ -46,15 +47,13 @@ const AttemptQuiz = (props) => {
     // eslint-disable-next-line
   }, []);
 
-  const downloadVideo = (blob, fileName) => {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+  const downloadVideo = async (blob, fileName) => {
+    const data = new FormData();
+    data.append("quiz_id", id);
+    data.append("username", zConfig.userName);
+    data.append("videoBlob", blob, fileName);
+    var reader = new FileReader();
+    const res = await UserRecordingService.set(data);
   };
 
   // Function to shuffle an array

@@ -1,10 +1,16 @@
 const express = require("express");
 const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
+const multer = require("multer");
 const path = require("path");
 const viewPath = path.resolve(__dirname, "./../templates/views");
 const { generateToken04 } = require("../zgocloud/zegoServerAssistant.js");
-const { QuizResultModel, QuizModel, UserModel } = require("../model/model.js");
+const {
+  QuizResultModel,
+  QuizModel,
+  UserModel,
+  UserRecordingModel,
+} = require("../model/model.js");
 const { PythonShell } = require("python-shell");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -375,6 +381,31 @@ const QuizResult = {
   },
 };
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "storage");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage }).single("videoBlob");
+
+const UserRecording = {
+  add: async (req, res) => {
+    upload(req, res, function (err) {
+      if (err instanceof multer.MulterError) {
+        return res.status(500).json(err);
+      } else if (err) {
+        return res.status(500).json(err);
+      }
+      console.log(req.body);
+      return res.status(200).send(req.file);
+    });
+  },
+};
+
 const a = {
   testMailSend: async (req, res) => {
     const mailContent = "Testing Mail is delivered successfully";
@@ -405,4 +436,12 @@ const a = {
   },
 };
 
-module.exports = { JWT, ZegocloudTokenGenerator, User, Quiz, QuizResult, a };
+module.exports = {
+  JWT,
+  ZegocloudTokenGenerator,
+  User,
+  Quiz,
+  QuizResult,
+  UserRecording,
+  a,
+};

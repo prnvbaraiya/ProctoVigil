@@ -7,6 +7,8 @@
 
 # testing
 /coverage
+/storage/*
+!/storage
 
 # production
 /build

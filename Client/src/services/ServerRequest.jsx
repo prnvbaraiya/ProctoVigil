@@ -80,10 +80,41 @@ const QuizResultService = {
   },
 };
 
+const UserRecordingService = {
+  set: async (data) => {
+    const type = "post";
+    const link = "user-recording";
+
+    const config = {
+      method: type,
+      url: SERVER_LINK + link,
+      headers: {
+        Authorization: auth.getToken(),
+      },
+      data,
+    };
+    console.log("PRNVSERVER:", data);
+
+    try {
+      const res = await axios(config);
+      return res;
+    } catch (err) {
+      // alert("Server Error:", JSON.stringify(err));
+      console.log("PRNV AXIOS ERROR:", err);
+    }
+  },
+};
+
 const JWTService = {
   generateToken: (data) => {
     return sendRequest("post", "generateToken", data);
   },
 };
 
-export { UserService, QuizService, QuizResultService, JWTService };
+export {
+  UserService,
+  QuizService,
+  QuizResultService,
+  UserRecordingService,
+  JWTService,
+};

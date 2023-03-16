@@ -6,6 +6,7 @@ const {
   a,
   JWT,
   QuizResult,
+  UserRecording,
 } = require("../controller/AuthController");
 const router = express.Router();
 
@@ -37,5 +38,7 @@ router
   .post("/quiz-result/send-mail", QuizResult.sendResultMail)
   .post("/quiz-result", QuizResult.add)
   .delete("/quiz-result/student", QuizResult.deleteStudent);
+
+router.post("/user-recording", UserRecording.add);
 
 module.exports = router;

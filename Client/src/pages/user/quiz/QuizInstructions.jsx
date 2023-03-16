@@ -77,7 +77,6 @@ const QuizInstructions = forwardRef((props, ref) => {
       if (tracks.length > 0) {
         const track = tracks[1];
         const settings = track.getSettings();
-        console.log("Prnv:", settings);
         if (settings.displaySurface === "monitor") {
           setIsValid({ ...isValid, isEntireScreenSharing: true });
         } else {

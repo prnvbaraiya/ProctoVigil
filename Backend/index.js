@@ -12,7 +12,8 @@ const port = process.env.PORT || 5000;
 
 app.use(json());
 app.use(cors());
-app.use(bodyParser.raw({ type: "video/webm", limit: "10mb" }));
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use("/api", AuthRoute);
 
 mongoose.set("strictQuery", false);
