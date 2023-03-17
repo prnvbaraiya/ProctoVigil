@@ -103,6 +103,13 @@ const UserRecordingService = {
       console.log("PRNV AXIOS ERROR:", err);
     }
   },
+  get: async () => {
+    return sendRequest("get", "user-recording");
+  },
+  getFile: async (data) => {
+    console.log(data);
+    return sendRequest("post", "user-recording/file-path", data);
+  },
 };
 
 const JWTService = {

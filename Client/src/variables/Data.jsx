@@ -4,6 +4,7 @@ import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import LiveTvIcon from "@mui/icons-material/LiveTv";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 export const userRoles = [
@@ -42,6 +43,11 @@ export const adminSidebarItems = [
     href: "/result",
     icon: <EmojiEventsIcon fontSize="small" />,
     title: "Result",
+  },
+  {
+    href: "/recording",
+    icon: <VideoLibraryIcon fontSize="small" />,
+    title: "Recording",
   },
   {
     href: "/settings",

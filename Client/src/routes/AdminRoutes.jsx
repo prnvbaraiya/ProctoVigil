@@ -15,6 +15,7 @@ import ViewPhase from "../pages/admin/phase/ViewPhase";
 import EditPhase from "../pages/admin/phase/EditPhase";
 import ViewResult from "../pages/admin/Result/ViewResult";
 import AddUser from "../pages/admin/user/AddUser";
+import ViewRecording from "../pages/admin/recording/ViewRecording";
 
 const AdminRoutes = (
   <Route
@@ -45,6 +46,9 @@ const AdminRoutes = (
       </Route>
       <Route path="result">
         <Route index element={<ViewResult />} />
+      </Route>
+      <Route path="recording">
+        <Route index element={<ViewRecording />} />
       </Route>
       <Route path="settings">
         <Route index element={<Settings />} />

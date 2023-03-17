@@ -429,9 +429,28 @@ const UserRecording = {
         }
       }
 
-      // await userRecording.save();
+      await userRecording.save();
       return res.status(200).send("recording saved successfully");
     });
+  },
+  get: async (req, res) => {
+    try {
+      const quizzes = await UserRecordingModel.find()
+        .populate("students.user_id", "username firstName lastName email")
+        .populate("quiz_id", "name");
+      return res.status(SUCCESS_CODE).send(quizzes);
+    } catch (err) {
+      return res.status(ERROR_CODE).send("There is some error: " + err);
+    }
+  },
+  sendFile: async (req, res) => {
+    try {
+      const { filePath } = req.body;
+      const fileBuffer = fs.readFileSync(filePath);
+      return res.status(SUCCESS_CODE).send(fileBuffer);
+    } catch (err) {
+      return res.status(ERROR_CODE).send("Server Error");
+    }
   },
 };
 

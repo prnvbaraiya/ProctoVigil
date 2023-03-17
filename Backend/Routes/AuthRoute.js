@@ -39,6 +39,9 @@ router
   .post("/quiz-result", QuizResult.add)
   .delete("/quiz-result/student", QuizResult.deleteStudent);
 
-router.post("/user-recording", UserRecording.add);
+router
+  .post("/user-recording", UserRecording.add)
+  .post("/user-recording/file-path", UserRecording.sendFile)
+  .get("/user-recording", UserRecording.get);
 
 module.exports = router;
