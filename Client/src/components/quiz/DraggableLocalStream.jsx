@@ -75,7 +75,7 @@ function DraggableLocalStream({
         const videoBlob = new Blob(cameraChunks, {
           type: "video/webm;codecs=vp9",
         });
-        downloadVideo(videoBlob, "recorded-camera-video.mkv");
+        downloadVideo(videoBlob, `${config.userName}.mkv`);
       };
 
       mediaRecorder.start();

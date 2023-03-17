@@ -14,8 +14,8 @@ const UserRecordingSchema = new mongoose.Schema(
           ref: "User",
           required: true,
         },
-        videoBlob: {
-          type: Buffer,
+        filePath: {
+          type: String,
         },
       },
     ],

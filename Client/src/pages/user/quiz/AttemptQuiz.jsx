@@ -52,7 +52,6 @@ const AttemptQuiz = (props) => {
     data.append("quiz_id", id);
     data.append("username", zConfig.userName);
     data.append("videoBlob", blob, fileName);
-    var reader = new FileReader();
     const res = await UserRecordingService.set(data);
   };
 

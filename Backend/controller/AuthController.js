@@ -3,6 +3,7 @@ const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 const viewPath = path.resolve(__dirname, "./../templates/views");
 const { generateToken04 } = require("../zgocloud/zegoServerAssistant.js");
 const {
@@ -382,11 +383,16 @@ const QuizResult = {
 };
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "storage");
+  destination: async function (req, file, cb) {
+    const quiz = await QuizModel.findById(req.body.quiz_id, { name: 1 });
+    const quizDir = path.join("storage", quiz.name);
+    if (!fs.existsSync(quizDir)) {
+      fs.mkdirSync(quizDir, { recursive: true });
+    }
+    cb(null, quizDir);
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
+    cb(null, file.originalname);
   },
 });
 
@@ -394,14 +400,37 @@ const upload = multer({ storage: storage }).single("videoBlob");
 
 const UserRecording = {
   add: async (req, res) => {
-    upload(req, res, function (err) {
+    upload(req, res, async function (err) {
       if (err instanceof multer.MulterError) {
         return res.status(500).json(err);
       } else if (err) {
         return res.status(500).json(err);
       }
-      console.log(req.body);
-      return res.status(200).send(req.file);
+      const { quiz_id, username } = req.body;
+      let userRecording = await UserRecordingModel.findOne({ quiz_id });
+
+      if (!userRecording) {
+        userRecording = new UserRecordingModel({ quiz_id });
+      }
+
+      const user = await UserModel.findOne({ username });
+
+      if (user) {
+        const existingUser = userRecording.students.find(
+          (u) => u.user_id.toString() === user._id.toString()
+        );
+        if (existingUser) {
+          existingUser.filePath = req.file.path;
+        } else {
+          userRecording.students.push({
+            user_id: user._id,
+            filePath: req.file.path,
+          });
+        }
+      }
+
+      // await userRecording.save();
+      return res.status(200).send("recording saved successfully");
     });
   },
 };
