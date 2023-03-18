@@ -4,6 +4,7 @@ const hbs = require("nodemailer-express-handlebars");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const { GoogleDriveService } = require("./googleDriveService");
 const viewPath = path.resolve(__dirname, "./../templates/views");
 const { generateToken04 } = require("../zgocloud/zegoServerAssistant.js");
 const {
@@ -16,8 +17,19 @@ const { PythonShell } = require("python-shell");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+require("dotenv").config();
+
+// Variables
+const driveClientId = process.env.GOOGLE_DRIVE_CLIENT_ID || "";
+const driveClientSecret = process.env.GOOGLE_DRIVE_CLIENT_SECRET || "";
+const driveRedirectUri = process.env.GOOGLE_DRIVE_REDIRECT_URI || "";
+const driveRefreshToken = process.env.GOOGLE_DRIVE_REFRESH_TOKEN || "";
+
 const ERROR_CODE = 500;
 const SUCCESS_CODE = 202;
+
+const videoStoringPath = "storage";
+const driveFolderName = "Video";
 
 const cryptingPassword = (password, callback) => {
   bcrypt.genSalt(10, function (err, salt) {
@@ -385,7 +397,7 @@ const QuizResult = {
 const storage = multer.diskStorage({
   destination: async function (req, file, cb) {
     const quiz = await QuizModel.findById(req.body.quiz_id, { name: 1 });
-    const quizDir = path.join("storage", quiz.name);
+    const quizDir = path.join(videoStoringPath, quiz.name);
     if (!fs.existsSync(quizDir)) {
       fs.mkdirSync(quizDir, { recursive: true });
     }
@@ -407,6 +419,12 @@ const UserRecording = {
         return res.status(500).json(err);
       }
       const { quiz_id, username } = req.body;
+
+      const link = await UserRecording.uploadToDrive(
+        req.file.path,
+        `${username}.mkv`
+      );
+
       let userRecording = await UserRecordingModel.findOne({ quiz_id });
 
       if (!userRecording) {
@@ -420,11 +438,11 @@ const UserRecording = {
           (u) => u.user_id.toString() === user._id.toString()
         );
         if (existingUser) {
-          existingUser.filePath = req.file.path;
+          existingUser.driveLink = link;
         } else {
           userRecording.students.push({
             user_id: user._id,
-            filePath: req.file.path,
+            driveLink: link,
           });
         }
       }
@@ -451,6 +469,51 @@ const UserRecording = {
     } catch (err) {
       return res.status(ERROR_CODE).send("Server Error");
     }
+  },
+
+  uploadToDrive: async (localPath, driveFileName) => {
+    const googleDriveService = new GoogleDriveService(
+      driveClientId,
+      driveClientSecret,
+      driveRedirectUri,
+      driveRefreshToken
+    );
+
+    const finalPath = localPath;
+    console.log(finalPath);
+
+    if (!fs.existsSync(finalPath)) {
+      throw new Error("File not found!");
+    }
+
+    let folder = await googleDriveService
+      .searchFolder(driveFolderName)
+      .catch((error) => {
+        console.error(error);
+        return null;
+      });
+
+    if (!folder) {
+      folder = await googleDriveService.createFolder(driveFolderName);
+    }
+
+    const savedFile = await googleDriveService
+      .saveFile(driveFileName, finalPath, "video/webm;codecs=vp9", folder.id)
+      .catch((error) => {
+        console.error(error);
+      });
+    console.log("File URL:", JSON.stringify(savedFile.data, null, 2));
+    console.info("File uploaded successfully!");
+
+    const permission = await googleDriveService
+      .createPermission(savedFile.data.id)
+      .catch((error) => {
+        console.error(error);
+      });
+
+    fs.unlinkSync(finalPath);
+
+    return `https://drive.google.com/uc?id=${savedFile.data.id}`;
   },
 };
 
@@ -481,6 +544,9 @@ const a = {
       }
     );
     console.log("End");
+  },
+  testDrive: async (req, res) => {
+    UserRecording.uploadToDrive("storage/Quiz 1/student2.mkv", "test.mkv");
   },
 };
 

@@ -14,7 +14,7 @@ const UserRecordingSchema = new mongoose.Schema(
           ref: "User",
           required: true,
         },
-        filePath: {
+        driveLink: {
           type: String,
         },
       },
