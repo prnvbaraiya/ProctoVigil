@@ -10,34 +10,18 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import AlertDialogBox from "../../../components/AlertDialogBox";
 import LoadingSpinner from "../../../components/LoadingSpinner";
-import SnackbarDisplay from "../../../components/SnackbarDisplay";
-import { useFormInput } from "../../../hooks/useFormInput";
-import {
-  QuizResultService,
-  UserRecordingService,
-} from "../../../services/ServerRequest";
+import { UserRecordingService } from "../../../services/ServerRequest";
 
 function ViewRecording() {
-  const [videoUrl, setVideoUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [rows, setRows] = useState([]);
   const [response, setResponse] = useState();
   const [quizzes, setQuizzes] = useState([]);
   const [selectedQuiz, setSelectedQuiz] = useState("");
   const [selectedStudent, setSelectedStudent] = useState("");
   const [students, setStudents] = useState([]);
-  const [filePath, setFilePath] = useState("");
-  const [deleteDialogBox, setDeleteDialogBox] = useState(false);
-  const [deleteId, setDeleteId] = useState("");
-  const [snackbarData, setSnackbarData] = useState({
-    open: false,
-    message: "",
-    type: "success",
-    vertical: "top",
-    horizontal: "right",
-  });
+  const [driveLinkUrl, setDriveLinkUrl] = useState("");
+  const [playVideo, setPlatVideo] = useState(false);
 
   useEffect(() => {
     setLoading((prev) => !prev);
@@ -51,17 +35,8 @@ function ViewRecording() {
     setLoading((prev) => !prev);
   }, []);
 
-  const handleGetStudent = async () => {
-    const res = await UserRecordingService.getFile({
-      filePath,
-    });
-    const blob = new Blob([res.data], { type: "video/webm;codecs=vp9" });
-    const url = URL.createObjectURL(blob);
-    setVideoUrl(url);
-    console.log(blob);
-  };
-
   const handleQuizChange = async (e) => {
+    setPlatVideo(false);
     setSelectedQuiz(e.target.value);
     const data = response.filter((item) => item.quiz_id._id === e.target.value);
 
@@ -69,21 +44,15 @@ function ViewRecording() {
   };
 
   const handleStudentChange = async (e) => {
+    setPlatVideo(false);
     const data = students.filter((item) => item.user_id._id === e.target.value);
     setSelectedStudent(e.target.value);
-    setFilePath(data[0].filePath);
+    setDriveLinkUrl(data[0].driveLink);
   };
 
   return (
     <>
       <Box>
-        <AlertDialogBox
-          open={deleteDialogBox}
-          setOpen={setDeleteDialogBox}
-          handleSuccess={() => handleDelete(deleteId)}
-          title="Are you sure you want to delete"
-          data="Deleting User's Response It is ireversible ?"
-        />
         <LoadingSpinner loading={loading} />
         <Box
           sx={{
@@ -125,7 +94,7 @@ function ViewRecording() {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 label="Student"
-                onChange={handleStudentChange}
+                onChange={() => setPlatVideo(true)}
                 value={selectedStudent}
               >
                 {students.map((item) => {
@@ -144,17 +113,20 @@ function ViewRecording() {
             </Button>
           </Grid>
         </Grid>
-        <Box textAlign="center">
-          {!loading && selectedQuiz.value !== "" && (
-            <video controls src={videoUrl}>
+        <Box sx={{ padding: 5 }} textAlign="center">
+          {!loading && driveLinkUrl !== "" && (
+            <video
+              autoPlay
+              controls
+              hidden={!playVideo}
+              id="Student-camera"
+              style={{ width: "50vw" }}
+              src={driveLinkUrl}
+            >
               Your browser does not support the video tag.
             </video>
           )}
         </Box>
-        <SnackbarDisplay
-          snackbarData={snackbarData}
-          setSnackbarData={setSnackbarData}
-        />
       </Box>
     </>
   );
