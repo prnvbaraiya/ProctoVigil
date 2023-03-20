@@ -39,8 +39,8 @@ function ViewRecording() {
     setPlatVideo(false);
     setSelectedQuiz(e.target.value);
     const data = response.filter((item) => item.quiz_id._id === e.target.value);
-
     setStudents(data[0].students);
+    setSelectedStudent("");
   };
 
   const handleStudentChange = async (e) => {
@@ -94,7 +94,7 @@ function ViewRecording() {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 label="Student"
-                onChange={() => setPlatVideo(true)}
+                onChange={handleStudentChange}
                 value={selectedStudent}
               >
                 {students.map((item) => {
@@ -108,7 +108,7 @@ function ViewRecording() {
             </FormControl>
           </Grid>
           <Grid item xs={2}>
-            <Button variant="contained" onClick={handleGetStudent}>
+            <Button variant="contained" onClick={() => setPlatVideo(true)}>
               Get Student
             </Button>
           </Grid>

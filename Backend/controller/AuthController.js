@@ -152,6 +152,21 @@ const User = {
       return res.status(ERROR_CODE).send("Server Error: " + err);
     }
   },
+  usersRegister: async (req, res) => {
+    const users = req.body;
+    const userObjs = [];
+    for (const user of users) {
+      const userObj = new UserModel(user);
+      userObjs.push(userObj);
+    }
+    try {
+      await UserModel.insertMany(userObjs);
+      res.status(SUCCESS_CODE).send("Users saved successfully");
+    } catch (err) {
+      console.error(err);
+      res.status(ERROR_CODE).send("Error saving users");
+    }
+  },
   login: async (req, res) => {
     const user = await UserModel.findOne({ username: req.body.username });
     if (user) {
@@ -216,6 +231,19 @@ const User = {
       return res.status(SUCCESS_CODE).send("User Deleted Successfully");
     } catch (err) {
       return res.status(ERROR_CODE).send("User Delted Error: " + err);
+    }
+  },
+  usersDelete: async (req, res) => {
+    const ids = req.body;
+    try {
+      const deletedUsers = await UserModel.deleteMany({ _id: { $in: ids } });
+      if (deletedUsers.deletedCount === 0) {
+        return res.status(ERROR_CODE).send("No users found with provided ids");
+      }
+      res.status(SUCCESS_CODE).send("Users deleted successfully");
+    } catch (err) {
+      console.error(err);
+      res.status(ERROR_CODE).send("Error deleting users");
     }
   },
 };

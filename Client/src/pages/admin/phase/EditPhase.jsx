@@ -1,16 +1,8 @@
-import {
-  Box,
-  Button,
-  Divider,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Divider, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import SelectBox from "../../../components/form/SelectBox";
 import TextBox from "../../../components/form/TextBox";
 import { useFormInput } from "../../../hooks/useFormInput";
 import { QuizService } from "../../../services/ServerRequest";
@@ -78,24 +70,12 @@ function EditPhase() {
         <form>
           <Stack spacing={3}>
             <TextBox label="Name" disabled {...name} />
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Phase</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={phase}
-                label="Phase"
-                onChange={(e) => setPhase(e.target.value)}
-              >
-                {quizPhase.map((item) => {
-                  return (
-                    <MenuItem key={item.value} value={item.value}>
-                      {item.title}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
+            <SelectBox
+              label="Phase"
+              menuItems={quizPhase}
+              value={phase}
+              onChange={(e) => setPhase(e.target.value)}
+            />
           </Stack>
         </form>
       </Box>

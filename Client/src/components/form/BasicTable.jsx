@@ -1,8 +1,18 @@
-import { Box } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import React, { useState } from "react";
 
-function BasicTable({ rows, columns, hideColumns }) {
+function BasicTable({
+  rows,
+  columns,
+  hideColumns,
+  disableRowSelectionOnClick = true,
+  selectedRowIds,
+  setSelectedRowIds,
+  handleSelectionModelChange,
+  handleDeleteRows,
+  ...others
+}) {
   const [pageSize, setPageSize] = useState(20);
   const [columnsState, setColumns] = useState(columns);
 
@@ -28,7 +38,27 @@ function BasicTable({ rows, columns, hideColumns }) {
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         columns={visibleColumns}
         onColumnVisibilityChange={handleColumnVisibilityChange}
-        components={{ Toolbar: GridToolbar }}
+        components={{
+          Toolbar: () => (
+            <>
+              <Stack direction="row" justifyContent="space-between">
+                <GridToolbar />
+                {selectedRowIds && selectedRowIds.length > 0 && (
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={handleDeleteRows}
+                  >
+                    Delete selected rows
+                  </Button>
+                )}
+              </Stack>
+            </>
+          ),
+        }}
+        disableRowSelectionOnClick
+        onSelectionModelChange={handleSelectionModelChange}
+        {...others}
       />
     </Box>
   );

@@ -23,9 +23,11 @@ router
   .get("/user", User.get)
   .get("/student", User.getStudent)
   .post("/user", User.register)
+  .post("/users", User.usersRegister)
   .post("/user/find", User.find)
   .put("/user", User.update)
-  .delete("/user", User.delete);
+  .delete("/user", User.delete)
+  .delete("/users", User.usersDelete);
 router
   .get("/quiz", Quiz.get)
   .get("/quiz/:id", Quiz.getById)

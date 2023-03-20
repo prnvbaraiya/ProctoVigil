@@ -33,11 +33,17 @@ const UserService = {
   set: async (data) => {
     return sendRequest("post", "user", data);
   },
+  setStudents: async (data) => {
+    return sendRequest("post", "users", data);
+  },
   update: async (data) => {
     return sendRequest("put", "user", data);
   },
   delete: async (data) => {
     return sendRequest("delete", "user", data);
+  },
+  deleteUsers: async (data) => {
+    return sendRequest("delete", "users", data);
   },
 };
 

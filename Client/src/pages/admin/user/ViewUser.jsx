@@ -20,6 +20,8 @@ function ViewUser() {
     horizontal: "right",
   });
   const [deleteDialogBox, setDeleteDialogBox] = useState(false);
+  const [selectedRowIds, setSelectedRowIds] = useState([]);
+  const [rowsDeletesDialogBox, setrowsDeleteDialogBox] = useState(false);
   const [deleteId, setDeleteId] = useState("");
 
   useEffect(() => {
@@ -95,6 +97,24 @@ function ViewUser() {
 
   const hideColumns = ["_id"];
 
+  const handleSelectionModelChange = (selectionModel) => {
+    setSelectedRowIds(selectionModel);
+  };
+
+  const handleRowsDelete = async () => {
+    const res = await UserService.deleteUsers(selectedRowIds);
+    if (res.status === 202) {
+      setrowsDeleteDialogBox(false);
+      setSnackbarData({
+        ...snackbarData,
+        open: true,
+        message: res.data,
+      });
+    } else {
+      alert("There is some error try again after some time");
+    }
+  };
+
   return (
     <>
       <Box>
@@ -103,8 +123,15 @@ function ViewUser() {
           open={deleteDialogBox}
           setOpen={setDeleteDialogBox}
           handleSuccess={() => handleDelete(deleteId)}
-          title="Are Your You want to delete User ?"
+          title="Are you sure you want to delete User ?"
           data="Ok Delete it"
+        />
+        <AlertDialogBox
+          open={rowsDeletesDialogBox}
+          setOpen={setrowsDeleteDialogBox}
+          handleSuccess={() => handleRowsDelete()}
+          title="Are you sure you want to delete selected Users ?"
+          data="This action is irrversible"
         />
         <Box
           sx={{
@@ -125,9 +152,14 @@ function ViewUser() {
         <Box textAlign="center">
           {!loading && (
             <BasicTable
+              selectedRowIds={selectedRowIds}
+              setSelectedRowIds={setSelectedRowIds}
+              handleSelectionModelChange={handleSelectionModelChange}
+              handleDeleteRows={() => setrowsDeleteDialogBox(true)}
               rows={data}
               columns={columns}
               hideColumns={hideColumns}
+              checkboxSelection={true}
             />
           )}
         </Box>
