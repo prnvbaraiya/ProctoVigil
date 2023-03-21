@@ -1,5 +1,6 @@
 import {
   Button,
+  Checkbox,
   FormControl,
   Stack,
   TextField,
@@ -59,38 +60,63 @@ function QuestionAdd({ questions, setQuestions }) {
   const handleAddQuestion = () => {
     setQuestions([
       ...questions,
-      { question: "", incorrect_answer: ["", "", ""], correct_answer: "" },
+      {
+        question: "",
+        options: [{ type: "multiple", text: "", isCorrect: false }],
+      },
     ]);
   };
 
-  const handleRemoveQuestion = (event, index) => {
-    event.preventDefault();
-    event.stopPropagation(); // stop the event from propagating
+  const handleRemoveQuestion = (event, qIndex) => {
     const newQuestions = [...questions];
-    newQuestions.splice(index, 1);
+    newQuestions.splice(qIndex, 1);
     setQuestions(newQuestions);
   };
 
-  const handleQuestionChange = (event, index) => {
+  const handleQuestionChange = (event, qIndex) => {
     const { name, value } = event.target;
     const newQuestions = [...questions];
-    newQuestions[index][name] = value;
+    newQuestions[qIndex][name] = value;
     setQuestions(newQuestions);
+  };
+
+  const handleOptionCheckChange = (event, qIndex, oIndex) => {
+    setQuestions((prevQuestions) => {
+      const newQuestions = [...prevQuestions];
+      const newOptions = [...newQuestions[qIndex].options];
+      newOptions[oIndex] = {
+        ...newOptions[oIndex],
+        isCorrect: event.target.checked,
+      };
+      newQuestions[qIndex] = { ...newQuestions[qIndex], options: newOptions };
+      return newQuestions;
+    });
   };
 
   const handleOptionChange = (event, qIndex, oIndex) => {
-    const { value } = event.target;
+    setQuestions((prevQuestions) => {
+      const newQuestions = [...prevQuestions];
+      const newOptions = [...newQuestions[qIndex].options];
+      newOptions[oIndex] = { ...newOptions[oIndex], text: event.target.value };
+      newQuestions[qIndex] = { ...newQuestions[qIndex], options: newOptions };
+      return newQuestions;
+    });
+  };
+
+  const handleAddOption = (event, qIndex) => {
     const newQuestions = [...questions];
-    newQuestions[qIndex].incorrect_answer[oIndex] = value;
+    const option = { text: "", is_correct: false };
+    newQuestions[qIndex].options.push(option);
     setQuestions(newQuestions);
   };
 
-  const handleCorrectAnswerChange = (event, index) => {
-    const { value } = event.target;
+  const handleRemoveOption = (event, qIndex, oIndex) => {
     const newQuestions = [...questions];
-    newQuestions[index].correct_answer = value;
+    console.log(newQuestions);
+    newQuestions[qIndex].options.splice(oIndex, 1);
     setQuestions(newQuestions);
   };
+
   return (
     <>
       <Box
@@ -113,57 +139,75 @@ function QuestionAdd({ questions, setQuestions }) {
         </Button>
       </Box>
 
-      {questions.map((question, index) => (
+      {questions.map((question, qIndex) => (
         <Accordion
-          expanded={expanded === `panel${index + 1}`}
-          onChange={handleChange(`panel${index + 1}`)}
-          key={index}
+          expanded={expanded === `panel${qIndex + 1}`}
+          onChange={handleChange(`panel${qIndex + 1}`)}
+          key={qIndex}
         >
-          <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-            <Typography>Question {index + 1}</Typography>
+          <AccordionSummary
+            aria-controls={`panel${qIndex + 1}d-content`}
+            id={`panel${qIndex + 1}d-header`}
+          >
+            <Typography>Question {qIndex + 1}</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Stack spacing={1}>
               <FormControl fullWidth>
                 <TextField
-                  id="outlined-basic"
+                  id={`question${qIndex}`}
                   name="question"
-                  onChange={(e) => handleQuestionChange(e, index)}
+                  onChange={(e) => handleQuestionChange(e, qIndex)}
                   value={question.question}
                   label="Question"
                   variant="outlined"
                 />
               </FormControl>
-              {question.incorrect_answer.map((option, oIndex) => (
+              {question.options.map((option, oIndex) => (
                 <FormControl key={oIndex} fullWidth>
-                  <TextField
-                    id="outlined-basic"
-                    name={`option${oIndex + 1}`}
-                    value={option}
-                    onChange={(e) => handleOptionChange(e, index, oIndex)}
-                    label={`Incorrect option ${oIndex + 1}`}
-                    variant="outlined"
-                  />
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Checkbox
+                      checked={option.isCorrect}
+                      onChange={(e) =>
+                        handleOptionCheckChange(e, qIndex, oIndex)
+                      }
+                    />
+                    <FormControl fullWidth>
+                      <TextField
+                        id={`option${oIndex + 1}q${qIndex}`}
+                        name={`option${oIndex + 1}`}
+                        value={option.text}
+                        onChange={(e) => handleOptionChange(e, qIndex, oIndex)}
+                        label={`Option ${oIndex + 1}`}
+                        variant="outlined"
+                      />
+                    </FormControl>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      sx={{ margin: "0 10px" }}
+                      onClick={(e) => handleRemoveOption(e, qIndex, oIndex)}
+                    >
+                      -
+                    </Button>
+                  </Box>
                 </FormControl>
               ))}
-              <FormControl>
-                <TextField
-                  id="outlined-basic"
-                  name="correct_answer"
-                  value={question.correct_answer}
-                  onChange={(e) => handleCorrectAnswerChange(e, index)}
-                  label={`Correct option`}
-                  variant="outlined"
-                />
+              <FormControl fullWidth>
+                <Button
+                  variant="contained"
+                  onClick={(e) => handleAddOption(e, qIndex)}
+                >
+                  Add Option
+                </Button>
               </FormControl>
-
               <FormControl fullWidth>
                 <Button
                   variant="contained"
                   color="error"
-                  onClick={(e) => handleRemoveQuestion(e, index)}
+                  onClick={(e) => handleRemoveQuestion(e, qIndex)}
                 >
-                  -
+                  Delete Question
                 </Button>
               </FormControl>
             </Stack>

@@ -9,6 +9,7 @@ import Unauthorized from "./pages/Unauthorized";
 import PageNotFound from "./pages/PageNotFound";
 import Register from "./pages/Register";
 import Test from "./pages/Test";
+import RequireAuth from "./pages/RequireAuth";
 
 function App() {
   const handleContextMenu = (e) => {
@@ -27,7 +28,12 @@ function App() {
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/test" element={<Test />} />
+          <Route
+            element={<RequireAuth allowedRoles={["admin"]} />}
+            key="Student"
+          >
+            <Route path="/test" element={<Test />} />
+          </Route>
           {UserRoutes}
           {AdminRoutes}
           <Route path="*" element={<Navigate to="/page-not-found" replace />} />

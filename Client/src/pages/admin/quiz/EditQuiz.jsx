@@ -2,6 +2,7 @@ import { Box, Stack, Button, Divider, Typography } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { getRandomQuestions } from "../../../common/Methods";
 import DateTime from "../../../components/form/DateTime";
 import QuestionAdd from "../../../components/form/QuestionAdd";
 import SelectChip from "../../../components/form/SelectChip";
@@ -24,7 +25,11 @@ function EditQuiz() {
   const duration = useFormInput("");
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [questions, setQuestions] = useState([
-    { question: "", incorrect_answer: ["", "", ""], correct_answer: "" },
+    {
+      type: "multiple",
+      question: "",
+      options: [{ text: "", isCorrect: false }],
+    },
   ]);
   const navigate = useNavigate();
 
@@ -68,18 +73,9 @@ function EditQuiz() {
 
   const handleRandomQuestions = async () => {
     setLoading(true);
-    const data = await axios.get(
-      `https://opentdb.com/api.php?amount=${randomQuestionNumber.value}&type=multiple`
-    );
-
-    const res = data.data.results.map((item) => {
-      return {
-        question: item.question,
-        incorrect_answer: item.incorrect_answers,
-        correct_answer: item.correct_answer,
-      };
-    });
-    setQuestions(res);
+    const tmpQuestions = await getRandomQuestions(randomQuestionNumber.value);
+    setQuestions(tmpQuestions);
+    randomQuestionNumber.onChange("");
     setLoading(false);
   };
 

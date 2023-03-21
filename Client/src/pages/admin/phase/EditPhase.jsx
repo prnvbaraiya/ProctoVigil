@@ -6,7 +6,7 @@ import SelectBox from "../../../components/form/SelectBox";
 import TextBox from "../../../components/form/TextBox";
 import { useFormInput } from "../../../hooks/useFormInput";
 import { QuizService } from "../../../services/ServerRequest";
-import { quizPhase } from "../../../variables/Data";
+import { quizPhase } from "../../../common/Data";
 
 function EditPhase() {
   const location = useLocation();

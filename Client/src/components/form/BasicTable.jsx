@@ -56,7 +56,7 @@ function BasicTable({
             </>
           ),
         }}
-        disableRowSelectionOnClick
+        disableSelectionOnClick
         onSelectionModelChange={handleSelectionModelChange}
         {...others}
       />

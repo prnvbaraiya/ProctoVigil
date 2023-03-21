@@ -15,11 +15,11 @@ import {
 import TextBox from "../components/form/TextBox";
 import { useFormInput } from "../hooks/useFormInput";
 import axios from "axios";
-import { SERVER_LINK } from "../variables/constants";
+import { SERVER_LINK } from "../common/constants";
 import { useNavigate } from "react-router-dom";
 import side from "../assets/side.jpg";
 import { Box } from "@mui/system";
-import { userRoles } from "../variables/Data";
+import { userRoles } from "../common/Data";
 import RadioButton from "../components/form/RadioButton";
 import LoadingSpinner from "../components/LoadingSpinner";
 

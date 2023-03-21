@@ -1,5 +1,6 @@
 import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import TextBox from "../../../components/form/TextBox";
 import { useFormInput } from "../../../hooks/useFormInput";
@@ -8,12 +9,11 @@ import SelectChip from "../../../components/form/SelectChip";
 import QuestionAdd from "../../../components/form/QuestionAdd";
 import auth from "../../../auth/auth";
 import { QuizService, UserService } from "../../../services/ServerRequest";
-import axios from "axios";
 import LoadingSpinner from "../../../components/LoadingSpinner";
+import { getRandomQuestions } from "../../../common/Methods";
 
 function AddQuiz() {
   const [loading, setLoading] = React.useState(false);
-  const randomQuestionNumber = useFormInput("");
   const [names, setNames] = useState([]);
   const author = useFormInput(auth.username);
   const name = useFormInput("");
@@ -22,8 +22,26 @@ function AddQuiz() {
   const [endDate, setEndDate] = useState(new Date());
   const duration = useFormInput("");
   const [studentNames, setstudentNames] = useState([]);
+  const randomQuestionNumber = useFormInput("");
+  // const [sections, setSections] = useState([
+  //   {
+  //     title: "",
+  //     duration: "",
+  //     questions: [
+  //       {
+  //         type: "multiple",
+  //         question: "",
+  //         options: [{ text: "", isCorrect: false }],
+  //       },
+  //     ],
+  //   },
+  // ]);
   const [questions, setQuestions] = useState([
-    { question: "", incorrect_answer: ["", "", ""], correct_answer: "" },
+    {
+      type: "multiple",
+      question: "",
+      options: [{ text: "", isCorrect: false }],
+    },
   ]);
   const navigate = useNavigate();
 
@@ -48,18 +66,9 @@ function AddQuiz() {
 
   const handleRandomQuestions = async () => {
     setLoading(true);
-    const data = await axios.get(
-      `https://opentdb.com/api.php?amount=${randomQuestionNumber.value}&type=multiple`
-    );
-
-    const res = data.data.results.map((item) => {
-      return {
-        question: item.question,
-        incorrect_answer: item.incorrect_answers,
-        correct_answer: item.correct_answer,
-      };
-    });
-    setQuestions(res);
+    const tmpQuestions = await getRandomQuestions(randomQuestionNumber.value);
+    setQuestions(tmpQuestions);
+    randomQuestionNumber.onChange("");
     setLoading(false);
   };
 
@@ -162,11 +171,16 @@ function AddQuiz() {
                 fullWidth={false}
                 {...randomQuestionNumber}
               />
-              <Button variant="contained" onClick={handleRandomQuestions}>
+              <Button
+                variant="contained"
+                onClick={handleRandomQuestions}
+                disabled={randomQuestionNumber.value <= 0}
+              >
                 Submit
               </Button>
             </Stack>
             <QuestionAdd questions={questions} setQuestions={setQuestions} />
+            {/* <QuestionAdd sections={sections} setSections={setSections} /> */}
           </Stack>
         </form>
       </Box>

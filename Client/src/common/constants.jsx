@@ -4,8 +4,7 @@
 // export const SERVER_LINK = "https://dashing-otter-62d612.netlify.app/api/"; //for Backend
 export const SERVER_LINK = import.meta.env.VITE_SERVER_LINK;
 
-export const JWT_SEC_KEY =
-  "2844ace3919e1f12b610f5128ad657f1cc912c47b4b9b85265dc0f45eb5be12e";
+export const JWT_SEC_KEY = import.meta.env.VITE_JWT_SEC_KEY;
 
 const ROLES = {
   User: 2002,

@@ -2,8 +2,14 @@ import { Box, Button, Grid } from "@mui/material";
 import { Stack } from "@mui/system";
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  blueEvent,
+  offlineEvent,
+  suffeledArray,
+} from "../../../common/Methods";
 import AlertDialogBox from "../../../components/AlertDialogBox";
 import LoadingSpinner from "../../../components/LoadingSpinner";
+import DisplayQuestions from "../../../components/quiz/DisplayQuestions";
 import ExamHeader from "../../../components/quiz/ExamHeader";
 import QuestionNavigation from "../../../components/quiz/QuestionNavigation";
 import {
@@ -29,25 +35,57 @@ const AttemptQuiz = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const getData = async () => {
+      const res = await QuizService.getById(id);
+      setData(res.data);
+
+      // Shuffle the options for each question and set the answer key
+      const updatedQuestions = res.data.questions.map((item) => {
+        const suffeledOptions = suffeledArray(item.options);
+        return {
+          ...item,
+          suffeledOptions,
+        };
+      });
+
+      // Set the updated questions and set isLoading to false
+      setQuestions(updatedQuestions);
+      // setQuestions((prevQuestions) => {
+      //   const shuffledQuestions = [...updatedQuestions];
+      //   for (let i = shuffledQuestions.length - 1; i > 0; i--) {
+      //     const j = Math.floor(Math.random() * (i + 1));
+      //     [shuffledQuestions[i], shuffledQuestions[j]] = [
+      //       shuffledQuestions[j],
+      //       shuffledQuestions[i],
+      //     ];
+      //     answerKey
+      //   }
+      //   return shuffledQuestions;
+      // });
+      setSelectedAnswers(
+        Array.from({ length: res.data.questions.length }, () => null)
+      );
+      setLoading(false);
+    };
     getData();
     if (import.meta.env.VITE_PRODUCTION === "true") {
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen();
       }
       window.addEventListener("offline", offlineEvent);
-      window.addEventListener("blur", blueEvent);
+      window.addEventListener("blur", () => blueEvent(setWarningCount));
       return () => {
         if (document.fullscreenElement) {
           document.exitFullscreen();
         }
-        window.removeEventListener("blur", blueEvent);
+        window.removeEventListener("blur", () => blueEvent(setWarningCount));
         window.removeEventListener("offline", offlineEvent);
       };
     }
     // eslint-disable-next-line
   }, []);
 
-  const downloadVideo = async (blob, fileName) => {
+  const sendVideo = async (blob, fileName) => {
     const data = new FormData();
     data.append("quiz_id", id);
     data.append("username", zConfig.userName);
@@ -55,64 +93,7 @@ const AttemptQuiz = (props) => {
     const res = await UserRecordingService.set(data);
   };
 
-  // Function to shuffle an array
-  const suffeledArray = (len) => {
-    const arr = [];
-    while (arr.length < len) {
-      const rand = Math.floor(Math.random() * len);
-      if (!arr.includes(rand)) arr.push(rand);
-    }
-    return arr;
-  };
-
-  const blueEvent = () => {
-    alert("You are trying to change window please stay on this window");
-    setWarningCount((prev) => prev + 1);
-  };
-
-  const offlineEvent = () => {
-    alert("There is Problem with your internet");
-  };
-
-  const getData = async () => {
-    const res = await QuizService.getById(id);
-    setData(res.data);
-
-    // Shuffle the options for each question and set the answer key
-    const updatedQuestions = res.data.questions.map((item) => {
-      const newArray = [item.correct_answer, ...item.incorrect_answer];
-      const suffleArr = suffeledArray(newArray.length);
-      setAnswerKey((prev) => [...prev, suffleArr.indexOf(0)]);
-      return {
-        ...item,
-        suffeledOptions: suffleArr.map((item) => {
-          return newArray[item];
-        }),
-      };
-    });
-
-    // Set the updated questions and set isLoading to false
-    setQuestions(updatedQuestions);
-    // setQuestions((prevQuestions) => {
-    //   const shuffledQuestions = [...updatedQuestions];
-    //   for (let i = shuffledQuestions.length - 1; i > 0; i--) {
-    //     const j = Math.floor(Math.random() * (i + 1));
-    //     [shuffledQuestions[i], shuffledQuestions[j]] = [
-    //       shuffledQuestions[j],
-    //       shuffledQuestions[i],
-    //     ];
-    //     answerKey
-    //   }
-    //   return shuffledQuestions;
-    // });
-    setSelectedAnswers(
-      Array.from({ length: res.data.questions.length }, () => null)
-    );
-    setLoading(false);
-  };
-
   const handleAnswerChange = (e) => {
-    // Update the selected answers
     setSelectedAnswers((prevAnswers) => {
       const newAnswers = [...prevAnswers];
       newAnswers[selectedQuestion - 1] = e.target.value;
@@ -121,31 +102,14 @@ const AttemptQuiz = (props) => {
   };
 
   const handleSuccess = async () => {
-    const answeredQuestions = selectedAnswers.map((item) => {
-      return item === "A"
-        ? 0
-        : item === "B"
-        ? 1
-        : item === "C"
-        ? 2
-        : item === "D"
-        ? 3
-        : null;
-    });
-    let tMarks = 0;
-    for (let i = 0; i < selectedAnswers.length; i++) {
-      if (answeredQuestions[i] === answerKey[i]) {
-        tMarks += 1;
-      }
-    }
     const data = {
       QuizId: id,
       totalMarks: selectedAnswers.length,
       students: {
         username: zConfig.userName,
         answerKey,
-        studentAnswer: answeredQuestions,
-        obtainedMarks: tMarks,
+        studentAnswer: selectedAnswers,
+        obtainedMarks: -1,
         warningCount,
       },
     };
@@ -184,41 +148,12 @@ const AttemptQuiz = (props) => {
                 <Stack sx={{ position: "relative" }}>
                   <Box>
                     {!loading && (
-                      <div>
-                        {/* Display the current question */}
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html:
-                              selectedQuestion +
-                              ") " +
-                              questions[selectedQuestion - 1].question,
-                          }}
-                        />
-                        {/* Display the options for the current question */}
-                        {["A", "B", "C", "D"].map((choice, index) => {
-                          const answer =
-                            questions[selectedQuestion - 1].suffeledOptions[
-                              index
-                            ];
-                          return (
-                            <div key={choice} style={{ marginTop: 5 }}>
-                              <label>
-                                <input
-                                  type="radio"
-                                  value={choice}
-                                  name={`question-${selectedQuestion}`}
-                                  checked={
-                                    choice ===
-                                    selectedAnswers[selectedQuestion - 1]
-                                  }
-                                  onChange={(e) => handleAnswerChange(e)}
-                                />
-                                {`${choice}) ${answer}`}
-                              </label>
-                            </div>
-                          );
-                        })}
-                      </div>
+                      <DisplayQuestions
+                        selectedQuestion={selectedQuestion}
+                        questions={questions}
+                        selectedAnswers={selectedAnswers}
+                        handleAnswerChange={handleAnswerChange}
+                      />
                     )}
                   </Box>
                   <Box
@@ -281,7 +216,7 @@ const AttemptQuiz = (props) => {
                     setVisitedQuestions={setVisitedQuestions}
                     visitedQuestions={visitedQuestions}
                     entireScreenStream={localS}
-                    downloadVideo={downloadVideo}
+                    downloadVideo={sendVideo}
                   />
                 </Box>
               </Grid>

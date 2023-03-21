@@ -1,7 +1,7 @@
 import { Box, Divider, IconButton, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
-import { quizPhase } from "../../../variables/Data";
+import { quizPhase } from "../../../common/Data";
 import BasicTable from "../../../components/form/BasicTable";
 import { QuizService } from "../../../services/ServerRequest";
 import { Link } from "react-router-dom";

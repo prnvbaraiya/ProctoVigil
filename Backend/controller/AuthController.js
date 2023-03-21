@@ -304,51 +304,60 @@ const Quiz = {
 
 const QuizResult = {
   add: async (req, res) => {
-    const { QuizId, totalMarks, students } = req.body;
+    try {
+      const { QuizId, totalMarks, students } = req.body;
 
-    // Find the quiz result document by QuizId
-    let quizResult = await QuizResultModel.findOne({ QuizId });
+      // Find the quiz result document by QuizId
+      let quizResult = await QuizResultModel.findOne({ QuizId });
 
-    // If the document does not exist, create a new one
-    if (!quizResult) {
-      quizResult = new QuizResultModel({ QuizId, totalMarks });
-    }
-
-    // Iterate through the students and add or update the quiz result
-    const { username, answerKey, studentAnswer, obtainedMarks, warningCount } =
-      students;
-
-    // Find the user by username
-    const user = await UserModel.findOne({ username });
-
-    if (user) {
-      // Check if the student already has a quiz result in the document
-      const existingStudent = quizResult.students.find(
-        (s) => s.user.toString() === user._id.toString()
-      );
-
-      if (existingStudent) {
-        // Update the existing quiz result
-        existingStudent.answerKey = answerKey;
-        existingStudent.studentAnswer = studentAnswer;
-        existingStudent.obtainedMarks = obtainedMarks;
-        existingStudent.warningCount = warningCount;
-      } else {
-        // Add a new quiz result for the student
-        quizResult.students.push({
-          user: user._id,
-          answerKey,
-          studentAnswer,
-          obtainedMarks,
-          warningCount,
-        });
+      // If the document does not exist, create a new one
+      if (!quizResult) {
+        quizResult = new QuizResultModel({ QuizId, totalMarks });
       }
+
+      // Iterate through the students and add or update the quiz result
+      const {
+        username,
+        answerKey,
+        studentAnswer,
+        obtainedMarks,
+        warningCount,
+      } = students;
+
+      // Find the user by username
+      const user = await UserModel.findOne({ username });
+
+      if (user) {
+        // Check if the student already has a quiz result in the document
+        const existingStudent = quizResult.students.find(
+          (s) => s.user.toString() === user._id.toString()
+        );
+
+        if (existingStudent) {
+          // Update the existing quiz result
+          existingStudent.answerKey = answerKey;
+          existingStudent.studentAnswer = studentAnswer;
+          existingStudent.obtainedMarks = obtainedMarks;
+          existingStudent.warningCount = warningCount;
+        } else {
+          // Add a new quiz result for the student
+          quizResult.students.push({
+            user: user._id,
+            answerKey,
+            studentAnswer,
+            obtainedMarks,
+            warningCount,
+          });
+        }
+      }
+
+      // Save the quiz result document
+      await quizResult.save();
+
+      res.status(SUCCESS_CODE).send("Quiz result added successfully");
+    } catch (err) {
+      return res.status(ERROR_CODE).send("There is some error: " + err);
     }
-
-    // Save the quiz result document
-    await quizResult.save();
-
-    res.status(SUCCESS_CODE).send("Quiz result added successfully");
   },
   get: async (req, res) => {
     try {
@@ -508,7 +517,6 @@ const UserRecording = {
     );
 
     const finalPath = localPath;
-    console.log(finalPath);
 
     if (!fs.existsSync(finalPath)) {
       throw new Error("File not found!");
@@ -530,7 +538,6 @@ const UserRecording = {
       .catch((error) => {
         console.error(error);
       });
-    console.log("File URL:", JSON.stringify(savedFile.data, null, 2));
     console.info("File uploaded successfully!");
 
     const permission = await googleDriveService

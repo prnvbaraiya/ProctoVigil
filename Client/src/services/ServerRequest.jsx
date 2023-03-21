@@ -1,6 +1,6 @@
 import axios from "axios";
 import auth from "../auth/auth";
-import { SERVER_LINK } from "../variables/constants";
+import { SERVER_LINK } from "../common/constants";
 
 const sendRequest = async (type, link, data = null) => {
   const config = {

@@ -11,7 +11,7 @@ import {
 import logo from "../../assets/logo.png";
 import { NavItem } from "./nav-item";
 
-import { adminSidebarItems } from "../../variables/Data";
+import { adminSidebarItems } from "../../common/Data";
 
 const items = adminSidebarItems;
 

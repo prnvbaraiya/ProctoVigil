@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router";
-import { SERVER_LINK } from "../variables/constants";
+import { SERVER_LINK } from "../common/constants";
 import auth from "../auth/auth";
 import side from "../assets/side.jpg";
 import SnackbarDisplay from "../components/SnackbarDisplay";

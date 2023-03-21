@@ -6,7 +6,7 @@ import TextBox from "../../../components/form/TextBox";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import { useFormInput } from "../../../hooks/useFormInput";
 import { UserService } from "../../../services/ServerRequest";
-import { userRoles } from "../../../variables/Data";
+import { userRoles } from "../../../common/Data";
 
 function EditUser() {
   const [loading, setLoading] = useState(false);

@@ -6,7 +6,7 @@ import SelectBox from "../../../components/form/SelectBox";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import { useFormInput } from "../../../hooks/useFormInput";
 import { UserService } from "../../../services/ServerRequest";
-import { userRoles } from "../../../variables/Data";
+import { userRoles } from "../../../common/Data";
 import ManualUserAdd from "./ManualUserAdd";
 import CSVUserAdd from "./CSVUserAdd";
 

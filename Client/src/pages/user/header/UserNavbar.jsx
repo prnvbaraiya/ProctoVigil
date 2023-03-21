@@ -22,7 +22,7 @@ import {
   userMenuItem,
   homeMenuItem,
   adminMenuItem,
-} from "../../../variables/Data";
+} from "../../../common/Data";
 import auth from "../../../auth/auth";
 
 const UserNavbarRoot = styled(AppBar)(({ theme }) => ({
