@@ -1,46 +1,8 @@
 import React from "react";
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControl,
-  Radio,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, FormControl, Radio, Stack, TextField } from "@mui/material";
 
-function BooleanQuestion({ questions, setQuestions, question, qIndex }) {
-  const handleQuestionChange = (event, qIndex) => {
-    const { name, value } = event.target;
-    const newQuestions = [...questions];
-    newQuestions[qIndex][name] = value;
-    setQuestions(newQuestions);
-  };
-
-  const handleOptionCheckChange = (qIndex, oIndex) => {
-    setQuestions((prevQuestions) => {
-      const updatedQuestions = [...prevQuestions];
-      const selectedOption = updatedQuestions[qIndex].options[oIndex];
-      selectedOption.isCorrect = true;
-      updatedQuestions[qIndex].options.forEach((option) => {
-        if (option !== selectedOption) {
-          option.isCorrect = false;
-        }
-      });
-      return updatedQuestions;
-    });
-  };
-
-  const handleOptionChange = (event, qIndex, oIndex) => {
-    setQuestions((prevQuestions) => {
-      const newQuestions = [...prevQuestions];
-      const newOptions = [...newQuestions[qIndex].options];
-      newOptions[oIndex] = { ...newOptions[oIndex], text: event.target.value };
-      newQuestions[qIndex] = { ...newQuestions[qIndex], options: newOptions };
-      return newQuestions;
-    });
-  };
+function BooleanQuestion({ question, qIndex, commonMethods }) {
+  const { handleSingleOptionCheckChange, handleQuestionChange } = commonMethods;
 
   return (
     <>
@@ -64,7 +26,7 @@ function BooleanQuestion({ questions, setQuestions, question, qIndex }) {
             <Radio
               checked={question.options[0].isCorrect}
               id="true"
-              onChange={() => handleOptionCheckChange(qIndex, 0)}
+              onChange={() => handleSingleOptionCheckChange(qIndex, 0)}
             />
             <label htmlFor="true">{question.options[0].text}</label>
           </Box>
@@ -75,7 +37,7 @@ function BooleanQuestion({ questions, setQuestions, question, qIndex }) {
             <Radio
               checked={question.options[1].isCorrect}
               id="false"
-              onChange={() => handleOptionCheckChange(qIndex, 1)}
+              onChange={() => handleSingleOptionCheckChange(qIndex, 1)}
             />
             <label htmlFor="false">{question.options[1].text}</label>
           </Box>

@@ -1,7 +1,16 @@
-import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  Box,
+  Button,
+  Divider,
+  Stack,
+  Typography,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+} from "@mui/material";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import TextBox from "../../../components/form/TextBox";
 import { useFormInput } from "../../../hooks/useFormInput";
 import DateTime from "../../../components/form/DateTime";
@@ -12,6 +21,7 @@ import { QuizService, UserService } from "../../../services/ServerRequest";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import { getRandomQuestions } from "../../../common/Methods";
 import { questionTypes } from "../../../common/Data";
+import SelectBox from "../../../components/form/SelectBox";
 
 function AddQuiz() {
   const [loading, setLoading] = React.useState(false);
@@ -21,27 +31,20 @@ function AddQuiz() {
   const description = useFormInput("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const duration = useFormInput("");
   const [selectedStudents, setSelectedStudents] = useState([]);
+  const randomQuestionSection = useFormInput("");
   const randomQuestionNumber = useFormInput("");
-  // const [sections, setSections] = useState([
-  //   {
-  //     title: "",
-  //     duration: "",
-  //     questions: [
-  //       {
-  //         type: questionTypes[0].value,
-  //         question: "",
-  //         options: [{ text: "", isCorrect: false }],
-  //       },
-  //     ],
-  //   },
-  // ]);
-  const [questions, setQuestions] = useState([
+  const [sections, setSections] = useState([
     {
-      type: questionTypes[0].value,
-      question: "",
-      options: [{ text: "", isCorrect: false }],
+      title: "Section 1",
+      duration: "",
+      questions: [
+        {
+          type: questionTypes[0].value,
+          question: "",
+          options: [{ text: "", isCorrect: false }],
+        },
+      ],
     },
   ]);
   const navigate = useNavigate();
@@ -64,15 +67,22 @@ function AddQuiz() {
   useEffect(() => {
     setLoading(true);
     if (new Date(startDate).getTime() > new Date(endDate).getTime()) {
-      setEndDate(new Date(startDate).getTime() + (duration.value * 60 || 0));
+      setEndDate(new Date(startDate).getTime());
     }
     setLoading(false);
-  }, [startDate, endDate, duration]);
+  }, [startDate, endDate]);
 
   const handleRandomQuestions = async () => {
     setLoading(true);
     const tmpQuestions = await getRandomQuestions(randomQuestionNumber.value);
-    setQuestions(tmpQuestions);
+    setSections((prev) => {
+      const tmpPrev = [...prev];
+      tmpPrev[randomQuestionSection.value - 1].questions = tmpQuestions;
+      tmpPrev[randomQuestionSection.value - 1].duration =
+        randomQuestionNumber.value * 2;
+      return tmpPrev;
+    });
+    randomQuestionSection.onChange("");
     randomQuestionNumber.onChange("");
     setLoading(false);
   };
@@ -85,14 +95,13 @@ function AddQuiz() {
       description: description.value,
       startDate: startDate,
       endDate: endDate,
-      duration: duration.value,
       studentNames: selectedStudents.map((selectedValue) => {
         const selectedName = studentNames.find(
           (name) => name.title === selectedValue
         );
         return selectedName.value;
       }),
-      questions,
+      sections,
     };
     const res = await QuizService.set(data);
     if (res.status === 202) {
@@ -106,6 +115,21 @@ function AddQuiz() {
       alert("There is Some error ", JSON.stringify(res));
     }
     setLoading(false);
+  };
+
+  const handleAddSection = () => {
+    const newSection = {
+      title: `Section ${sections.length + 1}`, // replace with your desired section title
+      duration: "", // replace with your desired section duration
+      questions: [
+        {
+          type: questionTypes[0].value,
+          question: "",
+          options: [{ text: "", isCorrect: false }],
+        },
+      ], // an array to hold questions for this section
+    };
+    setSections([...sections, newSection]);
   };
 
   return (
@@ -156,12 +180,6 @@ function AddQuiz() {
                 setValue={setEndDate}
                 minDate={startDate}
               />
-              <TextBox
-                label="Duration (in minutes)"
-                type="number"
-                fullWidth={false}
-                {...duration}
-              />
             </Stack>
             <SelectChip
               label="Students"
@@ -174,7 +192,16 @@ function AddQuiz() {
               direction={{ lg: "row", sm: "column" }}
               sx={{ alignItems: "center" }}
             >
-              <Typography>Enter Number of Random Questions</Typography>
+              <Typography>Random Questions</Typography>
+              <SelectBox
+                label="Section"
+                menuItems={sections.map((item, index) => ({
+                  title: item.title,
+                  value: index + 1,
+                }))}
+                fullWidth={false}
+                {...randomQuestionSection}
+              />
               <TextBox
                 label="Number of Questions"
                 type="number"
@@ -189,8 +216,52 @@ function AddQuiz() {
                 Submit
               </Button>
             </Stack>
-            <QuestionAdd questions={questions} setQuestions={setQuestions} />
-            {/* <QuestionAdd sections={sections} setSections={setSections} /> */}
+            <Button variant="contained" onClick={handleAddSection}>
+              Add Section
+            </Button>
+            {sections.map((section, index) => (
+              <Accordion
+                key={index}
+                sx={{ backgroundColor: "rgba(100, 116, 139, 0.12)" }}
+              >
+                <AccordionSummary expandIcon={<KeyboardArrowUpIcon />}>
+                  <Typography variant="h6">{`${section.title} (${section.questions.length} Questions)`}</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Stack>
+                    <Stack direction="row" spacing={3}>
+                      <TextBox
+                        label={`Section ${index + 1} Title`}
+                        value={section.title}
+                        onChange={(e) => {
+                          const updatedSections = [...sections];
+                          updatedSections[index].title = e.target.value;
+                          setSections(updatedSections);
+                        }}
+                      />
+                      <TextBox
+                        label={`Section ${index + 1} Duration`}
+                        type="number"
+                        value={section.duration}
+                        onChange={(e) => {
+                          const updatedSections = [...sections];
+                          updatedSections[index].duration = e.target.value;
+                          setSections(updatedSections);
+                        }}
+                      />
+                    </Stack>
+                    <QuestionAdd
+                      questions={section.questions}
+                      setQuestions={(newQuestions) => {
+                        const updatedSections = [...sections];
+                        updatedSections[index].questions = newQuestions;
+                        setSections(updatedSections);
+                      }}
+                    />
+                  </Stack>
+                </AccordionDetails>
+              </Accordion>
+            ))}
           </Stack>
         </form>
       </Box>

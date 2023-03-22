@@ -52,11 +52,11 @@ function Quiz() {
       },
     },
     {
-      field: "numberOfQuestions",
-      headerName: "No. of Questions",
+      field: "numberOfSections",
+      headerName: "No. of Sections",
       renderCell: (params) => {
         const row = params.row;
-        return <Typography>{row.questions.length}</Typography>;
+        return <Typography>{row.sections.length}</Typography>;
       },
     },
     {

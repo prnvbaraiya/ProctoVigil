@@ -25,10 +25,6 @@ const QuizSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    duration: {
-      type: Number,
-      required: true,
-    },
     studentNames: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -36,7 +32,7 @@ const QuizSchema = new mongoose.Schema(
         required: true,
       },
     ],
-    questions: {
+    sections: {
       type: Array,
       required: true,
     },

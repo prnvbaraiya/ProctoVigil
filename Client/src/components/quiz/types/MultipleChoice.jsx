@@ -1,50 +1,15 @@
 import { Box, Button, Checkbox, FormControl, TextField } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import React from "react";
 
-function MultipleChoice({ questions, setQuestions, question, qIndex }) {
-  const handleQuestionChange = (event, qIndex) => {
-    const { name, value } = event.target;
-    const newQuestions = [...questions];
-    newQuestions[qIndex][name] = value;
-    setQuestions(newQuestions);
-  };
-
-  const handleOptionCheckChange = (event, qIndex, oIndex) => {
-    setQuestions((prevQuestions) => {
-      const newQuestions = [...prevQuestions];
-      const newOptions = [...newQuestions[qIndex].options];
-      newOptions[oIndex] = {
-        ...newOptions[oIndex],
-        isCorrect: event.target.checked,
-      };
-      newQuestions[qIndex] = { ...newQuestions[qIndex], options: newOptions };
-      return newQuestions;
-    });
-  };
-
-  const handleOptionChange = (event, qIndex, oIndex) => {
-    setQuestions((prevQuestions) => {
-      const newQuestions = [...prevQuestions];
-      const newOptions = [...newQuestions[qIndex].options];
-      newOptions[oIndex] = { ...newOptions[oIndex], text: event.target.value };
-      newQuestions[qIndex] = { ...newQuestions[qIndex], options: newOptions };
-      return newQuestions;
-    });
-  };
-
-  const handleAddOption = (event, qIndex) => {
-    const newQuestions = [...questions];
-    const option = { text: "", isCorrect: false };
-    newQuestions[qIndex].options.push(option);
-    setQuestions(newQuestions);
-  };
-
-  const handleRemoveOption = (event, qIndex, oIndex) => {
-    const newQuestions = [...questions];
-    console.log(newQuestions);
-    newQuestions[qIndex].options.splice(oIndex, 1);
-    setQuestions(newQuestions);
-  };
+function MultipleChoice({ question, qIndex, commonMethods }) {
+  const {
+    handleQuestionChange,
+    handleMultipleOptionCheckChange,
+    handleOptionTextChange,
+    handleAddOption,
+    handleRemoveOption,
+  } = commonMethods;
 
   return (
     <>
@@ -63,14 +28,16 @@ function MultipleChoice({ questions, setQuestions, question, qIndex }) {
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Checkbox
               checked={option.isCorrect}
-              onChange={(e) => handleOptionCheckChange(e, qIndex, oIndex)}
+              onChange={(e) =>
+                handleMultipleOptionCheckChange(e, qIndex, oIndex)
+              }
             />
             <FormControl fullWidth>
               <TextField
                 id={`option${oIndex + 1}q${qIndex}`}
                 name={`option${oIndex + 1}`}
                 value={option.text}
-                onChange={(e) => handleOptionChange(e, qIndex, oIndex)}
+                onChange={(e) => handleOptionTextChange(e, qIndex, oIndex)}
                 label={`Option ${oIndex + 1}`}
                 variant="outlined"
               />
@@ -79,15 +46,15 @@ function MultipleChoice({ questions, setQuestions, question, qIndex }) {
               variant="contained"
               color="error"
               sx={{ margin: "0 10px" }}
-              onClick={(e) => handleRemoveOption(e, qIndex, oIndex)}
+              onClick={() => handleRemoveOption(qIndex, oIndex)}
             >
-              -
+              <DeleteIcon />
             </Button>
           </Box>
         </FormControl>
       ))}
       <FormControl fullWidth>
-        <Button variant="contained" onClick={(e) => handleAddOption(e, qIndex)}>
+        <Button variant="contained" onClick={() => handleAddOption(qIndex)}>
           Add Option
         </Button>
       </FormControl>
