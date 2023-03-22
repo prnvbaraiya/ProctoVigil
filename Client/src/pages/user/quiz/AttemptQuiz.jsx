@@ -103,7 +103,7 @@ const AttemptQuiz = (props) => {
 
   const handleSuccess = async () => {
     const data = {
-      QuizId: id,
+      quiz_id: id,
       totalMarks: selectedAnswers.length,
       students: {
         username: zConfig.userName,

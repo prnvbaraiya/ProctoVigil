@@ -74,9 +74,9 @@
 - [x] End date Never be less than start Date
 - [ ] when Exam starts, disable edit quiz option
 - [x] when user deleted if user is student delete from quizresult and quiz.student,userRecording
-- [ ] Quiz deleted, delete from quiz Result, userRecording
+- [x] Quiz deleted, delete from quiz Result, userRecording
 - [x] User delete modal text
-- [ ] User Update => update quiz Student
+- [x] User Update => update quiz Student
 - [x] Add Loading Spinner
 - [ ] Add Redux for passing VideoRef
 - [ ] When Time become 00:00:00 end the quiz

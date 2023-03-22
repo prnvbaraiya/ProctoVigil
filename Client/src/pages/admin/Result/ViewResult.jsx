@@ -39,9 +39,11 @@ function ViewResult() {
     setLoading((prev) => !prev);
     const getData = async () => {
       const res = await QuizResultService.get();
-      const arr = res.data.map((item) => item.QuizId);
-      setQuizzes(arr);
-      selectedQuiz.onChange(arr[0]._id);
+      if (res.data.length > 0) {
+        const arr = res.data.map((item) => item.quiz_id);
+        setQuizzes(arr);
+        selectedQuiz.onChange(arr[0]._id);
+      }
     };
     getData();
     setLoading((prev) => !prev);
@@ -65,7 +67,7 @@ function ViewResult() {
     setLoading((prev) => !prev);
     if (selectedQuiz.value !== "") {
       const res = await QuizResultService.sendMail({
-        QuizId: selectedQuiz.value,
+        quiz_id: selectedQuiz.value,
       });
       console.log(res);
     }
@@ -74,7 +76,7 @@ function ViewResult() {
 
   const handleDelete = async (id) => {
     const res = await QuizResultService.deleteUserResponse({
-      quizId: selectedQuiz.value,
+      quiz_id: selectedQuiz.value,
       _id: id,
     });
     if (res.status === 202) {

@@ -291,6 +291,20 @@ const User = {
 };
 
 const Quiz = {
+  quizDelete: async (quizIds) => {
+    try {
+      const userRec = await UserRecordingModel.deleteMany({
+        quiz_id: { $in: quizIds },
+      });
+      const quizRes = await QuizResultModel.deleteMany({
+        quiz_id: { $in: quizIds },
+      });
+      return true;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  },
   add: async (req, res) => {
     const user = await UserModel.findOne({ username: req.body.author });
     const data = { ...req.body, author: user._id };
@@ -348,6 +362,7 @@ const Quiz = {
   delete: async (req, res) => {
     try {
       const data = await QuizModel.findByIdAndDelete(req.body.id);
+      Quiz.quizDelete([req.body.id]);
       return res.status(SUCCESS_CODE).send("Quiz Deleted Successfully");
     } catch (err) {
       return res.status(ERROR_CODE).send("There is some error: " + err);
@@ -358,14 +373,14 @@ const Quiz = {
 const QuizResult = {
   add: async (req, res) => {
     try {
-      const { QuizId, totalMarks, students } = req.body;
+      const { quiz_id, totalMarks, students } = req.body;
 
       // Find the quiz result document by QuizId
-      let quizResult = await QuizResultModel.findOne({ QuizId });
+      let quizResult = await QuizResultModel.findOne({ quiz_id });
 
       // If the document does not exist, create a new one
       if (!quizResult) {
-        quizResult = new QuizResultModel({ QuizId, totalMarks });
+        quizResult = new QuizResultModel({ quiz_id, totalMarks });
       }
 
       // Iterate through the students and add or update the quiz result
@@ -415,7 +430,7 @@ const QuizResult = {
   get: async (req, res) => {
     try {
       const quizzes = await QuizResultModel.find().populate({
-        path: "QuizId",
+        path: "quiz_id",
         select: "name",
       });
       return res.status(SUCCESS_CODE).send(quizzes);
@@ -426,7 +441,7 @@ const QuizResult = {
   getById: async (req, res) => {
     try {
       const id = req.params.id;
-      const quiz = await QuizResultModel.findOne({ QuizId: id }).populate({
+      const quiz = await QuizResultModel.findOne({ quiz_id: id }).populate({
         path: "students.user",
         select: "username firstName lastName",
       });
@@ -439,7 +454,7 @@ const QuizResult = {
     try {
       const quizResults = await QuizResultModel.findOne(req.body)
         .populate("students.user", "username firstName lastName email")
-        .populate("QuizId", "name");
+        .populate("quiz_id", "name");
 
       const { totalMarks, students } = quizResults;
 
@@ -450,7 +465,7 @@ const QuizResult = {
           template: "exam-result",
           context: {
             name: `${user.firstName} ${user.lastName}`,
-            QuizTitle: quizResults.QuizId.name,
+            QuizTitle: quizResults.quiz_id.name,
             obtainedMarks,
             totalMarks,
           },
@@ -466,7 +481,7 @@ const QuizResult = {
   deleteStudent: async (req, res) => {
     try {
       const quizResults = await QuizResultModel.findOne({
-        QuizId: req.body.quizId,
+        quiz_id: req.body.quiz_id,
       });
 
       quizResults.students = quizResults.students.filter(
