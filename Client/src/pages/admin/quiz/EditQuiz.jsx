@@ -10,6 +10,7 @@ import TextBox from "../../../components/form/TextBox";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import { useFormInput } from "../../../hooks/useFormInput";
 import { QuizService, UserService } from "../../../services/ServerRequest";
+import { questionTypes } from "../../../common/Data";
 
 function EditQuiz() {
   const [loading, setLoading] = React.useState(true);
@@ -26,7 +27,7 @@ function EditQuiz() {
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [questions, setQuestions] = useState([
     {
-      type: "multiple",
+      type: questionTypes[0].value,
       question: "",
       options: [{ text: "", isCorrect: false }],
     },

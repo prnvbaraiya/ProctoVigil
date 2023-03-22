@@ -25,7 +25,12 @@ export const getRandomQuestions = async (length) => {
   const res = await axios.get(`https://opentdb.com/api.php?amount=${length}`);
   const tmpQuestions = res.data.results.map((item) => {
     return {
-      type: item.type,
+      type:
+        item.type === "multiple"
+          ? "singleChoice"
+          : item.type === "boolean"
+          ? "boolean"
+          : "multipleChoice",
       question: item.question,
       options: [
         ...item.incorrect_answers.map((incoption) => {

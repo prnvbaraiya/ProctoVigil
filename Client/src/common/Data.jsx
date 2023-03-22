@@ -77,3 +77,9 @@ export const quizPhase = [
   { value: "end", title: "End" },
   { value: "result", title: "Result" },
 ];
+
+export const questionTypes = [
+  { value: "singleChoice", title: "Single Choice" },
+  { value: "multipleChoice", title: "Multiple Choice" },
+  { value: "boolean", title: "True or False" },
+];

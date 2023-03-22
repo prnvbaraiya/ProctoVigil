@@ -11,6 +11,7 @@ import auth from "../../../auth/auth";
 import { QuizService, UserService } from "../../../services/ServerRequest";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import { getRandomQuestions } from "../../../common/Methods";
+import { questionTypes } from "../../../common/Data";
 
 function AddQuiz() {
   const [loading, setLoading] = React.useState(false);
@@ -29,7 +30,7 @@ function AddQuiz() {
   //     duration: "",
   //     questions: [
   //       {
-  //         type: "multiple",
+  //         type: questionTypes[0].value,
   //         question: "",
   //         options: [{ text: "", isCorrect: false }],
   //       },
@@ -38,7 +39,7 @@ function AddQuiz() {
   // ]);
   const [questions, setQuestions] = useState([
     {
-      type: "multiple",
+      type: questionTypes[0].value,
       question: "",
       options: [{ text: "", isCorrect: false }],
     },
