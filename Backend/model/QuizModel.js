@@ -29,10 +29,13 @@ const QuizSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    studentNames: {
-      type: Array,
-      required: true,
-    },
+    studentNames: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      },
+    ],
     questions: {
       type: Array,
       required: true,

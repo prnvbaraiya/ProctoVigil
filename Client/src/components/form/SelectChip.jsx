@@ -65,11 +65,11 @@ function SelectChip({ label = "Chip", names, studentNames, setstudentNames }) {
         >
           {names.map((name) => (
             <MenuItem
-              key={name}
-              value={name}
-              style={getStyles(name, studentNames, theme)}
+              key={name.title}
+              value={name.title}
+              style={getStyles(name.title, studentNames, theme)}
             >
-              {name}
+              {name.title}
             </MenuItem>
           ))}
         </Select>

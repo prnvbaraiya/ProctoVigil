@@ -208,7 +208,7 @@ function ViewResult() {
         </Grid>
       </Grid>
       <Box textAlign="center">
-        {!loading && selectedQuiz.value !== "" && (
+        {!loading && selectedQuiz.value !== "" && rows.length > 0 && (
           <BasicTable rows={rows} columns={columns} hideColumns={hideColumns} />
         )}
       </Box>

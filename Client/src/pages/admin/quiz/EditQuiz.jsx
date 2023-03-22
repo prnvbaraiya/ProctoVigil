@@ -37,7 +37,11 @@ function EditQuiz() {
     setLoading(true);
     const getData = async () => {
       const res = await UserService.getStudents();
-      setStudentNames(res.data.map((item) => item.username));
+      setStudentNames(
+        res.data.map((item) => {
+          return { title: item.username, value: item._id };
+        })
+      );
     };
     getData();
     setLoading(false);
@@ -55,7 +59,11 @@ function EditQuiz() {
       setStartDate(res.data.startDate);
       setEndDate(res.data.endDate);
       duration.onChange(res.data.duration);
-      setSelectedStudents(res.data.studentNames);
+      setSelectedStudents(
+        res.data.studentNames.map((selectedValue) => {
+          return selectedValue.username;
+        })
+      );
       setQuestions(res.data.questions);
       setLoading(false);
     };
@@ -88,7 +96,12 @@ function EditQuiz() {
       startDate: startDate,
       endDate: endDate,
       duration: duration.value,
-      studentNames: selectedStudents,
+      studentNames: selectedStudents.map((selectedValue) => {
+        const selectedName = studentNames.find(
+          (name) => name.title === selectedValue
+        );
+        return selectedName.value;
+      }),
       questions,
     };
     const res = await QuizService.update(data);

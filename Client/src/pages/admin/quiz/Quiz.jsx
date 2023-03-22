@@ -23,25 +23,34 @@ function Quiz() {
   const [deleteDialogBox, setDeleteDialogBox] = useState(false);
   const [deleteId, setDeleteId] = useState("");
 
-  const handleDelete = async (id) => {
-    const res = await QuizService.delete({ id });
-    if (res.status === 202) {
-      setDeleteDialogBox(false);
-      setSnackbarData({
-        ...snackbarData,
-        open: true,
-        message: res.data,
-      });
-    } else {
-      alert("There is some error try again after some time");
-    }
+  const getData = async () => {
+    setLoading(true);
+    const res = await QuizService.get();
+    setData(res.data);
+    setLoading(false);
   };
+
+  useEffect(() => {
+    getData();
+  }, [snackbarData]);
 
   const columns = [
     { field: "_id", headerName: "Id", width: 50 },
     { field: "name", headerName: "Name", width: 100 },
     { field: "description", headerName: "Description", width: 200 },
-    { field: "studentNames", headerName: "Students", width: 250 },
+    {
+      field: "studentNames",
+      headerName: "Students",
+      width: 250,
+      renderCell: (params) => {
+        const row = params.row;
+        return row.studentNames.map((item, index) => (
+          <Typography key={index}>
+            {index !== 0 ? ", " + item.username : item.username}
+          </Typography>
+        ));
+      },
+    },
     {
       field: "numberOfQuestions",
       headerName: "No. of Questions",
@@ -84,16 +93,19 @@ function Quiz() {
 
   const hideColumns = ["_id"];
 
-  const getData = async () => {
-    setLoading(true);
-    const res = await QuizService.get();
-    setData(res.data);
-    setLoading(false);
+  const handleDelete = async (id) => {
+    const res = await QuizService.delete({ id });
+    if (res.status === 202) {
+      setDeleteDialogBox(false);
+      setSnackbarData({
+        ...snackbarData,
+        open: true,
+        message: res.data,
+      });
+    } else {
+      alert("There is some error try again after some time");
+    }
   };
-
-  useEffect(() => {
-    getData();
-  }, [snackbarData]);
 
   return (
     <>

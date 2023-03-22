@@ -14,14 +14,14 @@ import { getRandomQuestions } from "../../../common/Methods";
 
 function AddQuiz() {
   const [loading, setLoading] = React.useState(false);
-  const [names, setNames] = useState([]);
+  const [studentNames, setStudentNames] = useState([]);
   const author = useFormInput(auth.username);
   const name = useFormInput("");
   const description = useFormInput("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const duration = useFormInput("");
-  const [studentNames, setstudentNames] = useState([]);
+  const [selectedStudents, setSelectedStudents] = useState([]);
   const randomQuestionNumber = useFormInput("");
   // const [sections, setSections] = useState([
   //   {
@@ -48,7 +48,11 @@ function AddQuiz() {
   const getData = async () => {
     setLoading(true);
     const res = await UserService.getStudents();
-    setNames(res.data.map((item) => item.username));
+    setStudentNames(
+      res.data.map((item) => {
+        return { title: item.username, value: item._id };
+      })
+    );
     setLoading(false);
   };
 
@@ -81,7 +85,12 @@ function AddQuiz() {
       startDate: startDate,
       endDate: endDate,
       duration: duration.value,
-      studentNames,
+      studentNames: selectedStudents.map((selectedValue) => {
+        const selectedName = studentNames.find(
+          (name) => name.title === selectedValue
+        );
+        return selectedName.value;
+      }),
       questions,
     };
     const res = await QuizService.set(data);
@@ -155,9 +164,9 @@ function AddQuiz() {
             </Stack>
             <SelectChip
               label="Students"
-              names={names}
-              studentNames={studentNames}
-              setstudentNames={setstudentNames}
+              names={studentNames}
+              studentNames={selectedStudents}
+              setstudentNames={setSelectedStudents}
             />
             <Stack
               spacing={{ sm: 3 }}

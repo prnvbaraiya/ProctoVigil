@@ -127,6 +127,27 @@ const MailingSystem = {
 };
 
 const User = {
+  userDelete: async (userIds) => {
+    try {
+      const quizAuth = await QuizModel.deleteMany({ author: { $in: userIds } });
+      const quizStu = await QuizModel.updateMany(
+        { studentNames: { $in: userIds } },
+        { $pull: { studentNames: { $in: userIds } } }
+      );
+      const userRec = await UserRecordingModel.updateMany(
+        { "students.user_id": userIds },
+        { $pull: { students: { user_id: { $in: userIds } } } }
+      );
+      const quizRes = await QuizResultModel.updateMany(
+        { students: { $elemMatch: { user: { $in: userIds } } } },
+        { $pull: { students: { user: { $in: userIds } } } }
+      );
+      return true;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  },
   register: async (req, res) => {
     var data = req.body;
 
@@ -154,17 +175,35 @@ const User = {
   },
   usersRegister: async (req, res) => {
     const users = req.body;
-    const userObjs = [];
-    for (const user of users) {
-      const userObj = new UserModel(user);
-      userObjs.push(userObj);
-    }
+
     try {
-      await UserModel.insertMany(userObjs);
-      res.status(SUCCESS_CODE).send("Users saved successfully");
+      const userObjs = [];
+      for (const user of users) {
+        cryptingPassword(user.password, async function (err, hash) {
+          if (err) {
+            return res.status(ERROR_CODE).send(err);
+          } else {
+            user.password = hash;
+            const userObj = new UserModel(user);
+            userObjs.push(userObj);
+
+            await userObj.save();
+
+            MailingSystem.sendMail({
+              to: user.email,
+              subject: "Welcome To ProctoVigil",
+              template: "welcome-mail",
+              context: {
+                name: user.firstName + " " + user.lastName,
+              },
+            });
+          }
+        });
+      }
+
+      return res.status(SUCCESS_CODE).send("Users created successfully");
     } catch (err) {
-      console.error(err);
-      res.status(ERROR_CODE).send("Error saving users");
+      return res.status(ERROR_CODE).send("Server Error: " + err);
     }
   },
   login: async (req, res) => {
@@ -226,9 +265,11 @@ const User = {
   },
   delete: async (req, res) => {
     try {
-      const user = await UserModel.findOneAndRemove(req.body);
-      const result = await QuizModel.deleteMany({ author: user._id });
-      return res.status(SUCCESS_CODE).send("User Deleted Successfully");
+      const user = await UserModel.findOne(req.body);
+      user.remove();
+      if (User.userDelete([user._id]))
+        return res.status(SUCCESS_CODE).send("User Deleted Successfully");
+      else return res.status(ERROR_CODE).send("User Delted Error: " + err);
     } catch (err) {
       return res.status(ERROR_CODE).send("User Delted Error: " + err);
     }
@@ -237,6 +278,7 @@ const User = {
     const ids = req.body;
     try {
       const deletedUsers = await UserModel.deleteMany({ _id: { $in: ids } });
+      User.userDelete(ids);
       if (deletedUsers.deletedCount === 0) {
         return res.status(ERROR_CODE).send("No users found with provided ids");
       }
@@ -262,10 +304,16 @@ const Quiz = {
   get: async (req, res) => {
     try {
       // const quizzes = await QuizModel.find({ startDate: { $gt: Date.now() } })
-      const quizzes = await QuizModel.find().sort({ name: 1 }).populate({
-        path: "author",
-        select: "firstName lastName",
-      });
+      const quizzes = await QuizModel.find()
+        .sort({ name: 1 })
+        .populate({
+          path: "author",
+          select: "firstName lastName",
+        })
+        .populate({
+          path: "studentNames",
+          select: "username",
+        });
       return res.status(SUCCESS_CODE).send(quizzes);
     } catch (err) {
       return res.status(ERROR_CODE).send("There is some error: " + err);
@@ -274,10 +322,15 @@ const Quiz = {
   getById: async (req, res) => {
     try {
       const id = req.params.id;
-      const quiz = await QuizModel.findById(id).populate({
-        path: "author",
-        select: "firstName lastName",
-      });
+      const quiz = await QuizModel.findById(id)
+        .populate({
+          path: "author",
+          select: "firstName lastName",
+        })
+        .populate({
+          path: "studentNames",
+          select: "username",
+        });
       return res.status(SUCCESS_CODE).send(quiz);
     } catch (err) {
       return res.status(ERROR_CODE).send("There is some error: " + err);
