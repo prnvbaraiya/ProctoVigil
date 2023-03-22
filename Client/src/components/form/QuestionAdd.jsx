@@ -89,9 +89,12 @@ function QuestionAdd({ questions, setQuestions }) {
         { text: "False", isCorrect: false },
       ];
     } else {
-      newQuestions[qIndex].options = [{ text: "", isCorrect: false }];
+      newQuestions[qIndex].options = newQuestions[qIndex].options.map(
+        (item) => {
+          return { ...item, isCorrect: false };
+        }
+      );
     }
-    newQuestions[qIndex].question = "";
     setQuestions(newQuestions);
   };
 

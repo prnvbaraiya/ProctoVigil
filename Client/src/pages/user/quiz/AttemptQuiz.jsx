@@ -9,7 +9,7 @@ import {
 } from "../../../common/Methods";
 import AlertDialogBox from "../../../components/AlertDialogBox";
 import LoadingSpinner from "../../../components/LoadingSpinner";
-import DisplayQuestions from "../../../components/quiz/DisplayQuestions";
+import DisplayQuestions from "../../../components/quiz/display/DisplayQuestions";
 import ExamHeader from "../../../components/quiz/ExamHeader";
 import QuestionNavigation from "../../../components/quiz/QuestionNavigation";
 import {
@@ -62,9 +62,16 @@ const AttemptQuiz = (props) => {
       //   }
       //   return shuffledQuestions;
       // });
+
       setSelectedAnswers(
-        Array.from({ length: res.data.questions.length }, () => null)
+        updatedQuestions.map((item) => ({
+          question: item.question,
+          userAnswer: [],
+          type: item.type,
+          takenTime: "",
+        }))
       );
+
       setLoading(false);
     };
     getData();
@@ -93,10 +100,34 @@ const AttemptQuiz = (props) => {
     const res = await UserRecordingService.set(data);
   };
 
-  const handleAnswerChange = (e) => {
+  const handleSingleAnswerChange = (e) => {
     setSelectedAnswers((prevAnswers) => {
       const newAnswers = [...prevAnswers];
-      newAnswers[selectedQuestion - 1] = e.target.value;
+      newAnswers[selectedQuestion - 1] = {
+        ...prevAnswers[selectedQuestion - 1],
+        userAnswer: [e.target.value],
+      };
+      return newAnswers;
+    });
+  };
+
+  const handleMultipleAnswerChange = (e) => {
+    const optionText = e.target.value;
+    setSelectedAnswers((prevAnswers) => {
+      const newAnswers = [...prevAnswers];
+      const currentAnswer = newAnswers[selectedQuestion - 1];
+      const optionIndex = currentAnswer.userAnswer.indexOf(optionText);
+      if (e.target.checked) {
+        // Add the option text to the selected answers if it's not already there
+        if (optionIndex === -1) {
+          currentAnswer.userAnswer.push(optionText);
+        }
+      } else {
+        // Remove the option text from the selected answers if it's there
+        if (optionIndex !== -1) {
+          currentAnswer.userAnswer.splice(optionIndex, 1);
+        }
+      }
       return newAnswers;
     });
   };
@@ -113,10 +144,11 @@ const AttemptQuiz = (props) => {
         warningCount,
       },
     };
-    const res = await QuizResultService.set(data);
-    if (res.status === 202) {
-      navigate("/quiz");
-    }
+    console.log(selectedAnswers);
+    // const res = await QuizResultService.set(data);
+    // if (res.status === 202) {
+    //   navigate("/quiz");
+    // }
   };
 
   return (
@@ -127,7 +159,8 @@ const AttemptQuiz = (props) => {
         handleSuccess={handleSuccess}
         title={"You really want to Submit?"}
         data={`Question Attempted: ${
-          selectedAnswers.filter((item) => item !== null).length
+          selectedAnswers.filter(({ userAnswer }) => userAnswer.length > 0)
+            .length
         }/${questions.length}`}
       />
       <LoadingSpinner loading={loading} />
@@ -152,7 +185,8 @@ const AttemptQuiz = (props) => {
                         selectedQuestion={selectedQuestion}
                         questions={questions}
                         selectedAnswers={selectedAnswers}
-                        handleAnswerChange={handleAnswerChange}
+                        handleMultipleAnswerChange={handleMultipleAnswerChange}
+                        handleSingleAnswerChange={handleSingleAnswerChange}
                       />
                     )}
                   </Box>

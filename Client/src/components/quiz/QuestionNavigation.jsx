@@ -28,7 +28,7 @@ export default function QuestionNavigation(props) {
           className={`queNavBtn ${
             isSelected
               ? "selected"
-              : selectedAnswers[i] !== null
+              : selectedAnswers[i].userAnswer.length > 0
               ? "answered"
               : isVisited
               ? "visited"
