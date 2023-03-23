@@ -16,8 +16,7 @@ import { useLocation, useNavigate } from "react-router";
 import { SERVER_LINK } from "../common/constants";
 import auth from "../auth/auth";
 import side from "../assets/side.jpg";
-import SnackbarDisplay from "../components/SnackbarDisplay";
-import LoadingSpinner from "../components/LoadingSpinner";
+import { SnackbarDisplay, LoadingSpinner } from "../components/index";
 
 const theme = createTheme();
 

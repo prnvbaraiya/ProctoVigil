@@ -99,7 +99,6 @@ const UserRecordingService = {
       },
       data,
     };
-    console.log("PRNVSERVER:", data);
 
     try {
       const res = await axios(config);
@@ -113,7 +112,6 @@ const UserRecordingService = {
     return sendRequest("get", "user-recording");
   },
   getFile: async (data) => {
-    console.log(data);
     return sendRequest("post", "user-recording/file-path", data);
   },
 };

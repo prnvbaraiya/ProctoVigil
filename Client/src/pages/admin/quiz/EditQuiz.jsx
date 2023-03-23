@@ -12,15 +12,17 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getRandomQuestions } from "../../../common/Methods";
-import DateTime from "../../../components/form/DateTime";
-import QuestionAdd from "../../../components/form/QuestionAdd";
-import SelectChip from "../../../components/form/SelectChip";
-import TextBox from "../../../components/form/TextBox";
-import LoadingSpinner from "../../../components/LoadingSpinner";
+import {
+  LoadingSpinner,
+  SelectBox,
+  TextBox,
+  SelectChip,
+  QuestionAdd,
+  DateTime,
+} from "../../../components/index";
 import { useFormInput } from "../../../hooks/useFormInput";
 import { QuizService, UserService } from "../../../services/ServerRequest";
 import { questionTypes } from "../../../common/Data";
-import SelectBox from "../../../components/form/SelectBox";
 
 function EditQuiz() {
   const location = useLocation();

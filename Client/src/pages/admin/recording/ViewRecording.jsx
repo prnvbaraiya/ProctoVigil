@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import LoadingSpinner from "../../../components/LoadingSpinner";
+import { LoadingSpinner } from "../../../components/index";
 import { UserRecordingService } from "../../../services/ServerRequest";
 
 function ViewRecording() {

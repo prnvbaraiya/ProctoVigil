@@ -1,7 +1,6 @@
 import { Stack } from "@mui/material";
 import React from "react";
-import RadioButton from "../../../components/form/RadioButton";
-import TextBox from "../../../components/form/TextBox";
+import { RadioButton, TextBox } from "../../../components/index";
 
 function ManualUserAdd({
   userRoles,

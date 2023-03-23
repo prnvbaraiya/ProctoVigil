@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { Box, Button, ListItem } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export const NavItem = (props) => {
+const NavItem = (props) => {
   const { href, icon, title, ...others } = props;
   const navigate = useNavigate();
   const location = useLocation();
@@ -50,8 +50,4 @@ export const NavItem = (props) => {
   );
 };
 
-NavItem.propTypes = {
-  href: PropTypes.string,
-  icon: PropTypes.node,
-  title: PropTypes.string,
-};
+export default NavItem;

@@ -65,7 +65,6 @@ function DraggableLocalStream({
       const mediaRecorder = new MediaRecorder(localStream);
 
       mediaRecorder.ondataavailable = (e) => {
-        console.log("prnvCam:", e.data);
         if (e.data && e.data.size > 0) {
           cameraChunks.push(e.data);
         }

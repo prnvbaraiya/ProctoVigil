@@ -1,13 +1,15 @@
 import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import BasicTable from "../../../components/form/BasicTable";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import SnackbarDisplay from "../../../components/SnackbarDisplay";
 import { QuizService } from "../../../services/ServerRequest";
-import AlertDialogBox from "../../../components/AlertDialogBox";
-import LoadingSpinner from "../../../components/LoadingSpinner";
+import {
+  AlertDialogBox,
+  SnackbarDisplay,
+  LoadingSpinner,
+  BasicTable,
+} from "../../../components/index";
 
 function Quiz() {
   const [loading, setLoading] = useState(true);

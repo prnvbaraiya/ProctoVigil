@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Divider, Stack, Typography } from "@mui/material";
-import AlertDialogBox from "../../../components/AlertDialogBox";
+import {
+  AlertDialogBox,
+  SnackbarDisplay,
+  TextBox,
+} from "../../../components/index";
 import auth from "../../../auth/auth";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { UserService } from "../../../services/ServerRequest";
-import TextBox from "../../../components/form/TextBox";
 import { useFormInput } from "../../../hooks/useFormInput";
-import SnackbarDisplay from "../../../components/SnackbarDisplay";
 
 function Settings() {
   const navigate = useNavigate();

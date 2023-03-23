@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { theme } from "../../../theme";
 import { format } from "date-fns";
 import { QuizService } from "../../../services/ServerRequest";
-import LoadingSpinner from "../../../components/LoadingSpinner";
+import { LoadingSpinner } from "../../../components/index";
 
 function Quiz() {
   const [quizzes, setQuizzes] = useState([]);

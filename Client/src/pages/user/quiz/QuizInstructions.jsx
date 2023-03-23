@@ -101,7 +101,6 @@ const QuizInstructions = forwardRef((props, ref) => {
       alert("Please select Share Entire Screen");
       return;
     }
-    // console.log("PrnvINS:", videoRef.current.srcObject);
     ref.current.srcObject.getTracks().forEach((track) => track.stop());
     setAttemptQuizData((prev) => {
       return {

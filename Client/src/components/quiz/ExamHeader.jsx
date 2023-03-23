@@ -10,7 +10,7 @@ import {
 import Logo from "../../assets/logo.png";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AlertDialogBox from "../AlertDialogBox";
+import { AlertDialogBox } from "../index";
 
 export default function ExamHeader({ duration, setSubmitOpen }) {
   const Ref = useRef(null);

@@ -1,17 +1,19 @@
 import { Box, Button, Grid } from "@mui/material";
 import { Stack } from "@mui/system";
-import React, { forwardRef, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   blueEvent,
   offlineEvent,
   suffeledArray,
 } from "../../../common/Methods";
-import AlertDialogBox from "../../../components/AlertDialogBox";
-import LoadingSpinner from "../../../components/LoadingSpinner";
-import DisplayQuestions from "../../../components/quiz/display/DisplayQuestions";
-import ExamHeader from "../../../components/quiz/ExamHeader";
-import QuestionNavigation from "../../../components/quiz/QuestionNavigation";
+import {
+  AlertDialogBox,
+  LoadingSpinner,
+  DisplayQuestions,
+  ExamHeader,
+  QuestionNavigation,
+} from "../../../components/index";
 import {
   QuizService,
   QuizResultService,
@@ -144,11 +146,10 @@ const AttemptQuiz = (props) => {
         warningCount,
       },
     };
-    console.log(selectedAnswers);
-    // const res = await QuizResultService.set(data);
-    // if (res.status === 202) {
-    //   navigate("/quiz");
-    // }
+    const res = await QuizResultService.set(data);
+    if (res.status === 202) {
+      navigate("/quiz");
+    }
   };
 
   return (

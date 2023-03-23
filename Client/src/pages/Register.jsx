@@ -1,27 +1,20 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   Button,
   CssBaseline,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
   Grid,
+  Box,
   Paper,
-  Radio,
-  RadioGroup,
   Stack,
   Typography,
 } from "@mui/material";
-import TextBox from "../components/form/TextBox";
 import { useFormInput } from "../hooks/useFormInput";
-import axios from "axios";
 import { SERVER_LINK } from "../common/constants";
-import { useNavigate } from "react-router-dom";
-import side from "../assets/side.jpg";
-import { Box } from "@mui/system";
+import sideImg from "../assets/side.jpg";
 import { userRoles } from "../common/Data";
-import RadioButton from "../components/form/RadioButton";
-import LoadingSpinner from "../components/LoadingSpinner";
+import { LoadingSpinner, TextBox, RadioButton } from "../components/index";
 
 function Register() {
   const [loading, setLoading] = useState(false);
@@ -64,7 +57,7 @@ function Register() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: `url(${side})`,
+            backgroundImage: `url(${sideImg})`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
             backgroundPosition: "center",

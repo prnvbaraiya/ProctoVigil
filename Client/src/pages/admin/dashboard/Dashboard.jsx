@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import BarChart from "../../../components/charts/BarChart";
 import { Avatar, Box, Grid, Typography } from "@mui/material";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import NoAccountsIcon from "@mui/icons-material/NoAccounts";
+import { BarChart } from "../../../components/index";
 
 const labels = [
   "January",

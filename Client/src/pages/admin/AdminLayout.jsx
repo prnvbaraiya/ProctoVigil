@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import { Box, Card, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { DashboardNavbar } from "../../components/admin/dashboard-navbar";
-import { DashboardSidebar } from "../../components/admin/dashboard-sidebar";
 import { theme } from "../../theme/index";
-import BreadcrumbsItem from "../../components/admin/BreadcrumbsItem";
-import { Outlet, useLocation } from "react-router-dom";
-import SnackbarDisplay from "../../components/SnackbarDisplay";
+import {
+  SnackbarDisplay,
+  BreadcrumbsItem,
+  DashboardNavbar,
+  DashboardSidebar,
+} from "../../components/index";
 
 const DashboardLayoutRoot = styled("div")(({ theme }) => ({
   display: "flex",

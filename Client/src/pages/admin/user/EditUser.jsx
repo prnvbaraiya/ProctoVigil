@@ -1,9 +1,11 @@
 import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import RadioButton from "../../../components/form/RadioButton";
-import TextBox from "../../../components/form/TextBox";
-import LoadingSpinner from "../../../components/LoadingSpinner";
+import {
+  LoadingSpinner,
+  TextBox,
+  RadioButton,
+} from "../../../components/index";
 import { useFormInput } from "../../../hooks/useFormInput";
 import { UserService } from "../../../services/ServerRequest";
 import { userRoles } from "../../../common/Data";

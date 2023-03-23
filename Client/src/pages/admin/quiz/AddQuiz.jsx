@@ -11,17 +11,19 @@ import {
   AccordionSummary,
 } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import TextBox from "../../../components/form/TextBox";
 import { useFormInput } from "../../../hooks/useFormInput";
-import DateTime from "../../../components/form/DateTime";
-import SelectChip from "../../../components/form/SelectChip";
-import QuestionAdd from "../../../components/form/QuestionAdd";
 import auth from "../../../auth/auth";
 import { QuizService, UserService } from "../../../services/ServerRequest";
-import LoadingSpinner from "../../../components/LoadingSpinner";
+import {
+  LoadingSpinner,
+  SelectBox,
+  QuestionAdd,
+  SelectChip,
+  DateTime,
+  TextBox,
+} from "../../../components/index";
 import { getRandomQuestions } from "../../../common/Methods";
 import { questionTypes } from "../../../common/Data";
-import SelectBox from "../../../components/form/SelectBox";
 
 function AddQuiz() {
   const [loading, setLoading] = React.useState(false);

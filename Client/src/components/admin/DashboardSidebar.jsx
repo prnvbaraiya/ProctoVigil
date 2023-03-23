@@ -9,7 +9,7 @@ import {
   useTheme,
 } from "@mui/material";
 import logo from "../../assets/logo.png";
-import { NavItem } from "./nav-item";
+import { NavItem } from "../index";
 
 import { adminSidebarItems } from "../../common/Data";
 
@@ -98,7 +98,4 @@ export const DashboardSidebar = (props) => {
   );
 };
 
-DashboardSidebar.propTypes = {
-  onClose: PropTypes.func,
-  open: PropTypes.bool,
-};
+export default DashboardSidebar;

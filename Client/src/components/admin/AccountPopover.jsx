@@ -2,7 +2,7 @@ import { Box, MenuItem, MenuList, Popover, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import auth from "../../auth/auth";
 
-export const AccountPopover = (props) => {
+const AccountPopover = (props) => {
   const { anchorEl, onClose, open, ...other } = props;
   const navigate = useNavigate();
 
@@ -56,3 +56,5 @@ export const AccountPopover = (props) => {
     </Popover>
   );
 };
+
+export default AccountPopover;

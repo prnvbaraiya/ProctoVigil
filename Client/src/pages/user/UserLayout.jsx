@@ -4,9 +4,8 @@ import { UserNavbar } from "./header/UserNavbar";
 import bgImg from "../../assets/bg.jpg";
 import { theme } from "../../theme";
 import Footer from "./footer/Footer";
-import TypedEffect from "../../components/TypedEffect";
 import { Outlet, useLocation } from "react-router-dom";
-import SnackbarDisplay from "../../components/SnackbarDisplay";
+import { SnackbarDisplay, TypedEffect } from "../../components/index";
 
 const UserLayoutRoot = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.body,

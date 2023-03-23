@@ -2,10 +2,9 @@ import { Box, Divider, IconButton, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import { quizPhase } from "../../../common/Data";
-import BasicTable from "../../../components/form/BasicTable";
 import { QuizService } from "../../../services/ServerRequest";
 import { Link } from "react-router-dom";
-import LoadingSpinner from "../../../components/LoadingSpinner";
+import { LoadingSpinner, BasicTable } from "../../../components/index";
 
 function ViewPhase() {
   const [loading, setLoading] = useState(true);

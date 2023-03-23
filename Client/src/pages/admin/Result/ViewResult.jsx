@@ -12,12 +12,14 @@ import {
   Typography,
 } from "@mui/material";
 import { useFormInput } from "../../../hooks/useFormInput";
-import BasicTable from "../../../components/form/BasicTable";
 import { QuizResultService } from "../../../services/ServerRequest";
-import LoadingSpinner from "../../../components/LoadingSpinner";
-import AlertDialogBox from "../../../components/AlertDialogBox";
+import {
+  AlertDialogBox,
+  SnackbarDisplay,
+  LoadingSpinner,
+  BasicTable,
+} from "../../../components/index";
 import DeleteIcon from "@mui/icons-material/Delete";
-import SnackbarDisplay from "../../../components/SnackbarDisplay";
 
 function ViewResult() {
   const [loading, setLoading] = useState(false);
@@ -69,7 +71,6 @@ function ViewResult() {
       const res = await QuizResultService.sendMail({
         quiz_id: selectedQuiz.value,
       });
-      console.log(res);
     }
     setLoading((prev) => !prev);
   };

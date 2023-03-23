@@ -14,7 +14,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import GroupIcon from "@mui/icons-material/Group";
-import { AccountPopover } from "./account-popover";
+import { AccountPopover } from "../index";
 import avatar from "../../assets/avatar-removebg-preview.png";
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
@@ -22,7 +22,7 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
   boxShadow: theme.shadows[3],
 }));
 
-export const DashboardNavbar = (props) => {
+const DashboardNavbar = (props) => {
   const { onSidebarOpen, ...other } = props;
   const settingsRef = useRef(null);
   const [openAccountPopover, setOpenAccountPopover] = useState(false);
@@ -102,6 +102,4 @@ export const DashboardNavbar = (props) => {
   );
 };
 
-DashboardNavbar.propTypes = {
-  onSidebarOpen: PropTypes.func,
-};
+export default DashboardNavbar;
