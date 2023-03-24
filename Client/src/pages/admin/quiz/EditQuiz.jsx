@@ -1,3 +1,6 @@
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 import {
   Box,
   Stack,
@@ -9,8 +12,6 @@ import {
   AccordionSummary,
 } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getRandomQuestions } from "../../../common/Methods";
 import {
   LoadingSpinner,
@@ -39,10 +40,12 @@ function EditQuiz() {
   const randomQuestionNumber = useFormInput("");
   const [sections, setSections] = useState([
     {
+      id: uuidv4(),
       title: "Section 1",
       duration: "",
       questions: [
         {
+          id: uuidv4(),
           type: questionTypes[0].value,
           question: "",
           options: [{ text: "", isCorrect: false }],
@@ -102,7 +105,9 @@ function EditQuiz() {
     const tmpQuestions = await getRandomQuestions(randomQuestionNumber.value);
     setSections((prev) => {
       const tmpPrev = [...prev];
-      tmpPrev[randomQuestionSection.value - 1].questions = tmpQuestions;
+      tmpPrev[randomQuestionSection.value - 1].questions = tmpQuestions.map(
+        (item) => ({ ...item, id: uuidv4() })
+      );
       tmpPrev[randomQuestionSection.value - 1].duration =
         randomQuestionNumber.value * 2;
       return tmpPrev;
@@ -144,10 +149,12 @@ function EditQuiz() {
 
   const handleAddSection = () => {
     const newSection = {
+      id: uuidv4(),
       title: `Section ${sections.length + 1}`,
       duration: "",
       questions: [
         {
+          id: uuidv4(),
           type: questionTypes[0].value,
           question: "",
           options: [{ text: "", isCorrect: false }],

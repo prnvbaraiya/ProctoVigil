@@ -41,8 +41,7 @@ const AttemptQuiz = (props) => {
       const res = await QuizService.getById(id);
       setData(res.data);
 
-      // Shuffle the options for each question and set the answer key
-      const updatedQuestions = res.data.questions.map((item) => {
+      const updatedQuestions = res.data.sections[0].questions.map((item) => {
         const suffeledOptions = suffeledArray(item.options);
         return {
           ...item,
@@ -50,24 +49,11 @@ const AttemptQuiz = (props) => {
         };
       });
 
-      // Set the updated questions and set isLoading to false
-      setQuestions(updatedQuestions);
-      // setQuestions((prevQuestions) => {
-      //   const shuffledQuestions = [...updatedQuestions];
-      //   for (let i = shuffledQuestions.length - 1; i > 0; i--) {
-      //     const j = Math.floor(Math.random() * (i + 1));
-      //     [shuffledQuestions[i], shuffledQuestions[j]] = [
-      //       shuffledQuestions[j],
-      //       shuffledQuestions[i],
-      //     ];
-      //     answerKey
-      //   }
-      //   return shuffledQuestions;
-      // });
+      setQuestions(suffeledArray(updatedQuestions));
 
       setSelectedAnswers(
         updatedQuestions.map((item) => ({
-          question: item.question,
+          question_id: item.id,
           userAnswer: [],
           type: item.type,
           takenTime: "",
@@ -168,9 +154,9 @@ const AttemptQuiz = (props) => {
       {!loading && (
         <Box>
           <Box>
-            {data.duration && (
+            {data.totalDuration && (
               <ExamHeader
-                duration={data.duration * 60}
+                duration={data.totalDuration * 60}
                 setSubmitOpen={setSubmitOpen}
                 setIsLoading={setLoading}
               />

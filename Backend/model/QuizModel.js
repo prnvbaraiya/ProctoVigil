@@ -25,6 +25,10 @@ const QuizSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    totalDuration: {
+      type: Number,
+      required: true,
+    },
     studentNames: [
       {
         type: mongoose.Schema.Types.ObjectId,

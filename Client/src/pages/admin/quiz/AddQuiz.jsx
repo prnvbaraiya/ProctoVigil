@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 import {
   Box,
   Button,
@@ -33,15 +34,18 @@ function AddQuiz() {
   const description = useFormInput("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const totalDuration = useFormInput(0);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const randomQuestionSection = useFormInput("");
   const randomQuestionNumber = useFormInput("");
   const [sections, setSections] = useState([
     {
+      id: uuidv4(),
       title: "Section 1",
       duration: "",
       questions: [
         {
+          id: uuidv4(),
           type: questionTypes[0].value,
           question: "",
           options: [{ text: "", isCorrect: false }],
@@ -67,6 +71,14 @@ function AddQuiz() {
   }, []);
 
   useEffect(() => {
+    let tmp = 0;
+    for (let section of sections) {
+      tmp += Number(section.duration);
+    }
+    totalDuration.onChange(tmp);
+  }, [sections]);
+
+  useEffect(() => {
     setLoading(true);
     if (new Date(startDate).getTime() > new Date(endDate).getTime()) {
       setEndDate(new Date(startDate).getTime());
@@ -77,9 +89,12 @@ function AddQuiz() {
   const handleRandomQuestions = async () => {
     setLoading(true);
     const tmpQuestions = await getRandomQuestions(randomQuestionNumber.value);
+
     setSections((prev) => {
       const tmpPrev = [...prev];
-      tmpPrev[randomQuestionSection.value - 1].questions = tmpQuestions;
+      tmpPrev[randomQuestionSection.value - 1].questions = tmpQuestions.map(
+        (item) => ({ ...item, id: uuidv4() })
+      );
       tmpPrev[randomQuestionSection.value - 1].duration =
         randomQuestionNumber.value * 2;
       return tmpPrev;
@@ -95,6 +110,7 @@ function AddQuiz() {
       author: auth.username,
       name: name.value,
       description: description.value,
+      totalDuration: totalDuration.value,
       startDate: startDate,
       endDate: endDate,
       studentNames: selectedStudents.map((selectedValue) => {
@@ -121,10 +137,12 @@ function AddQuiz() {
 
   const handleAddSection = () => {
     const newSection = {
+      id: uuidv4(),
       title: `Section ${sections.length + 1}`, // replace with your desired section title
       duration: "", // replace with your desired section duration
       questions: [
         {
+          id: uuidv4(),
           type: questionTypes[0].value,
           question: "",
           options: [{ text: "", isCorrect: false }],
@@ -181,6 +199,12 @@ function AddQuiz() {
                 value={endDate}
                 setValue={setEndDate}
                 minDate={startDate}
+              />
+              <TextBox
+                label="Total Duration"
+                disabled
+                fullWidth={false}
+                {...totalDuration}
               />
             </Stack>
             <SelectChip

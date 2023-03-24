@@ -10,15 +10,11 @@ export const offlineEvent = () => {
 };
 
 export const suffeledArray = (oldArr) => {
-  const arr = [];
-  while (arr.length < oldArr.length) {
-    const rand = Math.floor(Math.random() * oldArr.length);
-    if (!arr.includes(rand)) arr.push(rand);
+  for (let i = oldArr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [oldArr[i], oldArr[j]] = [oldArr[j], oldArr[i]];
   }
-  const newArray = arr.map((item) => {
-    return oldArr[item];
-  });
-  return newArray;
+  return oldArr;
 };
 
 export const getRandomQuestions = async (length) => {
