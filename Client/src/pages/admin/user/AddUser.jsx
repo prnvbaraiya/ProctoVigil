@@ -133,7 +133,7 @@ function AddUser() {
     setLoading(true);
     if (inputMethods.value == "csv") {
       handleCsvUpload();
-    } else if ((inputMethods.value = "manual")) {
+    } else if (inputMethods.value == "manual") {
       handleManualUpload();
     }
     setLoading(false);

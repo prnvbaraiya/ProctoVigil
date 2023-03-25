@@ -16,7 +16,6 @@ function DisplayMulitpleChoice({
         return (
           <div key={index} style={{ marginTop: 5 }}>
             <label
-              variant="contained"
               htmlFor={`option-${selectedQuestion.id}-${index}`}
               style={{ display: "flex" }}
             >

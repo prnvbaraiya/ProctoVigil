@@ -1,3 +1,4 @@
+import React from "react";
 import "./App.css";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import UserRoutes from "./routes/UserRoutes";
@@ -5,8 +6,6 @@ import AdminRoutes from "./routes/AdminRoutes";
 import { ThemeProvider } from "@emotion/react";
 import { theme } from "./theme/index";
 import Login from "./pages/Login";
-import Unauthorized from "./pages/Unauthorized";
-import PageNotFound from "./pages/PageNotFound";
 import Register from "./pages/Register";
 import Test from "./pages/Test";
 import RequireAuth from "./pages/RequireAuth";

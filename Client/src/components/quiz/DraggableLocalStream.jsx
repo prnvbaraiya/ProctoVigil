@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import Draggable from "react-draggable";
-import { useReactMediaRecorder } from "react-media-recorder";
 import { JWTService } from "../../services/ServerRequest";
 
 function DraggableLocalStream({

@@ -74,7 +74,7 @@ function QuestionAdd({ questions, setQuestions }) {
   };
 
   const handleQuestionTypeChange = (event, qIndex) => {
-    const { value, name } = event.target;
+    const { value } = event.target;
     const newQuestions = [...questions];
     newQuestions[qIndex].type = value;
     if (value === "boolean") {

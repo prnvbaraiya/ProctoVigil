@@ -19,32 +19,30 @@ function ViewStream() {
 
   useEffect(() => {
     createRoom();
-    instance.on(
-      "roomStreamUpdate",
-      async (roomID, updateType, streamList, extendedData) => {
-        if (updateType === "ADD") {
-          streamList.map(async (item) => {
-            if (data.students.includes(item.user.userID)) {
-              const streamID = item.streamID;
+    instance.on("roomStreamUpdate", async (roomID, updateType, streamList) => {
+      //async (roomID, updateType, streamList, _extendedData) => {
+      if (updateType === "ADD") {
+        streamList.map(async (item) => {
+          if (data.students.includes(item.user.userID)) {
+            const streamID = item.streamID;
 
-              const remoteStream = await instance.startPlayingStream(streamID);
-              const remoteView = instance.createRemoteStreamView(remoteStream);
-              document.getElementById(streamID).innerHTML = "";
+            const remoteStream = await instance.startPlayingStream(streamID);
+            const remoteView = instance.createRemoteStreamView(remoteStream);
+            document.getElementById(streamID).innerHTML = "";
 
-              remoteView.play(streamID, {
-                enableAutoplayDialog: true,
-              });
-            }
-          });
-        } else {
-          streamList.map(async (item) => {
-            document.getElementById(
-              item.streamID
-            ).innerHTML = `<center>${item.user.userName} Is Already Leave</center>`;
-          });
-        }
+            remoteView.play(streamID, {
+              enableAutoplayDialog: true,
+            });
+          }
+        });
+      } else {
+        streamList.map(async (item) => {
+          document.getElementById(
+            item.streamID
+          ).innerHTML = `<center>${item.user.userName} Is Already Leave</center>`;
+        });
       }
-    );
+    });
     return () => {
       if (instance) {
         instance.logoutRoom(zconf.roomId);

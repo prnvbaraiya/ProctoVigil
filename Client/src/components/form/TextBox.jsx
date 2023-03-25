@@ -2,8 +2,6 @@ import {
   FormControl,
   IconButton,
   InputAdornment,
-  InputLabel,
-  OutlinedInput,
   TextField,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";

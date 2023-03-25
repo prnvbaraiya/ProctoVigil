@@ -6,8 +6,8 @@ export const SERVER_LINK = import.meta.env.VITE_SERVER_LINK;
 
 export const JWT_SEC_KEY = import.meta.env.VITE_JWT_SEC_KEY;
 
-const ROLES = {
-  User: 2002,
-  Teacher: 2017,
-  Admin: 5150,
-};
+// const ROLES = {
+//   User: 2002,
+//   Teacher: 2017,
+//   Admin: 5150,
+// };

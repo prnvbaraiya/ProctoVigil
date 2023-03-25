@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -235,5 +235,7 @@ const QuizInstructions = forwardRef((props, ref) => {
     </div>
   );
 });
+
+QuizInstructions.displayName = "QuizInstructions";
 
 export default QuizInstructions;

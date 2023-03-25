@@ -13,7 +13,6 @@ function DisplaySignleChoice({
           <div key={index} style={{ marginTop: 5 }}>
             <label
               name={`choice-${index + 1}`}
-              variant="contained"
               htmlFor={index}
               style={{ display: "flex" }}
             >

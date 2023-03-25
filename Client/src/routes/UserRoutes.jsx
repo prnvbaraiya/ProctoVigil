@@ -1,3 +1,4 @@
+import React from "react";
 import { Route } from "react-router-dom";
 import AboutUs from "../pages/AboutUs";
 import ContactUs from "../pages/ContactUs";

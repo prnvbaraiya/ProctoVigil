@@ -5,7 +5,6 @@ import {
   Divider,
   FormControl,
   Grid,
-  IconButton,
   InputLabel,
   MenuItem,
   Select,
@@ -20,6 +19,7 @@ import {
   BasicTable,
 } from "../../../components/index";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { GridActionsCellItem } from "@mui/x-data-grid";
 
 function ViewResult() {
   const [loading, setLoading] = useState(false);
@@ -68,7 +68,7 @@ function ViewResult() {
   const handleSendMail = async () => {
     setLoading((prev) => !prev);
     if (selectedQuiz.value !== "") {
-      const res = await QuizResultService.sendMail({
+      await QuizResultService.sendMail({
         quiz_id: selectedQuiz.value,
       });
     }
@@ -93,16 +93,23 @@ function ViewResult() {
   };
 
   const columns = [
-    { field: "_id", headerName: "Id", width: 50 },
+    {
+      field: "_id",
+      headerName: "Id",
+      type: "string",
+      width: 50,
+    },
     {
       field: "username",
       headerName: "Username",
+      type: "string",
       width: 150,
       renderCell: (params) => params.row.user.username,
     },
     {
       field: "name",
       headerName: "Name",
+      type: "string",
       width: 150,
       renderCell: (params) => {
         const row = params.row;
@@ -116,42 +123,39 @@ function ViewResult() {
     {
       field: "warningCount",
       headerName: "Total Warnings",
+      type: "number",
       width: 120,
     },
     {
       field: "obtainedMarks",
       headerName: "Obtained Marks",
+      type: "number",
       width: 120,
     },
     {
       field: "totalMarks",
       headerName: "Total Marks",
+      type: "number",
       width: 150,
-      renderCell: (params) => {
-        return params.row.answerKey.length;
-      },
+      valueGetter: () => totalMarks,
     },
     {
       field: "actions",
       headerName: "Actions",
-      sortable: false,
+      type: "actions",
       width: 150,
-      renderCell: (params) => {
-        const row = params.row;
-        return (
-          <>
-            <IconButton
-              onClick={() => {
-                setDeleteId(row.user._id);
-                setDeleteDialogBox(true);
-              }}
-              color="error"
-            >
-              <DeleteIcon />
-            </IconButton>
-          </>
-        );
-      },
+      getActions: (params) => [
+        <GridActionsCellItem
+          label="delete"
+          key={params.row.user._id}
+          icon={<DeleteIcon />}
+          onClick={() => {
+            setDeleteId(params.row.user._id);
+            setDeleteDialogBox(true);
+          }}
+          color="error"
+        />,
+      ],
     },
   ];
 

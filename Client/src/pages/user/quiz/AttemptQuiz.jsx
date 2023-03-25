@@ -1,4 +1,5 @@
 import { Box, Button, Grid } from "@mui/material";
+import PropTypes from "prop-types";
 import { Stack } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -22,8 +23,8 @@ import {
 } from "../../../services/ServerRequest";
 
 const AttemptQuiz = (props) => {
-  const [sections, setSections] = useState([]);
   const { instance, zConfig, attemptQuizData, localS } = props;
+  const [sections, setSections] = useState([]);
   const { id, InputDeviceIds } = attemptQuizData;
   const [data, setData] = useState({});
   const [selectedQuestion, setSelectedQuestion] = useState({});
@@ -122,7 +123,7 @@ const AttemptQuiz = (props) => {
     data.append("quiz_id", id);
     data.append("username", zConfig.userName);
     data.append("videoBlob", blob, fileName);
-    const res = await UserRecordingService.set(data);
+    await UserRecordingService.set(data);
   };
 
   const handleSingleAnswerChange = (e) => {
@@ -326,6 +327,18 @@ const AttemptQuiz = (props) => {
       )}
     </>
   );
+};
+
+AttemptQuiz.prototype = {
+  attemptQuizData: PropTypes.object.isRequired,
+  zConfig: PropTypes.shape({
+    roomId: PropTypes.string.isRequired,
+    userId: PropTypes.string.isRequired,
+    token: PropTypes.string.isRequired,
+    userName: PropTypes.string.isRequired,
+  }).isRequired,
+  instance: PropTypes.object.isRequired,
+  localS: PropTypes.string.isRequired,
 };
 
 export default AttemptQuiz;

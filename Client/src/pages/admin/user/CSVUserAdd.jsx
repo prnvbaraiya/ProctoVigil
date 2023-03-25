@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Stack, Typography } from "@mui/material";
+import PropTypes from "prop-types";
 
 function CSVUserAdd({ csvFile, setCsvFile }) {
   const handleCsvFileSelect = (event) => {
     setCsvFile(event.target.files[0]);
   };
+
+  useEffect(() => {
+    console.log(typeof setCsvFile);
+  }, []);
 
   return (
     <div>
@@ -24,5 +29,10 @@ function CSVUserAdd({ csvFile, setCsvFile }) {
     </div>
   );
 }
+
+CSVUserAdd.prototype = {
+  csvFile: PropTypes.string.isRequired,
+  setCsvFile: PropTypes.func.isRequired,
+};
 
 export default CSVUserAdd;

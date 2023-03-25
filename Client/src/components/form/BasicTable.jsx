@@ -6,9 +6,7 @@ function BasicTable({
   rows,
   columns,
   hideColumns,
-  disableRowSelectionOnClick = true,
   selectedRowIds,
-  setSelectedRowIds,
   handleSelectionModelChange,
   handleDeleteRows,
   ...others
