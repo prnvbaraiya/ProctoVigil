@@ -2,29 +2,29 @@ import { Typography } from "@mui/material";
 import React from "react";
 
 function DisplayMulitpleChoice({
-  questions,
-  selectedQuestion,
   selectedAnswers,
   handleMultipleAnswerChange,
+  selectedQuestion,
 }) {
+  const answers = selectedAnswers.find(
+    (answer) => answer.question_id === selectedQuestion.id
+  ).userAnswer;
   return (
     <>
-      {questions[selectedQuestion - 1].options.map((option, index) => {
+      {selectedQuestion.options.map((option, index) => {
+        const isChecked = answers.includes(option.text);
         return (
           <div key={index} style={{ marginTop: 5 }}>
             <label
-              name={`question-${selectedQuestion}`}
               variant="contained"
-              htmlFor={`option-${selectedQuestion}-${index}`}
+              htmlFor={`option-${selectedQuestion.id}-${index}`}
               style={{ display: "flex" }}
             >
               <input
                 type="checkbox"
                 value={option.text}
-                id={`option-${selectedQuestion}-${index}`}
-                checked={selectedAnswers[
-                  selectedQuestion - 1
-                ].userAnswer.includes(option.text)}
+                id={`option-${selectedQuestion.id}-${index}`}
+                checked={isChecked}
                 onChange={(e) => handleMultipleAnswerChange(e)}
               />
               <Typography

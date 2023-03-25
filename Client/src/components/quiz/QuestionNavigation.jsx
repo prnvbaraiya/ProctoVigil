@@ -5,30 +5,31 @@ import SectionAccordion from "./SectionAccordion";
 
 export default function QuestionNavigation(props) {
   const {
-    selectedQuestion,
     zConfig,
-    numQuestions,
     selectedAnswers,
-    setSelectedQuestion,
     instance,
     visitedQuestions,
     setVisitedQuestions,
     InputDeviceIds,
     entireScreenStream,
     downloadVideo,
+    sections,
+    selectedQuestion,
+    getQuestion,
   } = props;
 
-  const getQueNav = () =>
-    [...Array(numQuestions)].map((_, i) => {
-      const isSelected = selectedQuestion === i + 1;
-      const isVisited = visitedQuestions.includes(i + 1);
+  const getQueNav = (questions) =>
+    questions.map((question, i) => {
+      const isSelected = selectedQuestion.id === question.id;
+      const isVisited = visitedQuestions.includes(question.id);
       return (
         <Grid
           item
           className={`queNavBtn ${
             isSelected
               ? "selected"
-              : selectedAnswers[i].userAnswer.length > 0
+              : selectedAnswers.find((a) => a.question_id === question.id)
+                  .userAnswer.length > 0
               ? "answered"
               : isVisited
               ? "visited"
@@ -36,9 +37,9 @@ export default function QuestionNavigation(props) {
           }`}
           textAlign="center"
           onClick={() => {
-            setSelectedQuestion(i + 1);
+            getQuestion(question.id);
             if (!isVisited) {
-              setVisitedQuestions((prev) => [...prev, i + 1]);
+              setVisitedQuestions((prev) => [...prev, question.id]);
             }
           }}
           key={i}
@@ -91,9 +92,17 @@ export default function QuestionNavigation(props) {
         entireScreenStream={entireScreenStream}
         downloadVideo={downloadVideo}
       />
-      <SectionAccordion title="Section 01" data={getQueNav()} />
-      <SectionAccordion title="Section 02" data={"LOL"} disabled={true} />
 
+      {sections.map((item) => {
+        return (
+          <SectionAccordion
+            key={item.id}
+            title={item.title}
+            data={getQueNav(item.questions)}
+          />
+        );
+      })}
+      <hr />
       <Grid container textAlign="center">
         {showLegend(null, "Unanswered")}
         {showLegend("lightblue", "Selected")}

@@ -21,11 +21,12 @@ import {
 } from "../../../services/ServerRequest";
 
 const AttemptQuiz = (props) => {
+  const [sections, setSections] = useState([]);
   const { instance, zConfig, attemptQuizData, localS } = props;
   const { id, InputDeviceIds } = attemptQuizData;
   const [data, setData] = useState({});
   const [questions, setQuestions] = useState([]);
-  const [selectedQuestion, setSelectedQuestion] = useState(1);
+  const [selectedQuestion, setSelectedQuestion] = useState("");
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [visitedQuestions, setVisitedQuestions] = useState([1]);
   const [loading, setLoading] = useState(true);
@@ -41,24 +42,41 @@ const AttemptQuiz = (props) => {
       const res = await QuizService.getById(id);
       setData(res.data);
 
-      const updatedQuestions = res.data.sections[0].questions.map((item) => {
-        const suffeledOptions = suffeledArray(item.options);
+      const updatedSections = res.data.sections.map((section) => {
+        const updatedQuestions = section.questions.map((question) => {
+          const suffeledOptions = suffeledArray(question.options);
+          return {
+            ...question,
+            suffeledOptions,
+          };
+        });
         return {
-          ...item,
-          suffeledOptions,
+          ...section,
+          questions: suffeledArray(updatedQuestions),
         };
       });
-
-      setQuestions(suffeledArray(updatedQuestions));
+      setSections(updatedSections);
+      setSelectedQuestion({
+        ...updatedSections[0].questions[0],
+        questionIndex: 0,
+      });
+      setVisitedQuestions((prev) => [
+        ...prev,
+        updatedSections[0].questions[0].id,
+      ]);
 
       setSelectedAnswers(
-        updatedQuestions.map((item) => ({
-          question_id: item.id,
-          userAnswer: [],
-          type: item.type,
-          takenTime: "",
-        }))
+        updatedSections.flatMap((section) => {
+          return section.questions.map((question) => ({
+            section_id: section.id,
+            question_id: question.id,
+            userAnswer: [],
+            type: question.type,
+            takenTime: "",
+          }));
+        })
       );
+      setQuestions(updatedSections[0].questions);
 
       setLoading(false);
     };
@@ -91,8 +109,11 @@ const AttemptQuiz = (props) => {
   const handleSingleAnswerChange = (e) => {
     setSelectedAnswers((prevAnswers) => {
       const newAnswers = [...prevAnswers];
-      newAnswers[selectedQuestion - 1] = {
-        ...prevAnswers[selectedQuestion - 1],
+      const questionIndex = newAnswers.findIndex(
+        (answer) => answer.question_id === selectedQuestion.id
+      );
+      newAnswers[questionIndex] = {
+        ...newAnswers[questionIndex],
         userAnswer: [e.target.value],
       };
       return newAnswers;
@@ -103,15 +124,15 @@ const AttemptQuiz = (props) => {
     const optionText = e.target.value;
     setSelectedAnswers((prevAnswers) => {
       const newAnswers = [...prevAnswers];
-      const currentAnswer = newAnswers[selectedQuestion - 1];
+      const currentAnswer = newAnswers.find(
+        (answer) => answer.question_id === selectedQuestion.id
+      );
       const optionIndex = currentAnswer.userAnswer.indexOf(optionText);
       if (e.target.checked) {
-        // Add the option text to the selected answers if it's not already there
         if (optionIndex === -1) {
           currentAnswer.userAnswer.push(optionText);
         }
       } else {
-        // Remove the option text from the selected answers if it's there
         if (optionIndex !== -1) {
           currentAnswer.userAnswer.splice(optionIndex, 1);
         }
@@ -132,10 +153,30 @@ const AttemptQuiz = (props) => {
         warningCount,
       },
     };
+    console.log(data);
+    return;
     const res = await QuizResultService.set(data);
     if (res.status === 202) {
       navigate("/quiz");
     }
+  };
+
+  const getQuestion = (questionId) => {
+    for (let i = 0; i < sections.length; i++) {
+      const section = sections[i];
+      for (let j = 0; j < section.questions.length; j++) {
+        const question = section.questions[j];
+        if (question.id === questionId) {
+          setSelectedQuestion(question);
+          return {
+            questionIndex: j,
+            question: question,
+          };
+        }
+      }
+    }
+    // Return null if no question was found
+    return null;
   };
 
   return (
@@ -170,7 +211,6 @@ const AttemptQuiz = (props) => {
                     {!loading && (
                       <DisplayQuestions
                         selectedQuestion={selectedQuestion}
-                        questions={questions}
                         selectedAnswers={selectedAnswers}
                         handleMultipleAnswerChange={handleMultipleAnswerChange}
                         handleSingleAnswerChange={handleSingleAnswerChange}
@@ -189,26 +229,45 @@ const AttemptQuiz = (props) => {
                   >
                     <Button
                       variant="contained"
-                      disabled={selectedQuestion === 1}
+                      disabled={selectedQuestion.questionIndex === 0}
                       onClick={() => {
-                        setVisitedQuestions((prev) => [
-                          ...prev,
-                          selectedQuestion,
-                        ]);
-                        setSelectedQuestion((prev) => prev - 1);
+                        const questionIndex =
+                          selectedQuestion.questionIndex - 1;
+                        const prevQuestion = questions[questionIndex];
+                        if (!visitedQuestions.includes(prevQuestion.id)) {
+                          setVisitedQuestions((prev) => [
+                            ...prev,
+                            prevQuestion.id,
+                          ]);
+                        }
+                        setSelectedQuestion({
+                          ...prevQuestion,
+                          questionIndex,
+                        });
                       }}
                     >
                       Previous
                     </Button>
+
                     <Button
                       variant="contained"
-                      disabled={selectedQuestion === questions.length}
+                      disabled={
+                        selectedQuestion.questionIndex === questions.length - 1
+                      }
                       onClick={() => {
-                        setVisitedQuestions((prev) => [
-                          ...prev,
-                          selectedQuestion,
-                        ]);
-                        setSelectedQuestion((prev) => prev + 1);
+                        const questionIndex =
+                          selectedQuestion.questionIndex + 1;
+                        const nextQuestion = questions[questionIndex];
+                        if (!visitedQuestions.includes(nextQuestion.id)) {
+                          setVisitedQuestions((prev) => [
+                            ...prev,
+                            nextQuestion.id,
+                          ]);
+                        }
+                        setSelectedQuestion({
+                          ...nextQuestion,
+                          questionIndex,
+                        });
                       }}
                     >
                       Next
@@ -229,15 +288,15 @@ const AttemptQuiz = (props) => {
                   <QuestionNavigation
                     InputDeviceIds={InputDeviceIds}
                     zConfig={zConfig}
-                    selectedQuestion={selectedQuestion}
-                    setSelectedQuestion={setSelectedQuestion}
                     selectedAnswers={selectedAnswers}
-                    numQuestions={questions.length}
                     instance={instance}
                     setVisitedQuestions={setVisitedQuestions}
                     visitedQuestions={visitedQuestions}
                     entireScreenStream={localS}
                     downloadVideo={sendVideo}
+                    sections={sections}
+                    selectedQuestion={selectedQuestion}
+                    getQuestion={getQuestion}
                   />
                 </Box>
               </Grid>

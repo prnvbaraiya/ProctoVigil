@@ -1,14 +1,12 @@
-import { Typography } from "@mui/material";
 import React from "react";
 import DisplayMulitpleChoice from "./DisplayMulitpleChoice";
 import DisplaySignleChoice from "./DisplaySignleChoice";
 
 function DisplayQuestions({
-  selectedQuestion,
-  questions,
   selectedAnswers,
   handleSingleAnswerChange,
   handleMultipleAnswerChange,
+  selectedQuestion,
 }) {
   return (
     <>
@@ -16,28 +14,23 @@ function DisplayQuestions({
         {/* Display the current question */}
         <div
           dangerouslySetInnerHTML={{
-            __html:
-              selectedQuestion +
-              ") " +
-              questions[selectedQuestion - 1].question,
+            __html: selectedQuestion.question,
           }}
         />
         {/* Display the options for the current question */}
-        {(questions[selectedQuestion - 1].type === "singleChoice" ||
-          questions[selectedQuestion - 1].type === "boolean") && (
+        {(selectedQuestion.type === "singleChoice" ||
+          selectedQuestion.type === "boolean") && (
           <DisplaySignleChoice
-            questions={questions}
-            selectedQuestion={selectedQuestion}
             selectedAnswers={selectedAnswers}
             handleSingleAnswerChange={handleSingleAnswerChange}
+            selectedQuestion={selectedQuestion}
           />
         )}
-        {questions[selectedQuestion - 1].type === "multipleChoice" && (
+        {selectedQuestion.type === "multipleChoice" && (
           <DisplayMulitpleChoice
-            questions={questions}
-            selectedQuestion={selectedQuestion}
             selectedAnswers={selectedAnswers}
             handleMultipleAnswerChange={handleMultipleAnswerChange}
+            selectedQuestion={selectedQuestion}
           />
         )}
       </div>

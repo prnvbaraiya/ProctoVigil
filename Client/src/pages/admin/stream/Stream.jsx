@@ -69,7 +69,9 @@ function Stream() {
                 result.map((item) => {
                   if (item.name === e.target.value) {
                     setQuizId(item._id);
-                    setStudentLabel(item.studentNames);
+                    setStudentLabel(
+                      item.studentNames.map((item) => item.username)
+                    );
                   }
                 });
               }}

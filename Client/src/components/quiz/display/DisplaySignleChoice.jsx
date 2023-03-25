@@ -2,14 +2,13 @@ import { Typography } from "@mui/material";
 import React from "react";
 
 function DisplaySignleChoice({
-  questions,
-  selectedQuestion,
   selectedAnswers,
   handleSingleAnswerChange,
+  selectedQuestion,
 }) {
   return (
     <>
-      {questions[selectedQuestion - 1].options.map((option, index) => {
+      {selectedQuestion.options.map((option, index) => {
         return (
           <div key={index} style={{ marginTop: 5 }}>
             <label
@@ -24,7 +23,9 @@ function DisplaySignleChoice({
                 id={index}
                 checked={
                   option.text ===
-                  selectedAnswers[selectedQuestion - 1].userAnswer[0]
+                  selectedAnswers.find(
+                    (answer) => answer.question_id === selectedQuestion.id
+                  ).userAnswer[0]
                 }
                 onChange={(e) => handleSingleAnswerChange(e)}
               />

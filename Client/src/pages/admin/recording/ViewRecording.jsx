@@ -116,7 +116,6 @@ function ViewRecording() {
         <Box sx={{ padding: 5 }} textAlign="center">
           {!loading && driveLinkUrl !== "" && (
             <video
-              autoPlay
               controls
               hidden={!playVideo}
               id="Student-camera"
