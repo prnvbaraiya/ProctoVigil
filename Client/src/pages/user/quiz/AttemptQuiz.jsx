@@ -3,9 +3,10 @@ import { Stack } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  blueEvent,
+  blurEvent,
   offlineEvent,
   suffeledArray,
+  focusEvent,
 } from "../../../common/Methods";
 import {
   AlertDialogBox,
@@ -25,15 +26,12 @@ const AttemptQuiz = (props) => {
   const { instance, zConfig, attemptQuizData, localS } = props;
   const { id, InputDeviceIds } = attemptQuizData;
   const [data, setData] = useState({});
-  const [questions, setQuestions] = useState([]);
-  const [selectedQuestion, setSelectedQuestion] = useState("");
+  const [selectedQuestion, setSelectedQuestion] = useState({});
   const [selectedAnswers, setSelectedAnswers] = useState([]);
-  const [visitedQuestions, setVisitedQuestions] = useState([1]);
+  const [visitedQuestions, setVisitedQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // eslint-disable-next-line
   const [answerKey, setAnswerKey] = useState([]);
-  const [warningCount, setWarningCount] = useState(0);
+  const [warningAlert, setWarningAlert] = useState({ count: 0, open: false });
   const [submitOpen, setSubmitOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -42,31 +40,32 @@ const AttemptQuiz = (props) => {
       const res = await QuizService.getById(id);
       setData(res.data);
 
-      const updatedSections = res.data.sections.map((section) => {
-        const updatedQuestions = section.questions.map((question) => {
-          const suffeledOptions = suffeledArray(question.options);
-          return {
-            ...question,
-            suffeledOptions,
-          };
-        });
+      const updatedSection = res.data.sections.map((section, sectionIndex) => {
+        const updatedQuestions = suffeledArray(section.questions).map(
+          (question, questionIndex) => {
+            const suffeledOptions = suffeledArray(question.options);
+            return {
+              ...question,
+              suffeledOptions,
+              sectionIndex,
+              questionIndex,
+            };
+          }
+        );
         return {
           ...section,
-          questions: suffeledArray(updatedQuestions),
+          sectionIndex,
+          questions: updatedQuestions,
         };
       });
-      setSections(updatedSections);
-      setSelectedQuestion({
-        ...updatedSections[0].questions[0],
-        questionIndex: 0,
-      });
-      setVisitedQuestions((prev) => [
-        ...prev,
-        updatedSections[0].questions[0].id,
-      ]);
 
+      setSections(updatedSection);
+      setSelectedQuestion({
+        ...updatedSection[0].questions[0],
+      });
+      setVisitedQuestions([updatedSection[0].questions[0].id]);
       setSelectedAnswers(
-        updatedSections.flatMap((section) => {
+        updatedSection.flatMap((section) => {
           return section.questions.map((question) => ({
             section_id: section.id,
             question_id: question.id,
@@ -76,26 +75,46 @@ const AttemptQuiz = (props) => {
           }));
         })
       );
-      setQuestions(updatedSections[0].questions);
+      setAnswerKey(
+        updatedSection.map((section) => ({
+          sectionId: section.id,
+          answers: section.questions.map((question) => ({
+            questionId: question.id,
+            correctAnswer: question.options.filter(
+              (option) => option.isCorrect
+            ),
+          })),
+        }))
+      );
 
       setLoading(false);
     };
     getData();
-    if (import.meta.env.VITE_PRODUCTION === "true") {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-      }
-      window.addEventListener("offline", offlineEvent);
-      window.addEventListener("blur", () => blueEvent(setWarningCount));
-      return () => {
-        if (document.fullscreenElement) {
-          document.exitFullscreen();
-        }
-        window.removeEventListener("blur", () => blueEvent(setWarningCount));
-        window.removeEventListener("offline", offlineEvent);
-      };
-    }
     // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    if (import.meta.env.VITE_PRODUCTION === "true") {
+      // Enter fullscreen mode and add event listeners
+      document.documentElement.requestFullscreen();
+      window.addEventListener("offline", offlineEvent);
+      window.addEventListener("blur", () =>
+        blurEvent(setWarningAlert, warningAlert)
+      );
+      window.addEventListener("focus", () => focusEvent(setWarningAlert));
+    }
+
+    // Clean up
+    return () => {
+      if (import.meta.env.VITE_PRODUCTION === "true") {
+        if (document && document.fullscreenElement) document.exitFullscreen();
+        window.removeEventListener("offline", offlineEvent);
+        window.removeEventListener("blur", () =>
+          blurEvent(setWarningAlert, warningAlert)
+        );
+        window.removeEventListener("focus", () => focusEvent(setWarningAlert));
+      }
+    };
   }, []);
 
   const sendVideo = async (blob, fileName) => {
@@ -150,11 +169,9 @@ const AttemptQuiz = (props) => {
         answerKey,
         studentAnswer: selectedAnswers,
         obtainedMarks: -1,
-        warningCount,
+        warningCount: warningAlert.count,
       },
     };
-    console.log(data);
-    return;
     const res = await QuizResultService.set(data);
     if (res.status === 202) {
       navigate("/quiz");
@@ -169,13 +186,13 @@ const AttemptQuiz = (props) => {
         if (question.id === questionId) {
           setSelectedQuestion(question);
           return {
-            questionIndex: j,
+            sectionIndex: i,
             question: question,
           };
         }
       }
     }
-    // Return null if no question was found
+    alert("Question Not Found ");
     return null;
   };
 
@@ -189,7 +206,7 @@ const AttemptQuiz = (props) => {
         data={`Question Attempted: ${
           selectedAnswers.filter(({ userAnswer }) => userAnswer.length > 0)
             .length
-        }/${questions.length}`}
+        }/ tobeUpdated`}
       />
       <LoadingSpinner loading={loading} />
       {!loading && (
@@ -233,17 +250,17 @@ const AttemptQuiz = (props) => {
                       onClick={() => {
                         const questionIndex =
                           selectedQuestion.questionIndex - 1;
-                        const prevQuestion = questions[questionIndex];
+                        const prevQuestion =
+                          sections[selectedQuestion.sectionIndex].questions[
+                            questionIndex
+                          ];
                         if (!visitedQuestions.includes(prevQuestion.id)) {
                           setVisitedQuestions((prev) => [
                             ...prev,
                             prevQuestion.id,
                           ]);
                         }
-                        setSelectedQuestion({
-                          ...prevQuestion,
-                          questionIndex,
-                        });
+                        setSelectedQuestion(prevQuestion);
                       }}
                     >
                       Previous
@@ -252,22 +269,25 @@ const AttemptQuiz = (props) => {
                     <Button
                       variant="contained"
                       disabled={
-                        selectedQuestion.questionIndex === questions.length - 1
+                        selectedQuestion.questionIndex ===
+                        sections[selectedQuestion.sectionIndex].questions
+                          .length -
+                          1
                       }
                       onClick={() => {
                         const questionIndex =
                           selectedQuestion.questionIndex + 1;
-                        const nextQuestion = questions[questionIndex];
+                        const nextQuestion =
+                          sections[selectedQuestion.sectionIndex].questions[
+                            questionIndex
+                          ];
                         if (!visitedQuestions.includes(nextQuestion.id)) {
                           setVisitedQuestions((prev) => [
                             ...prev,
                             nextQuestion.id,
                           ]);
                         }
-                        setSelectedQuestion({
-                          ...nextQuestion,
-                          questionIndex,
-                        });
+                        setSelectedQuestion(nextQuestion);
                       }}
                     >
                       Next

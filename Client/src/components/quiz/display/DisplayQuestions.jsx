@@ -14,7 +14,11 @@ function DisplayQuestions({
         {/* Display the current question */}
         <div
           dangerouslySetInnerHTML={{
-            __html: selectedQuestion.question,
+            __html:
+              selectedQuestion.questionIndex +
+              1 +
+              ") " +
+              selectedQuestion.question,
           }}
         />
         {/* Display the options for the current question */}

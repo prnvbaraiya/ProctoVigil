@@ -114,9 +114,14 @@ function ViewResult() {
       },
     },
     {
+      field: "warningCount",
+      headerName: "Total Warnings",
+      width: 120,
+    },
+    {
       field: "obtainedMarks",
       headerName: "Obtained Marks",
-      width: 200,
+      width: 120,
     },
     {
       field: "totalMarks",

@@ -1,8 +1,15 @@
 import axios from "axios";
 
-export const blueEvent = (setWarningCount) => {
-  alert("You are trying to change window please stay on this window");
-  setWarningCount((prev) => prev + 1);
+export const blurEvent = (setWarningAlert, warningAlert) => {
+  setWarningAlert((prev) => ({ ...prev, count: prev.count + 1 }));
+  if (!warningAlert.open) {
+    setWarningAlert((prev) => ({ ...prev, open: true }));
+    alert("You are trying to change window please stay on this window");
+  }
+};
+
+export const focusEvent = (setWarningAlert) => {
+  setWarningAlert((prev) => ({ ...prev, open: false }));
 };
 
 export const offlineEvent = () => {
