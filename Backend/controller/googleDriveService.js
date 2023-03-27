@@ -22,14 +22,21 @@ class GoogleDriveService {
     });
   }
 
-  createFolder(folderName) {
-    return this.driveClient.files.create({
-      resource: {
-        name: folderName,
-        mimeType: "application/vnd.google-apps.folder",
-      },
-      fields: "id, name",
-    });
+  async createFolder(folderName, parentFolderId) {
+    try {
+      const res = await this.driveClient.files.create({
+        resource: {
+          name: folderName,
+          mimeType: "application/vnd.google-apps.folder",
+          parents: parentFolderId ? [parentFolderId] : [],
+        },
+        fields: "id, name",
+      });
+      return res.data;
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
   }
 
   searchFolder(folderName) {

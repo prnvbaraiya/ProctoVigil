@@ -29,7 +29,7 @@ const ERROR_CODE = 500;
 const SUCCESS_CODE = 202;
 
 const videoStoringPath = "storage";
-const driveFolderName = "Video";
+const driveFolderName = "Procto Vigil";
 
 const cryptingPassword = (password, callback) => {
   bcrypt.genSalt(10, function (err, salt) {
@@ -524,10 +524,12 @@ const UserRecording = {
         return res.status(500).json(err);
       }
       const { quiz_id, username } = req.body;
+      const quiz = await QuizModel.findById(quiz_id);
 
       const link = await UserRecording.uploadToDrive(
         req.file.path,
-        `${username}.mkv`
+        `${username}.mkv`,
+        quiz.name
       );
 
       let userRecording = await UserRecordingModel.findOne({ quiz_id });
@@ -576,7 +578,7 @@ const UserRecording = {
     }
   },
 
-  uploadToDrive: async (localPath, driveFileName) => {
+  uploadToDrive: async (localPath, driveFileName, drivePathFolderName) => {
     const googleDriveService = new GoogleDriveService(
       driveClientId,
       driveClientSecret,
@@ -590,15 +592,17 @@ const UserRecording = {
       throw new Error("File not found!");
     }
 
-    let folder = await googleDriveService
-      .searchFolder(driveFolderName)
-      .catch((error) => {
-        console.error(error);
-        return null;
-      });
+    let parentFolder = await googleDriveService.searchFolder(driveFolderName);
+    if (!parentFolder) {
+      parentFolder = await googleDriveService.createFolder(driveFolderName);
+    }
 
+    let folder = await googleDriveService.searchFolder(drivePathFolderName);
     if (!folder) {
-      folder = await googleDriveService.createFolder(driveFolderName);
+      folder = await googleDriveService.createFolder(
+        drivePathFolderName,
+        parentFolder.id
+      );
     }
 
     const savedFile = await googleDriveService
