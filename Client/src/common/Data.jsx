@@ -7,6 +7,7 @@ import AutorenewIcon from "@mui/icons-material/Autorenew";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import SettingsIcon from "@mui/icons-material/Settings";
+import VideoChatIcon from "@mui/icons-material/VideoChat";
 
 export const userRoles = [
   { title: "Admin", value: "admin" },
@@ -29,6 +30,11 @@ export const adminSidebarItems = [
     href: "/quiz",
     icon: <LibraryBooksIcon fontSize="small" />,
     title: "Quiz",
+  },
+  {
+    href: "/interview",
+    icon: <VideoChatIcon fontSize="small" />,
+    title: "Interview",
   },
   {
     href: "/stream",

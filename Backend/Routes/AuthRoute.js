@@ -3,6 +3,7 @@ const {
   User,
   ZegocloudTokenGenerator,
   Quiz,
+  Interview,
   a,
   JWT,
   QuizResult,
@@ -34,6 +35,12 @@ router
   .post("/quiz", Quiz.add)
   .put("/quiz", Quiz.update)
   .delete("/quiz", Quiz.delete);
+router
+  .get("/interview", Interview.get)
+  .get("/interview/:id", Interview.getById)
+  .post("/interview", Interview.add)
+  .put("/interview", Interview.update)
+  .delete("/interview", Interview.delete);
 router
   .get("/quiz-result", QuizResult.get)
   .get("/quiz-result/:id", QuizResult.getById)

@@ -17,6 +17,9 @@ import EditPhase from "../pages/admin/phase/EditPhase";
 import ViewResult from "../pages/admin/Result/ViewResult";
 import AddUser from "../pages/admin/user/AddUser";
 import ViewRecording from "../pages/admin/recording/ViewRecording";
+import ViewInterview from "../pages/admin/interview/ViewInterview";
+import AddInterview from "../pages/admin/interview/AddInterview";
+import EditInterview from "../pages/admin/interview/EditInterview";
 
 const AdminRoutes = (
   <Route
@@ -36,6 +39,11 @@ const AdminRoutes = (
         <Route index element={<Quiz />} />
         <Route path="add" element={<AddQuiz />} />
         <Route path="edit" element={<EditQuiz />} />
+      </Route>
+      <Route path="interview">
+        <Route index element={<ViewInterview />} />
+        <Route path="add" element={<AddInterview />} />
+        <Route path="edit" element={<EditInterview />} />
       </Route>
       <Route path="stream">
         <Route index element={<Stream />} />

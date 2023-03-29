@@ -180,8 +180,8 @@ function AddUser() {
           fname={fname}
           lname={lname}
           email={email}
-          password
-          cnfPassword
+          password={password}
+          cnfPassword={cnfPassword}
         />
       )}
       {inputMethods.value === "csv" && (

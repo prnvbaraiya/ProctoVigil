@@ -18,7 +18,9 @@
 - [x] Admin collection
 - [x] User collection
 - [x] Quiz collection
-- [ ] Result Quiz collection
+- [x] Result Quiz collection
+- [ ] Interview collection
+- [x] User Recording collection
 - [ ] Notification collection
 
 - [ ] Complete Admin Side
@@ -86,6 +88,6 @@
 
 - [x] 20% webrtc module & quiz module & frontend layout
 - [x] 40% admin can add users & quiz & admin profile setting
-- [ ] 60% all the result will be disply & send mail & quiz with subjective and different sections
+- [x] 60% all the result will be disply & send mail & quiz with subjective and different sections
 - [ ] 75% integrate the lms system with quiz & bug fixes
 - [ ] 100% integrate ai quiz and lms system
