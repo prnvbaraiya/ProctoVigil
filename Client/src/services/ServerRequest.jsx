@@ -54,6 +54,9 @@ const QuizService = {
   getById: (id) => {
     return sendRequest("get", "quiz/" + id);
   },
+  getByUserId: (id) => {
+    return sendRequest("get", "quiz/user/" + id);
+  },
   set: (data) => {
     return sendRequest("post", "quiz", data);
   },
@@ -71,6 +74,9 @@ const InterviewService = {
   },
   getById: (id) => {
     return sendRequest("get", "interview/" + id);
+  },
+  getByUserId: (id) => {
+    return sendRequest("get", "interview/user/" + id);
   },
   set: (data) => {
     return sendRequest("post", "interview", data);

@@ -66,6 +66,7 @@ export const adminSidebarItems = [
 export const homeMenuItem = [
   { title: "Home", link: "/" },
   { title: "Quiz", link: "/quiz" },
+  { title: "Interviews", link: "/interview" },
   { title: "About Us", link: "/about-us" },
   { title: "Contact Us", link: "/contact-us" },
   { title: "Test Page", link: "/test" },

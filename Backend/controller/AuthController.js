@@ -338,15 +338,21 @@ const Quiz = {
     try {
       const id = req.params.id;
       const quiz = await QuizModel.findById(id)
-        .populate({
-          path: "author",
-          select: "firstName lastName",
-        })
-        .populate({
-          path: "studentNames",
-          select: "username",
-        });
+        .populate("author", "firstName lastName")
+        .populate("studentNames", "username");
       return res.status(SUCCESS_CODE).send(quiz);
+    } catch (err) {
+      return res.status(ERROR_CODE).send("There is some error: " + err);
+    }
+  },
+  getByUserId: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const quizzes = await QuizModel.find({ studentNames: id }).populate(
+        "author",
+        "name email"
+      );
+      return res.status(SUCCESS_CODE).send(quizzes);
     } catch (err) {
       return res.status(ERROR_CODE).send("There is some error: " + err);
     }
@@ -424,6 +430,17 @@ const Interview = {
           select: "username",
         });
       return res.status(SUCCESS_CODE).send(interview);
+    } catch (err) {
+      return res.status(ERROR_CODE).send("There is some error: " + err);
+    }
+  },
+  getByUserId: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const interviews = await InterviewModel.find({
+        "studentNames.user_id": id,
+      }).populate("author", "firstName lastName");
+      return res.status(SUCCESS_CODE).send(interviews);
     } catch (err) {
       return res.status(ERROR_CODE).send("There is some error: " + err);
     }
