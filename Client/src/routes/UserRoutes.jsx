@@ -6,6 +6,7 @@ import PageNotFound from "../pages/PageNotFound";
 import RequireAuth from "../pages/RequireAuth";
 import Unauthorized from "../pages/Unauthorized";
 import Home from "../pages/user/home/Home";
+import StartInterview from "../pages/user/interview/StartInterview";
 import UserInterview from "../pages/user/interview/UserInterview";
 import Quiz from "../pages/user/quiz/Quiz";
 import StartQuiz from "../pages/user/quiz/StartQuiz";
@@ -24,6 +25,9 @@ const UserRoutes = [
     >
       <Route path="/quiz" element={<Quiz />} key="quiz"></Route>
       <Route path="/interview" element={<UserInterview />} />
+      <Route path="/interview" key="interview">
+        <Route path="start" element={<StartInterview />} />
+      </Route>
     </Route>
   </Route>,
   <Route element={<RequireAuth allowedRoles={["student"]} />} key="Student">

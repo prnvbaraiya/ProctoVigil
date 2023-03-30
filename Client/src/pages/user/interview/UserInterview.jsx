@@ -19,19 +19,40 @@ function UserInterview() {
 
   const getData = async () => {
     setLoading(true);
-    const usr = await UserService.find({ username: auth.username });
-    console.log(usr.data[0]._id);
-    const res = await InterviewService.getByUserId(usr.data[0]._id);
-    console.log(res);
-    setQuizzes(
-      res.data.map((item) => {
-        return {
-          ...item,
-          startDate: format(new Date(item.startDate), "MMM, dd yyyy hh:mm aa"),
-          isAvailable: isDisable(item.startDate, item.endDate),
-        };
-      })
-    );
+    let res = "";
+    let date = "";
+    if (auth.roles === "admin") {
+      res = await InterviewService.get();
+      setQuizzes(
+        res.data.map((item) => {
+          return {
+            ...item,
+            startDate: format(
+              new Date(item.startDate),
+              "MMM, dd yyyy hh:mm aa"
+            ),
+            isAvailable: true,
+          };
+        })
+      );
+    } else {
+      const usr = await UserService.find({ username: auth.username });
+      res = await InterviewService.getByUserId(usr.data[0]._id);
+      date = res.data.map(
+        (item) =>
+          item.studentNames.find((stu) => stu.user_id === usr.data[0]._id)
+            .interviewTime
+      );
+      setQuizzes(
+        res.data.map((item, index) => {
+          return {
+            ...item,
+            startDate: format(new Date(date[index]), "MMM, dd yyyy hh:mm aa"),
+            isAvailable: isDisable(date[index]),
+          };
+        })
+      );
+    }
     setLoading(false);
   };
 

@@ -15,7 +15,7 @@ const sendRequest = async (type, link, data = null) => {
     const res = await axios(config);
     return res;
   } catch (err) {
-    // alert("Server Error:", JSON.stringify(err));
+    alert("Server: " + err.message);
     console.log("PRNV AXIOS ERROR:", err);
   }
 };
