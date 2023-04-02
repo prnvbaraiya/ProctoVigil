@@ -1,6 +1,6 @@
-import { Breadcrumbs, Link } from "@mui/material";
+import { Breadcrumbs } from "@mui/material";
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function BreadcrumbsItem() {
   const location = useLocation();
@@ -8,13 +8,13 @@ function BreadcrumbsItem() {
   let url = "/admin";
   return (
     <Breadcrumbs>
-      <Link underline="hover" color="inherit" href="/">
+      <Link underline="hover" color="inherit" to="/">
         Home
       </Link>
       {items.map((item, index) => {
         url += "/" + item;
         return (
-          <Link underline="hover" color="inherit" href={url} key={index}>
+          <Link underline="hover" color="inherit" to={url} key={index}>
             {item}
           </Link>
         );

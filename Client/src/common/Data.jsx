@@ -69,7 +69,7 @@ export const homeMenuItem = [
   { title: "Interviews", link: "/interview" },
   { title: "About Us", link: "/about-us" },
   { title: "Contact Us", link: "/contact-us" },
-  { title: "Test Page", link: "/test" },
+  // { title: "Test Page", link: "/test" },
 ];
 
 export const adminMenuItem = [
