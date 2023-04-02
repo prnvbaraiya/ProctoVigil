@@ -45,3 +45,11 @@ export const getRandomQuestions = async (length) => {
   });
   return tmpQuestions;
 };
+
+export const groupByObject = (arr, key) => {
+  const result = {};
+  for (let item of arr) {
+    result[item[key]] = { ...item };
+  }
+  return result;
+};

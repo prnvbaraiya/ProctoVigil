@@ -20,6 +20,7 @@ import ViewRecording from "../pages/admin/recording/ViewRecording";
 import ViewInterview from "../pages/admin/interview/ViewInterview";
 import AddInterview from "../pages/admin/interview/AddInterview";
 import EditInterview from "../pages/admin/interview/EditInterview";
+import Gradding from "../pages/admin/Result/Gradding";
 
 const AdminRoutes = (
   <Route
@@ -55,6 +56,7 @@ const AdminRoutes = (
       </Route>
       <Route path="result">
         <Route index element={<ViewResult />} />
+        <Route path="gradding" element={<Gradding />} />
       </Route>
       <Route path="recording">
         <Route index element={<ViewRecording />} />

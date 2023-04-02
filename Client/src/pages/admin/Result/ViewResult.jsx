@@ -20,6 +20,7 @@ import {
 } from "../../../components/index";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { GridActionsCellItem } from "@mui/x-data-grid";
+import { useNavigate } from "react-router-dom";
 
 function ViewResult() {
   const [loading, setLoading] = useState(false);
@@ -36,6 +37,7 @@ function ViewResult() {
     vertical: "top",
     horizontal: "right",
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading((prev) => !prev);
@@ -90,6 +92,14 @@ function ViewResult() {
     } else {
       alert("There is some error try again after some time");
     }
+  };
+
+  const handleGrading = (id) => {
+    const state = {
+      quiz_id: selectedQuiz.value,
+      student_id: id,
+    };
+    navigate("gradding", { state });
   };
 
   const columns = [
@@ -154,6 +164,14 @@ function ViewResult() {
             setDeleteDialogBox(true);
           }}
           color="error"
+        />,
+        <GridActionsCellItem
+          label="Start Grading"
+          key={params.row.user._id}
+          onClick={() => {
+            handleGrading(params.row.user._id);
+          }}
+          showInMenu
         />,
       ],
     },

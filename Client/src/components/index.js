@@ -9,6 +9,7 @@ import BreadcrumbsItem from "./admin/BreadcrumbsItem";
 import DashboardNavbar from "./admin/DashboardNavbar";
 import DashboardSidebar from "./admin/DashboardSidebar";
 import NavItem from "./admin/NavItem";
+import QuestionCard from "./admin/QuestionCard";
 
 //Charts
 import BarChart from "./charts/BarChart";
@@ -48,6 +49,7 @@ export {
   DashboardNavbar,
   DashboardSidebar,
   NavItem,
+  QuestionCard,
   BarChart,
   BasicTable,
   DateTime,
