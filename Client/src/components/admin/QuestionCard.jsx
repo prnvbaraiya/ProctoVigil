@@ -33,7 +33,7 @@ const QuestionCard = ({
   return (
     <div
       className={`report-question ${
-        isCorrect ? "green" : userAnswer !== null && "red"
+        isCorrect ? "green" : userAnswer.length !== 0 && "red"
       } `}
     >
       <div className="report-question-header">

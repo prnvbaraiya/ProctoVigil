@@ -9,6 +9,9 @@ import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import SettingsIcon from "@mui/icons-material/Settings";
 import VideoChatIcon from "@mui/icons-material/VideoChat";
 
+export const ERROR_CODE = 500;
+export const SUCCESS_CODE = 202;
+
 export const userRoles = [
   { title: "Admin", value: "admin" },
   { title: "Teacher", value: "teacher" },

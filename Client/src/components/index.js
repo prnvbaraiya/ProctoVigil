@@ -16,6 +16,7 @@ import BarChart from "./charts/BarChart";
 
 //forms
 import BasicTable from "./form/BasicTable";
+import CustomTextBox from "./form/CustomTextBox";
 import DateTime from "./form/DateTime";
 import QuestionAdd from "./form/QuestionAdd";
 import RadioButton from "./form/RadioButton";
@@ -52,6 +53,7 @@ export {
   QuestionCard,
   BarChart,
   BasicTable,
+  CustomTextBox,
   DateTime,
   QuestionAdd,
   RadioButton,

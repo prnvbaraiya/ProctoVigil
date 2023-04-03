@@ -13,6 +13,7 @@ const {
   UserModel,
   UserRecordingModel,
   InterviewModel,
+  FeedbackModel,
 } = require("../model/model.js");
 const { PythonShell } = require("python-shell");
 const bcrypt = require("bcrypt");
@@ -719,6 +720,34 @@ const UserRecording = {
   },
 };
 
+const Feedback = {
+  add: async (req, res) => {
+    try {
+      await FeedbackModel.create(req.body);
+      return res.status(SUCCESS_CODE).send("Feedback added Successfully");
+    } catch (err) {
+      return res.status(ERROR_CODE).send("There is some error: " + err);
+    }
+  },
+  get: async (req, res) => {
+    try {
+      const feedbacks = await FeedbackModel.find();
+      return res.status(SUCCESS_CODE).send(feedbacks);
+    } catch (err) {
+      return res.status(ERROR_CODE).send("There is some error: " + err);
+    }
+  },
+  getById: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const feedback = await FeedbackModel.findById(id);
+      return res.status(SUCCESS_CODE).send(feedback);
+    } catch (err) {
+      return res.status(ERROR_CODE).send("There is some error: " + err);
+    }
+  },
+};
+
 const a = {
   testMailSend: async (req, res) => {
     const mailContent = "Testing Mail is delivered successfully";
@@ -760,5 +789,6 @@ module.exports = {
   Interview,
   QuizResult,
   UserRecording,
+  Feedback,
   a,
 };

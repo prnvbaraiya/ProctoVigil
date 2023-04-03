@@ -4,6 +4,7 @@ const {
   ZegocloudTokenGenerator,
   Quiz,
   Interview,
+  Feedback,
   a,
   JWT,
   QuizResult,
@@ -54,5 +55,10 @@ router
   .post("/user-recording", UserRecording.add)
   .post("/user-recording/file-path", UserRecording.sendFile)
   .get("/user-recording", UserRecording.get);
+
+router
+  .post("/feedback", Feedback.add)
+  .get("/feedback", Feedback.get)
+  .post("/feedback/:id", Feedback.getById);
 
 module.exports = router;

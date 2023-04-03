@@ -110,6 +110,18 @@ const QuizResultService = {
   },
 };
 
+const FeedbackService = {
+  get: () => {
+    return sendRequest("get", "feedback");
+  },
+  getById: (id) => {
+    return sendRequest("get", "feedback/" + id);
+  },
+  set: (data) => {
+    return sendRequest("post", "feedback", data);
+  },
+};
+
 const UserRecordingService = {
   set: async (data) => {
     const type = "post";
@@ -151,6 +163,7 @@ export {
   QuizService,
   InterviewService,
   QuizResultService,
+  FeedbackService,
   UserRecordingService,
   JWTService,
 };
