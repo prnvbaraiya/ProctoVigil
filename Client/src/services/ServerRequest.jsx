@@ -124,25 +124,7 @@ const FeedbackService = {
 
 const UserRecordingService = {
   set: async (data) => {
-    const type = "post";
-    const link = "user-recording";
-
-    const config = {
-      method: type,
-      url: SERVER_LINK + link,
-      headers: {
-        Authorization: auth.getToken(),
-      },
-      data,
-    };
-
-    try {
-      const res = await axios(config);
-      return res;
-    } catch (err) {
-      // alert("Server Error:", JSON.stringify(err));
-      console.log("PRNV AXIOS ERROR:", err);
-    }
+    return sendRequest("post", "user-recording", data);
   },
   get: async () => {
     return sendRequest("get", "user-recording");

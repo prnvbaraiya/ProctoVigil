@@ -1,5 +1,6 @@
 const fs = require("fs");
 const { google } = require("googleapis");
+const stream = require("stream");
 
 class GoogleDriveService {
   constructor(clientId, clientSecret, redirectUri, refreshToken) {
@@ -57,18 +58,26 @@ class GoogleDriveService {
     });
   }
 
-  saveFile(fileName, filePath, fileMimeType, folderId) {
-    return this.driveClient.files.create({
-      requestBody: {
-        name: fileName,
-        mimeType: fileMimeType,
-        parents: folderId ? [folderId] : [],
-      },
-      media: {
-        mimeType: fileMimeType,
-        body: fs.createReadStream(filePath),
-      },
-    });
+  async saveFile(fileName, fileBuffer, fileMimeType, folderId) {
+    const fileMetadata = {
+      name: fileName,
+      parents: folderId ? [folderId] : [],
+    };
+    const media = {
+      mimeType: fileMimeType,
+      body: stream.Readable.from([fileBuffer]),
+    };
+    try {
+      const file = await this.driveClient.files.create({
+        resource: fileMetadata,
+        media: media,
+        fields: "id",
+      });
+      return file;
+    } catch (err) {
+      // TODO(developer) - Handle error
+      throw err;
+    }
   }
 
   createPermission(fileId, emailAddress = "") {

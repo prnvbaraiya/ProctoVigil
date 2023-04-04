@@ -24,6 +24,7 @@
     "nodemailer-express-handlebars": "^6.1.0",
     "nodemon": "^2.0.20",
     "python-shell": "^5.0.0",
-    "serverless-http": "^3.1.1"
+    "serverless-http": "^3.1.1",
+    "stream": "^0.0.2"
   }
 }

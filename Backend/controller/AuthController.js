@@ -595,21 +595,8 @@ const QuizResult = {
   },
 };
 
-const storage = multer.diskStorage({
-  destination: async function (req, file, cb) {
-    const quiz = await QuizModel.findById(req.body.quiz_id, { name: 1 });
-    const quizDir = path.join(videoStoringPath, quiz.name);
-    if (!fs.existsSync(quizDir)) {
-      fs.mkdirSync(quizDir, { recursive: true });
-    }
-    cb(null, quizDir);
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
-
-const upload = multer({ storage: storage }).single("videoBlob");
+const memoryStorage = multer.memoryStorage();
+const upload = multer({ storage: memoryStorage }).single("videoBlob");
 
 const UserRecording = {
   add: async (req, res) => {
@@ -622,8 +609,10 @@ const UserRecording = {
       const { quiz_id, username } = req.body;
       const quiz = await QuizModel.findById(quiz_id);
 
+      const fileData = req.file.buffer; // Get the file data from memory
+
       const link = await UserRecording.uploadToDrive(
-        req.file.path,
+        fileData,
         `${username}-${quiz.name}.mkv`,
         quiz.name
       );
@@ -674,19 +663,13 @@ const UserRecording = {
     }
   },
 
-  uploadToDrive: async (localPath, driveFileName, drivePathFolderName) => {
+  uploadToDrive: async (fileBuffer, driveFileName, drivePathFolderName) => {
     const googleDriveService = new GoogleDriveService(
       driveClientId,
       driveClientSecret,
       driveRedirectUri,
       driveRefreshToken
     );
-
-    const finalPath = localPath;
-
-    if (!fs.existsSync(finalPath)) {
-      throw new Error("File not found!");
-    }
 
     let parentFolder = await googleDriveService.searchFolder(driveFolderName);
     if (!parentFolder) {
@@ -702,9 +685,10 @@ const UserRecording = {
     }
 
     const savedFile = await googleDriveService
-      .saveFile(driveFileName, finalPath, "video/webm;codecs=vp9", folder.id)
+      .saveFile(driveFileName, fileBuffer, "video/webm;codecs=vp9", folder.id)
       .catch((error) => {
         console.error(error);
+        return;
       });
     console.info("File uploaded successfully!");
 
@@ -713,8 +697,6 @@ const UserRecording = {
       .catch((error) => {
         console.error(error);
       });
-
-    fs.unlinkSync(finalPath);
 
     return `https://drive.google.com/uc?id=${savedFile.data.id}`;
   },
