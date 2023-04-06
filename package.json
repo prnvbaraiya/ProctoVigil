@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "frontend": "cd Client && npm run dev",
     "newFrontend": "cd Client && npm i && npm run dev",
-    "backend":"cd Backend && nodemon main",
-    "newBackend":"cd Backend && npm i && nodemon main"
+    "backend": "cd Backend && nodemon main",
+    "newBackend": "cd Backend && npm i && nodemon main"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/prnvbaraiya/ProctoVigil/issues"
   },
-  "homepage": "https://github.com/prnvbaraiya/ProctoVigil#readme"
+  "homepage": "https://github.com/prnvbaraiya/ProctoVigil#readme",
+  "dependencies": {
+    "@google-pay/button-react": "^3.0.6",
+    "@zegocloud/zego-uikit-prebuilt": "^1.7.5",
+    "zego-superboard-web": "^2.11.0"
+  }
 }

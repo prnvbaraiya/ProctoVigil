@@ -66,6 +66,49 @@ export const adminSidebarItems = [
   },
 ];
 
+export const teacherSidebarItems = [
+  {
+    href: "/dashboard",
+    icon: <SignalCellularAltIcon fontSize="small" />,
+    title: "Dashboard",
+  },
+  {
+    href: "/quiz",
+    icon: <LibraryBooksIcon fontSize="small" />,
+    title: "Quiz",
+  },
+  {
+    href: "/stream",
+    icon: <LiveTvIcon fontSize="small" />,
+    title: "Stream",
+  },
+  {
+    href: "/phase",
+    icon: <AutorenewIcon fontSize="small" />,
+    title: "Change Phase",
+  },
+  {
+    href: "/result",
+    icon: <EmojiEventsIcon fontSize="small" />,
+    title: "Result",
+  },
+  {
+    href: "/recording",
+    icon: <VideoLibraryIcon fontSize="small" />,
+    title: "Recording",
+  },
+  {
+    href: "/ai-analyzer",
+    icon: <PersonIcon fontSize="small" />,
+    title: "AI Analyzer",
+  },
+  {
+    href: "/settings",
+    icon: <SettingsIcon fontSize="small" />,
+    title: "Settings",
+  },
+];
+
 export const homeMenuItem = [
   { title: "Home", link: "/" },
   { title: "Quiz", link: "/quiz" },
