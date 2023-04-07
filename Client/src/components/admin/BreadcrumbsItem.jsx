@@ -1,14 +1,15 @@
 import { Breadcrumbs } from "@mui/material";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import auth from "../../auth/auth";
 
 function BreadcrumbsItem() {
   const location = useLocation();
   const items = location.pathname.split("/").splice(2);
-  let url = "/admin";
+  let url = "/" + auth.roles;
   return (
     <Breadcrumbs>
-      <Link underline="hover" color="inherit" to="/">
+      <Link underline="hover" color="inherit" to={url + "/dashboard"}>
         Home
       </Link>
       {items.map((item, index) => {

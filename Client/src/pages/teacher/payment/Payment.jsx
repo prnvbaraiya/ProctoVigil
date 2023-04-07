@@ -1,18 +1,56 @@
 import { React, useState } from "react";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  DialogContentText,
+  Divider,
+} from "@mui/material";
+import GooglePayButton from "@google-pay/button-react";
+import { plans } from "../../../common/Data";
 
 const Payment = () => {
   const [open, setOpen] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState("");
+  const [selectedPlan, setSelectedPlan] = useState({ title: "", price: 0 });
 
-  const handleClickOpen = (plan) => {
-    setSelectedPlan(plan);
+  const paymentRequest = {
+    apiVersion: 2,
+    apiVersionMinor: 0,
+    allowedPaymentMethods: [
+      {
+        type: "CARD",
+        parameters: {
+          allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+          allowedCardNetworks: ["MASTERCARD", "VISA"],
+        },
+        tokenizationSpecification: {
+          type: "PAYMENT_GATEWAY",
+          parameters: {
+            gateway: "example",
+          },
+        },
+      },
+    ],
+    merchantInfo: {
+      merchantId: "12345678901234567890",
+      merchantName: "Demo Merchant",
+    },
+    transactionInfo: {
+      totalPriceStatus: "FINAL",
+      totalPriceLabel: "Total",
+      totalPrice: selectedPlan.price.toString(),
+      currencyCode: "INR",
+      countryCode: "IN",
+    },
+    shippingAddressRequired: false,
+    callbackIntents: ["PAYMENT_AUTHORIZATION"],
+  };
+
+  const handleClickOpen = (title, price) => {
+    setSelectedPlan({ title, price });
     setOpen(true);
   };
 
@@ -20,42 +58,89 @@ const Payment = () => {
     setOpen(false);
   };
 
-  const handleAddToCart = () => {
-    // Logic for adding selectedPlan to cart
+  const handlePayment = (paymentData) => {
+    console.log(paymentData);
+    setOpen(false);
   };
 
-  const handlePayment = () => {
-    // Logic for initiating payment with selectedPlan
-    // ...
-    setOpen(false);
+  const displayPlans = (plan) => {
+    return (
+      <>
+        <Box key={plan.title} sx={{ gap: 3, minWidth: "45%" }}>
+          <h2>{plan.title}</h2>
+          <p style={{ textAlign: "justify", textJustify: "inter-word" }}>
+            {plan.description}
+          </p>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <p>Total Price: ₹{plan.price}</p>
+            <p>Quiz tokens: {plan.points}</p>
+            <Button
+              variant="contained"
+              onClick={() => handleClickOpen(plan.title, plan.price)}
+            >
+              Buy Now
+            </Button>
+          </div>
+        </Box>
+        <Divider sx={{ margin: "10px 0" }} />
+        {plan.addOns &&
+          plan.addOns.map((addon) => {
+            return (
+              <Box key={addon.title} sx={{ gap: 3, minWidth: "45%" }}>
+                <h2>{addon.title}</h2>
+                <p style={{ textAlign: "justify", textJustify: "inter-word" }}>
+                  {addon.description}
+                </p>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <p>Total Price: ₹{addon.price}</p>
+                  <Button
+                    variant="contained"
+                    onClick={() => handleClickOpen(addon.title, addon.price)}
+                  >
+                    Buy Now
+                  </Button>
+                </div>
+              </Box>
+            );
+          })}
+      </>
+    );
   };
 
   return (
     <Box display="flex" flexDirection="row" justifyContent="space-between">
       <Box>
-        <h2>Plan 1</h2>
-        <p>Description of Plan 1</p>
-        <Button variant="contained" onClick={() => handleClickOpen("Plan 1")}>
-          Add to Cart
-        </Button>
-      </Box>
-      <Box>
-        <h2>Plan 2</h2>
-        <p>Description of Plan 2</p>
-        <Button variant="contained" onClick={() => handleClickOpen("Plan 2")}>
-          Add to Cart
-        </Button>
+        {plans.map((plan) => (
+          <Box key={plan.price}>{displayPlans(plan)}</Box>
+        ))}
       </Box>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Confirm Subscription</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to subscribe to {selectedPlan}?
+            Are you sure you want to subscribe to {selectedPlan.title} your
+            total price is {selectedPlan.price}?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handlePayment}>Subscribe</Button>
+          <GooglePayButton
+            environment="TEST"
+            paymentRequest={paymentRequest}
+            buttonType="plain"
+            onLoadPaymentData={(paymentReq) => {
+              console.log("load payment data", paymentReq);
+            }}
+            onPaymentAuthorized={(paymentData) => {
+              handlePayment(paymentData);
+              return {
+                transactionState: "SUCCESS",
+              };
+            }}
+          />
+          {/* <Button onClick={handlePayment}>Subscribe</Button> */}
         </DialogActions>
       </Dialog>
     </Box>

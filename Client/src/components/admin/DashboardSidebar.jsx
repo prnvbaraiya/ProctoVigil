@@ -13,6 +13,7 @@ import { NavItem } from "../index";
 
 import { adminSidebarItems, teacherSidebarItems } from "../../common/Data";
 import auth from "../../auth/auth";
+import { Link } from "react-router-dom";
 
 export const DashboardSidebar = (props) => {
   const items =
@@ -34,10 +35,12 @@ export const DashboardSidebar = (props) => {
         }}
       >
         <div>
-          <Box sx={{ p: 3, display: "flex", alignItems: "center", gap: 5 }}>
-            <Avatar src={logo}></Avatar>
-            <Typography>Procto Vigil</Typography>
-          </Box>
+          <Link to="/">
+            <Box sx={{ p: 3, display: "flex", alignItems: "center", gap: 5 }}>
+              <Avatar src={logo}></Avatar>
+              <Typography color="white">Procto Vigil</Typography>
+            </Box>
+          </Link>
         </div>
         <Divider
           sx={{

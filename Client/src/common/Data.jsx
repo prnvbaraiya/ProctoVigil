@@ -158,3 +158,28 @@ export const questionTypes = [
   { value: "multipleChoice", title: "Multiple Choice" },
   { value: "boolean", title: "True or False" },
 ];
+
+export const plans = [
+  {
+    title: "Online Proctorign System",
+    points: 5,
+    price: "600",
+    description:
+      "By online Proctoirng you can take exams from anywhere with student being anywhere in the world. Take your exams outside of just a classroom with help this product. This system will allow you to add tests as and customize them as your need and proctor your students from anywhere.",
+  },
+  {
+    title: "Online Proctorign System",
+    points: 10,
+    price: "1000",
+    description:
+      "By online Proctoirng you can take exams from anywhere with student being anywhere in the world. Take your exams outside of just a classroom with help this product. This system will allow you to add tests as and customize them as your need and proctor your students from anywhere.",
+    addOns: [
+      {
+        title: "AI Analyzation",
+        price: "1999",
+        description:
+          "This AI Analyzation will help you analyze candidates recordings for potential cheating.",
+      },
+    ],
+  },
+];
