@@ -8,6 +8,7 @@ import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import SettingsIcon from "@mui/icons-material/Settings";
 import VideoChatIcon from "@mui/icons-material/VideoChat";
+import PaymentsIcon from "@mui/icons-material/Payments";
 
 export const ERROR_CODE = 500;
 export const SUCCESS_CODE = 202;
@@ -60,6 +61,11 @@ export const adminSidebarItems = [
     title: "Recording",
   },
   {
+    href: "/ai-analyzer",
+    icon: <PersonIcon fontSize="small" />,
+    title: "AI Analyzer",
+  },
+  {
     href: "/settings",
     icon: <SettingsIcon fontSize="small" />,
     title: "Settings",
@@ -73,9 +79,19 @@ export const teacherSidebarItems = [
     title: "Dashboard",
   },
   {
+    href: "/user",
+    icon: <PersonIcon fontSize="small" />,
+    title: "User",
+  },
+  {
     href: "/quiz",
     icon: <LibraryBooksIcon fontSize="small" />,
     title: "Quiz",
+  },
+  {
+    href: "/interview",
+    icon: <VideoChatIcon fontSize="small" />,
+    title: "Interview",
   },
   {
     href: "/stream",
@@ -98,9 +114,9 @@ export const teacherSidebarItems = [
     title: "Recording",
   },
   {
-    href: "/ai-analyzer",
-    icon: <PersonIcon fontSize="small" />,
-    title: "AI Analyzer",
+    href: "/payment",
+    icon: <PaymentsIcon fontSize="small" />,
+    title: "Payment",
   },
   {
     href: "/settings",
@@ -121,6 +137,11 @@ export const homeMenuItem = [
 export const adminMenuItem = [
   { title: "Dashboard", link: "/admin/dashboard" },
   { title: "setting", link: "admin/settings" },
+];
+
+export const teacherMenuItem = [
+  { title: "Dashboard", link: "/teacher/dashboard" },
+  { title: "setting", link: "teacher/settings" },
 ];
 
 export const userMenuItem = [];

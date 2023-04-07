@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@google-pay/button-react": "^3.0.6",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.8",
     "@mui/x-data-grid": "^5.17.23",

@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Button, ListItem } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
+import auth from "../../auth/auth";
 
 const NavItem = (props) => {
   const { href, icon, title, ...others } = props;
@@ -24,7 +25,7 @@ const NavItem = (props) => {
       <Button
         component="a"
         startIcon={icon}
-        onClick={() => navigate("/admin" + href)}
+        onClick={() => navigate("/" + auth.roles + href)}
         disableRipple
         sx={{
           backgroundColor: active && "rgba(255,255,255, 0.08)",

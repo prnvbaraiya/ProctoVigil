@@ -11,11 +11,12 @@ import {
 import logo from "../../assets/logo.png";
 import { NavItem } from "../index";
 
-import { adminSidebarItems } from "../../common/Data";
-
-const items = adminSidebarItems;
+import { adminSidebarItems, teacherSidebarItems } from "../../common/Data";
+import auth from "../../auth/auth";
 
 export const DashboardSidebar = (props) => {
+  const items =
+    auth.roles === "admin" ? adminSidebarItems : teacherSidebarItems;
   const { open, onClose } = props;
   const theme = useTheme();
   const lgUp = useMediaQuery(theme.breakpoints.up("lg"), {

@@ -3,15 +3,13 @@ import "./App.css";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import UserRoutes from "./routes/UserRoutes";
 import AdminRoutes from "./routes/AdminRoutes";
+import TeacherRoutes from "./routes/TeacherRotes";
 import { ThemeProvider } from "@emotion/react";
 import { theme } from "./theme/index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Test from "./pages/Test";
 import RequireAuth from "./pages/RequireAuth";
-import TeacherRoutes from "./routes/TeacherRoutes";
-import Payment from "./pages/payment/Payment";
-
 
 function App() {
   const handleContextMenu = (e) => {
@@ -30,8 +28,6 @@ function App() {
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/payment" element={<Payment />} />
-
           <Route
             element={<RequireAuth allowedRoles={["admin"]} />}
             key="Student"
@@ -41,7 +37,6 @@ function App() {
           {UserRoutes}
           {AdminRoutes}
           {TeacherRoutes}
-
           <Route path="*" element={<Navigate to="/page-not-found" replace />} />
         </Routes>
         <Outlet />

@@ -378,6 +378,93 @@ const Quiz = {
   },
 };
 
+const TeacherQuiz = {
+  quizDelete: async (quizIds) => {
+    try {
+      const userRec = await UserRecordingModel.deleteMany({
+        quiz_id: { $in: quizIds },
+      });
+      const quizRes = await QuizResultModel.deleteMany({
+        quiz_id: { $in: quizIds },
+      });
+      return true;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  },
+  add: async (req, res) => {
+    const user = await UserModel.findOne({ username: req.body.author });
+    const data = { ...req.body, author: user._id };
+    try {
+      await QuizModel.create(data);
+      return res.status(SUCCESS_CODE).send("Quiz Created Successfully");
+    } catch (err) {
+      return res.status(ERROR_CODE).send("There is some error: " + err);
+    }
+  },
+  get: async (req, res) => {
+    try {
+      const teacherId = req.params.userId;
+      // const quizzes = await QuizModel.find({ startDate: { $gt: Date.now() } })
+      const quizzes = await QuizModel.find({ author: teacherId })
+        .sort({ name: 1 })
+        .populate({
+          path: "author",
+          select: "firstName lastName",
+        })
+        .populate({
+          path: "studentNames",
+          select: "username",
+        });
+      return res.status(SUCCESS_CODE).send(quizzes);
+    } catch (err) {
+      return res.status(ERROR_CODE).send("There is some error: " + err);
+    }
+  },
+  getById: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const quiz = await QuizModel.findById(id)
+        .populate("author", "firstName lastName")
+        .populate("studentNames", "username");
+      return res.status(SUCCESS_CODE).send(quiz);
+    } catch (err) {
+      return res.status(ERROR_CODE).send("There is some error: " + err);
+    }
+  },
+  getByUserId: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const quizzes = await QuizModel.find({ studentNames: id }).populate(
+        "author",
+        "name email"
+      );
+      return res.status(SUCCESS_CODE).send(quizzes);
+    } catch (err) {
+      return res.status(ERROR_CODE).send("There is some error: " + err);
+    }
+  },
+  update: async (req, res) => {
+    try {
+      const data = req.body;
+      await QuizModel.findByIdAndUpdate(data._id, data);
+      return res.status(SUCCESS_CODE).send("Quiz Updated Successfully");
+    } catch (err) {
+      return res.status(ERROR_CODE).send("There is some error: " + err);
+    }
+  },
+  delete: async (req, res) => {
+    try {
+      const data = await QuizModel.findByIdAndDelete(req.body.id);
+      Quiz.quizDelete([req.body.id]);
+      return res.status(SUCCESS_CODE).send("Quiz Deleted Successfully");
+    } catch (err) {
+      return res.status(ERROR_CODE).send("There is some error: " + err);
+    }
+  },
+};
+
 const Interview = {
   interviewDelete: async (quizIds) => {
     try {
@@ -768,6 +855,7 @@ module.exports = {
   ZegocloudTokenGenerator,
   User,
   Quiz,
+  TeacherQuiz,
   Interview,
   QuizResult,
   UserRecording,

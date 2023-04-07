@@ -38,6 +38,13 @@ router
   .put("/quiz", Quiz.update)
   .delete("/quiz", Quiz.delete);
 router
+  .get("/teacher/quiz/:userId", Quiz.get)
+  .get("/quiz/:id", Quiz.getById)
+  .get("/quiz/user/:id", Quiz.getByUserId)
+  .post("/quiz", Quiz.add)
+  .put("/quiz", Quiz.update)
+  .delete("/quiz", Quiz.delete);
+router
   .get("/interview", Interview.get)
   .get("/interview/:id", Interview.getById)
   .get("/interview/user/:id", Interview.getByUserId)
