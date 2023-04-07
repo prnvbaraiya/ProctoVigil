@@ -68,6 +68,27 @@ const QuizService = {
   },
 };
 
+const TeacherQuizService = {
+  get: (id) => {
+    return sendRequest("get", "/teacher/quiz/" + id);
+  },
+  getById: (id) => {
+    return sendRequest("get", "quiz/" + id);
+  },
+  getByUserId: (id) => {
+    return sendRequest("get", "quiz/user/" + id);
+  },
+  set: (data) => {
+    return sendRequest("post", "quiz", data);
+  },
+  update: (data) => {
+    return sendRequest("put", "quiz", data);
+  },
+  delete: (data) => {
+    return sendRequest("delete", "quiz", data);
+  },
+};
+
 const InterviewService = {
   get: () => {
     return sendRequest("get", "interview");
@@ -143,6 +164,7 @@ const JWTService = {
 export {
   UserService,
   QuizService,
+  TeacherQuizService,
   InterviewService,
   QuizResultService,
   FeedbackService,

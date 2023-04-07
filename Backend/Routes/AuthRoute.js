@@ -3,6 +3,7 @@ const {
   User,
   ZegocloudTokenGenerator,
   Quiz,
+  TeacherQuiz,
   Interview,
   Feedback,
   a,
@@ -38,12 +39,12 @@ router
   .put("/quiz", Quiz.update)
   .delete("/quiz", Quiz.delete);
 router
-  .get("/teacher/quiz/:userId", Quiz.get)
-  .get("/quiz/:id", Quiz.getById)
-  .get("/quiz/user/:id", Quiz.getByUserId)
-  .post("/quiz", Quiz.add)
-  .put("/quiz", Quiz.update)
-  .delete("/quiz", Quiz.delete);
+  .get("/teacher/quiz/:userId", TeacherQuiz.get)
+  .get("/quiz/:id", TeacherQuiz.getById)
+  .get("/quiz/user/:id", TeacherQuiz.getByUserId)
+  .post("/quiz", TeacherQuiz.add)
+  .put("/quiz", TeacherQuiz.update)
+  .delete("/quiz", TeacherQuiz.delete);
 router
   .get("/interview", Interview.get)
   .get("/interview/:id", Interview.getById)

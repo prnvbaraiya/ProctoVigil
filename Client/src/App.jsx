@@ -3,7 +3,7 @@ import "./App.css";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import UserRoutes from "./routes/UserRoutes";
 import AdminRoutes from "./routes/AdminRoutes";
-import TeacherRoutes from "./routes/TeacherRotes";
+import TeacherRoutes from "./routes/TeacherRoutes";
 import { ThemeProvider } from "@emotion/react";
 import { theme } from "./theme/index";
 import Login from "./pages/Login";

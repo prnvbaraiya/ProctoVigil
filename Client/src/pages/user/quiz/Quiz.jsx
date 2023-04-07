@@ -5,6 +5,7 @@ import { theme } from "../../../theme";
 import { format } from "date-fns";
 import { QuizService } from "../../../services/ServerRequest";
 import { LoadingSpinner } from "../../../components/index";
+import auth from "../../../auth/auth";
 
 function Quiz() {
   const [quizzes, setQuizzes] = useState([]);
@@ -19,7 +20,8 @@ function Quiz() {
 
   const getData = async () => {
     setLoading(true);
-    const res = await QuizService.get();
+    const res = await QuizService.getByUserId(auth.id);
+    console.log(res);
     setQuizzes(
       res.data.map((item) => {
         return {

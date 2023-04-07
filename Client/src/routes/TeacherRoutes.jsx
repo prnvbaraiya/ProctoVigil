@@ -1,32 +1,36 @@
-import { Route } from "react-router-dom";
 import React from "react";
+import { Route } from "react-router-dom";
 import Dashboard from "../pages/teacher/dashboard/Dashboard";
-import ViewStream from "../pages/teacher/stream/ViewStream";
-import Quiz from "../pages/teacher/quiz/Quiz";
+import ViewStream from "../pages/admin/stream/ViewStream";
+import ViewQuiz from "../pages/teacher/quiz/ViewQuiz";
 import Stream from "../pages/teacher/stream/Stream";
-import TeacherLayout from "../pages/teacher/TeacherLayout";
-import ViewUser from "../pages/teacher/user/ViewUser";
-import AddQuiz from "../pages/teacher/quiz/AddQuiz";
-import EditQuiz from "../pages/teacher/quiz/EditQuiz";
-import EditUser from "../pages/teacher/user/EditUser";
+import AdminLayout from "../pages/admin/AdminLayout";
+import ViewUser from "../pages/admin/user/ViewUser";
+import AddQuiz from "../pages/admin/quiz/AddQuiz";
+import EditQuiz from "../pages/admin/quiz/EditQuiz";
+import EditUser from "../pages/admin/user/EditUser";
 import PageNotFound from "../pages/PageNotFound";
 import RequireAuth from "../pages/RequireAuth";
-import Settings from "../pages/teacher/settings/Settings";
+import Settings from "../pages/admin/settings/Settings";
 import ViewPhase from "../pages/teacher/phase/ViewPhase";
-import EditPhase from "../pages/teacher/phase/EditPhase";
-import ViewResult from "../pages/teacher/Result/ViewResult";
-import AddUser from "../pages/teacher/user/AddUser";
-import ViewRecording from "../pages/teacher/recording/ViewRecording";
-import AIAnalyzer from "../pages/teacher/ai-analyzer/AIAnalyzer";
+import EditPhase from "../pages/admin/phase/EditPhase";
+import ViewResult from "../pages/admin/Result/ViewResult";
+import AddUser from "../pages/admin/user/AddUser";
+import ViewRecording from "../pages/admin/recording/ViewRecording";
+import ViewInterview from "../pages/admin/interview/ViewInterview";
+import AddInterview from "../pages/admin/interview/AddInterview";
+import EditInterview from "../pages/admin/interview/EditInterview";
+import Gradding from "../pages/admin/Result/Gradding";
+import Payment from "../pages/teacher/payment/Payment";
 
 const TeacherRoutes = (
   <Route
     path="/teacher"
-    element={<RequireAuth allowedRoles={["teacher","admin"]} />}
+    element={<RequireAuth allowedRoles={["teacher"]} />}
     key="Teacher"
   >
     <Route element={<PageNotFound />} index />
-    <Route element={<TeacherLayout />}>
+    <Route element={<AdminLayout />}>
       <Route path="dashboard" element={<Dashboard />} />
       <Route path="user">
         <Route index element={<ViewUser />} />
@@ -34,9 +38,14 @@ const TeacherRoutes = (
         <Route path="edit" element={<EditUser />} />
       </Route>
       <Route path="quiz">
-        <Route index element={<Quiz />} />
+        <Route index element={<ViewQuiz />} />
         <Route path="add" element={<AddQuiz />} />
         <Route path="edit" element={<EditQuiz />} />
+      </Route>
+      <Route path="interview">
+        <Route index element={<ViewInterview />} />
+        <Route path="add" element={<AddInterview />} />
+        <Route path="edit" element={<EditInterview />} />
       </Route>
       <Route path="stream">
         <Route index element={<Stream />} />
@@ -46,14 +55,15 @@ const TeacherRoutes = (
         <Route index element={<ViewPhase />} />
         <Route path="edit" element={<EditPhase />} />
       </Route>
-      <Route path="ai-analyzer">
-        <Route index element={<AIAnalyzer />} />
-      </Route>
       <Route path="result">
         <Route index element={<ViewResult />} />
+        <Route path="gradding" element={<Gradding />} />
       </Route>
       <Route path="recording">
         <Route index element={<ViewRecording />} />
+      </Route>
+      <Route path="payment">
+        <Route index element={<Payment />} />
       </Route>
       <Route path="settings">
         <Route index element={<Settings />} />

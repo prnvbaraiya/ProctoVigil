@@ -53,6 +53,7 @@ const comparePassword = (plainPass, hashword, callback) => {
 const JWT = {
   generateToken: (user) => {
     const payload = {
+      id: user._id,
       roles: user.roles,
       username: user.username,
     };
@@ -351,7 +352,7 @@ const Quiz = {
       const id = req.params.id;
       const quizzes = await QuizModel.find({ studentNames: id }).populate(
         "author",
-        "name email"
+        "firstName lastName email"
       );
       return res.status(SUCCESS_CODE).send(quizzes);
     } catch (err) {

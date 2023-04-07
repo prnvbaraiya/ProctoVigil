@@ -11,10 +11,18 @@ import {
 } from "@mui/material";
 import GooglePayButton from "@google-pay/button-react";
 import { plans } from "../../../common/Data";
+import { SnackbarDisplay } from "../../../components";
 
 const Payment = () => {
   const [open, setOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState({ title: "", price: 0 });
+  const [snackbarData, setSnackbarData] = useState({
+    open: false,
+    message: "",
+    type: "success",
+    vertical: "top",
+    horizontal: "right",
+  });
 
   const paymentRequest = {
     apiVersion: 2,
@@ -55,11 +63,23 @@ const Payment = () => {
   };
 
   const handleClose = () => {
+    setSnackbarData({
+      ...snackbarData,
+      open: true,
+      message: "payment Aborted",
+      type: "error",
+    });
     setOpen(false);
   };
 
   const handlePayment = (paymentData) => {
     console.log(paymentData);
+    setSnackbarData({
+      ...snackbarData,
+      open: true,
+      message: "payment Successfull",
+      type: "success",
+    });
     setOpen(false);
   };
 
@@ -143,6 +163,10 @@ const Payment = () => {
           {/* <Button onClick={handlePayment}>Subscribe</Button> */}
         </DialogActions>
       </Dialog>
+      <SnackbarDisplay
+        snackbarData={snackbarData}
+        setSnackbarData={setSnackbarData}
+      />
     </Box>
   );
 };
