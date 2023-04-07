@@ -64,7 +64,7 @@ export default function Login() {
       } else if (roles === "student") {
         navigate(from || "/", { state }, { replace: true });
       } else if (roles === "teacher") {
-        navigate(from || "/", { state }, { replace: true });
+        navigate(from || "/teacher/dashboard", { state }, { replace: true });
       }
     } catch (err) {
       setSnackbarData({

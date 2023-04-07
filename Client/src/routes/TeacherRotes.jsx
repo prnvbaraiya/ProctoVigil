@@ -1,6 +1,6 @@
 import React from "react";
 import { Route } from "react-router-dom";
-import Dashboard from "../pages/admin/dashboard/Dashboard";
+import Dashboard from "../pages/teacher/dashboard/Dashboard";
 import ViewStream from "../pages/admin/stream/ViewStream";
 import Quiz from "../pages/admin/quiz/Quiz";
 import Stream from "../pages/admin/stream/Stream";
@@ -21,13 +21,13 @@ import ViewInterview from "../pages/admin/interview/ViewInterview";
 import AddInterview from "../pages/admin/interview/AddInterview";
 import EditInterview from "../pages/admin/interview/EditInterview";
 import Gradding from "../pages/admin/Result/Gradding";
-import AIAnalyzer from "../pages/admin/ai-analyzer/AIAnalyzer";
+import Payment from "../pages/teacher/payment/Payment";
 
-const AdminRoutes = (
+const TeacherRoutes = (
   <Route
-    path="/admin"
-    element={<RequireAuth allowedRoles={["admin"]} />}
-    key="Admin"
+    path="/teacher"
+    element={<RequireAuth allowedRoles={["teacher"]} />}
+    key="Teacher"
   >
     <Route element={<PageNotFound />} index />
     <Route element={<AdminLayout />}>
@@ -62,8 +62,8 @@ const AdminRoutes = (
       <Route path="recording">
         <Route index element={<ViewRecording />} />
       </Route>
-      <Route path="ai-analyzer">
-        <Route index element={<AIAnalyzer />} />
+      <Route path="payment">
+        <Route index element={<Payment />} />
       </Route>
       <Route path="settings">
         <Route index element={<Settings />} />
@@ -72,4 +72,4 @@ const AdminRoutes = (
   </Route>
 );
 
-export default AdminRoutes;
+export default TeacherRoutes;

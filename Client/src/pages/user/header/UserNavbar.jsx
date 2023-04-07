@@ -21,6 +21,7 @@ import {
   userMenuItem,
   homeMenuItem,
   adminMenuItem,
+  teacherMenuItem,
 } from "../../../common/Data";
 import auth from "../../../auth/auth";
 
@@ -40,7 +41,12 @@ export const UserNavbar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const menuItem = homeMenuItem;
-  const userMenuItems = auth.roles === "admin" ? adminMenuItem : userMenuItem;
+  const userMenuItems =
+    auth.roles === "admin"
+      ? adminMenuItem
+      : auth.roles === "teacher"
+      ? teacherMenuItem
+      : userMenuItem;
   const navigate = useNavigate();
 
   const handleOpenUserMenu = (event) => {
