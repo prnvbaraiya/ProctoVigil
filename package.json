@@ -7,8 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "frontend": "cd Client && npm run dev",
     "newFrontend": "cd Client && npm i && npm run dev",
-    "backend":"cd Backend && nodemon main",
-    "newBackend":"cd Backend && npm i && nodemon main"
+    "backend": "cd Backend && nodemon main",
+    "newBackend": "cd Backend && npm i && nodemon main",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "first": "concurrently \"npm run newBackend\" \"npm run newFrontend\""
   },
   "repository": {
     "type": "git",
@@ -20,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/prnvbaraiya/ProctoVigil/issues"
   },
-  "homepage": "https://github.com/prnvbaraiya/ProctoVigil#readme"
+  "homepage": "https://github.com/prnvbaraiya/ProctoVigil#readme",
+  "dependencies": {
+    "concurrently": "^8.0.1"
+  }
 }

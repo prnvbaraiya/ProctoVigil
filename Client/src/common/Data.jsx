@@ -178,7 +178,7 @@ export const plans = [
         title: "AI Analyzation",
         price: "1999",
         description:
-          "This AI Analyzation will help you analyze candidates recordings for potential cheating.",
+          "This AI Analyzation will help you analyze candidates recordings for potential cheating. Get access for 30 days with one purchase.",
       },
     ],
   },
