@@ -20,8 +20,12 @@ function Quiz() {
 
   const getData = async () => {
     setLoading(true);
-    const res = await QuizService.getByUserId(auth.id);
-    console.log(res);
+    let res = [];
+    if (auth.roles === "admin") {
+      res = await QuizService.get();
+    } else {
+      res = await QuizService.getByUserId(auth.id);
+    }
     setQuizzes(
       res.data.map((item) => {
         return {

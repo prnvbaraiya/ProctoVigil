@@ -218,6 +218,7 @@ const AttemptQuiz = (props) => {
                 duration={data.totalDuration * 60}
                 setSubmitOpen={setSubmitOpen}
                 setIsLoading={setLoading}
+                handleSuccess={handleSuccess}
               />
             )}
           </Box>

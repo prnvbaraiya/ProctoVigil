@@ -12,7 +12,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AlertDialogBox } from "../index";
 
-export default function ExamHeader({ duration, setSubmitOpen }) {
+export default function ExamHeader({ duration, setSubmitOpen, handleSuccess }) {
   const Ref = useRef(null);
   const navigate = useNavigate();
   const [cancelOpen, setCancelOpen] = useState(false);
@@ -34,6 +34,9 @@ export default function ExamHeader({ duration, setSubmitOpen }) {
 
   const startTimer = (e) => {
     let { total, hours, minutes, seconds } = getTimeRemaining(e);
+    if (total == 0) {
+      handleSuccess();
+    }
     if (total >= 0) {
       setTimer(
         (hours > 9 ? hours : "0" + hours) +
@@ -57,6 +60,8 @@ export default function ExamHeader({ duration, setSubmitOpen }) {
   const getDeadTime = () => {
     let deadline = new Date();
     deadline.setSeconds(deadline.getSeconds() + duration);
+    //Just for testing purpose
+    // deadline.setSeconds(deadline.getSeconds() + 30);
     return deadline;
   };
 

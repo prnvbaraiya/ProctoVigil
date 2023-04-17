@@ -35,6 +35,7 @@ function EditQuiz() {
   const description = useFormInput("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const totalDuration = useFormInput(0);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const randomQuestionSection = useFormInput("");
   const randomQuestionNumber = useFormInput("");
@@ -99,6 +100,14 @@ function EditQuiz() {
     }
     setLoading(false);
   }, [startDate, endDate]);
+
+  useEffect(() => {
+    let tmp = 0;
+    for (let section of sections) {
+      tmp += Number(section.duration);
+    }
+    totalDuration.onChange(tmp);
+  }, [sections]);
 
   const handleRandomQuestions = async () => {
     setLoading(true);
@@ -216,6 +225,12 @@ function EditQuiz() {
                   value={endDate}
                   setValue={setEndDate}
                   minDate={startDate}
+                />
+                <TextBox
+                  label="Total Duration"
+                  disabled
+                  fullWidth={false}
+                  {...totalDuration}
                 />
               </Stack>
               <SelectChip
