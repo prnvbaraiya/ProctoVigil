@@ -19,9 +19,11 @@
 - [x] User collection
 - [x] Quiz collection
 - [x] Result Quiz collection
-- [ ] Interview collection
+- [x] Interview collection
 - [x] User Recording collection
 - [ ] Notification collection
+- [ ] Payment collection
+- [ ] Feedback collection
 
 - [ ] Complete Admin Side
 - [x] Admin Login Page
@@ -33,9 +35,9 @@
 - [x] Admin Quiz Page
 - [x] Admin Add Update Quiz Page
 - [ ] Admin Add Quiz Using csv file
-- [ ] Add Quiz with types
-- [ ] Add Quiz with sections(with sections time)
-- [ ] Interview Feature
+- [x] Add Quiz with types
+- [x] Add Quiz with sections(with sections time)
+- [x] Interview Feature
 - [ ] Marking System automatic or manual
 - [x] In Add Quiz add random number question
 - [x] Admin Stream Page
@@ -48,7 +50,7 @@
 - [x] Admin Proctar Student Page
 
 - [ ] Complete User Side
-- [ ] User Login Page
+- [x] User Login Page
 - [x] User Layout
 - [ ] In Instruction Page add mice sound check for checking mice working
 - [x] User get all the permissions and validate do not start until all the conditions follow
@@ -56,7 +58,6 @@
 - [x] User Attempt Quiz Page
 - [ ] User Result Quiz Page
 - [x] User send data to zegocloud Page
-- [ ] Make Zego Context
 - [ ] Add Form Validation
 
 - [x] Account setup in zegocloud
@@ -65,7 +66,7 @@
 - [ ] Forget Password Mail link
 - [ ] Once user verify email then only start quiz
 - [x] Sending Results
-- [ ] Make Feedback Database
+- [x] Make Feedback Database
 
 ### Bugs
 
@@ -80,8 +81,7 @@
 - [x] User delete modal text
 - [x] User Update => update quiz Student
 - [x] Add Loading Spinner
-- [ ] Add Redux for passing VideoRef
-- [ ] When Time become 00:00:00 end the quiz
+- [x] When Time become 00:00:00 end the quiz
 - [ ] User can only give quiz once
 
 ### Progress

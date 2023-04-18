@@ -6,15 +6,15 @@ const {
   TeacherQuiz,
   Interview,
   Feedback,
-  a,
+  testing,
   JWT,
   QuizResult,
+  TeacherUser,
   UserRecording,
 } = require("../controller/AuthController");
 const router = express.Router();
 
-router.get("/test-mail", a.testMailSend);
-router.get("/yay", a.sc);
+router.get("/test-mail", testing.testMailSend);
 
 router.post("/register", User.register);
 router.post("/login", User.login);
@@ -68,5 +68,9 @@ router
   .post("/feedback", Feedback.add)
   .get("/feedback", Feedback.get)
   .post("/feedback/:id", Feedback.getById);
+
+router
+  .post("/quiz-point", TeacherUser.update)
+  .get("/quiz-point/:id", TeacherUser.getByUserId);
 
 module.exports = router;

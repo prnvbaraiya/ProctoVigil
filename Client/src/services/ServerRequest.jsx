@@ -161,6 +161,12 @@ const JWTService = {
   },
 };
 
+const quizPointsService = {
+  getById: (id) => {
+    return sendRequest("get", "quiz-point/" + id);
+  },
+};
+
 export {
   UserService,
   QuizService,
@@ -170,4 +176,5 @@ export {
   FeedbackService,
   UserRecordingService,
   JWTService,
+  quizPointsService,
 };
