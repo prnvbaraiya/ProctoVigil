@@ -10,7 +10,7 @@ import AddQuiz from "../pages/admin/quiz/AddQuiz";
 import EditQuiz from "../pages/admin/quiz/EditQuiz";
 import EditUser from "../pages/admin/user/EditUser";
 import PageNotFound from "../pages/PageNotFound";
-import RequireAuth from "../pages/RequireAuth";
+import RequireAuth from "../auth/RequireAuth";
 import Settings from "../pages/admin/settings/Settings";
 import ViewPhase from "../pages/admin/phase/ViewPhase";
 import EditPhase from "../pages/admin/phase/EditPhase";

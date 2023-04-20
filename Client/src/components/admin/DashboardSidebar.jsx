@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Box,
@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import logo from "../../assets/logo.png";
 import { NavItem } from "../index";
-
+import { isSubsciber } from "../../common/Methods";
 import { adminSidebarItems, teacherSidebarItems } from "../../common/Data";
 import auth from "../../auth/auth";
 import { Link } from "react-router-dom";
@@ -23,6 +23,15 @@ export const DashboardSidebar = (props) => {
   const lgUp = useMediaQuery(theme.breakpoints.up("lg"), {
     defaultMatches: true,
     noSsr: false,
+  });
+  const [isValid, setIsValid] = useState(false);
+
+  useEffect(() => {
+    const getData = async () => {
+      const res = await isSubsciber();
+      setIsValid(res);
+    };
+    getData();
   });
 
   const content = (
@@ -49,14 +58,16 @@ export const DashboardSidebar = (props) => {
           }}
         />
         <Box sx={{ flexGrow: 1 }}>
-          {items.map((item) => (
-            <NavItem
-              key={item.title}
-              icon={item.icon}
-              href={item.href}
-              title={item.title}
-            />
-          ))}
+          {items.map(({ require, title, icon, href }) => {
+            const isAiAnalyzation = require === "aiAnalyzation";
+            const shouldRender =
+              !isAiAnalyzation || (isAiAnalyzation && isValid);
+            return (
+              shouldRender && (
+                <NavItem key={title} icon={icon} href={href} title={title} />
+              )
+            );
+          })}
         </Box>
         <Divider sx={{ borderColor: "#2D3748" }} />
       </Box>

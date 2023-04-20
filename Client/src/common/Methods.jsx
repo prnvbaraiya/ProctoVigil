@@ -1,4 +1,11 @@
 import axios from "axios";
+import { quizPointsService } from "../services/ServerRequest";
+import auth from "../auth/auth";
+
+export const isSubsciber = async () => {
+  const res = await quizPointsService.getById(auth.id);
+  return res.data.aiAnalyzation;
+};
 
 export const blurEvent = (setWarningAlert, warningAlert) => {
   setWarningAlert((prev) => ({ ...prev, count: prev.count + 1 }));

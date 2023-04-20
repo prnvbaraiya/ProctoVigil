@@ -3,7 +3,7 @@ import { Route } from "react-router-dom";
 import AboutUs from "../pages/AboutUs";
 import ContactUs from "../pages/ContactUs";
 import PageNotFound from "../pages/PageNotFound";
-import RequireAuth from "../pages/RequireAuth";
+import RequireAuth from "../auth/RequireAuth";
 import Unauthorized from "../pages/Unauthorized";
 import Home from "../pages/user/home/Home";
 import StartInterview from "../pages/user/interview/StartInterview";

@@ -114,6 +114,12 @@ export const teacherSidebarItems = [
     title: "Recording",
   },
   {
+    href: "/ai-analyzer",
+    icon: <PersonIcon fontSize="small" />,
+    title: "AI Analyzer",
+    require: "aiAnalyzation",
+  },
+  {
     href: "/payment",
     icon: <PaymentsIcon fontSize="small" />,
     title: "Payment",

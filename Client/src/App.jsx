@@ -9,7 +9,7 @@ import { theme } from "./theme/index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Test from "./pages/Test";
-import RequireAuth from "./pages/RequireAuth";
+import RequireAuth from "./auth/RequireAuth";
 
 function App() {
   const handleContextMenu = (e) => {

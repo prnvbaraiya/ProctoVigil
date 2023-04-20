@@ -10,7 +10,7 @@ import AddQuiz from "../pages/admin/quiz/AddQuiz";
 import EditQuiz from "../pages/admin/quiz/EditQuiz";
 import EditUser from "../pages/admin/user/EditUser";
 import PageNotFound from "../pages/PageNotFound";
-import RequireAuth from "../pages/RequireAuth";
+import RequireAuth from "../auth/RequireAuth";
 import Settings from "../pages/admin/settings/Settings";
 import ViewPhase from "../pages/teacher/phase/ViewPhase";
 import EditPhase from "../pages/admin/phase/EditPhase";
@@ -22,6 +22,8 @@ import AddInterview from "../pages/admin/interview/AddInterview";
 import EditInterview from "../pages/admin/interview/EditInterview";
 import Gradding from "../pages/admin/Result/Gradding";
 import Payment from "../pages/teacher/payment/Payment";
+import AIAnalyzer from "../pages/teacher/ai-analyzer/AIAnalyzer";
+import RequireSubscription from "../auth/RequireSubscription";
 
 const TeacherRoutes = (
   <Route
@@ -61,6 +63,11 @@ const TeacherRoutes = (
       </Route>
       <Route path="recording">
         <Route index element={<ViewRecording />} />
+      </Route>
+      <Route element={<RequireSubscription />}>
+        <Route path="ai-analyzer">
+          <Route index element={<AIAnalyzer />} />
+        </Route>
       </Route>
       <Route path="payment">
         <Route index element={<Payment />} />
