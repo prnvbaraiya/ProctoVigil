@@ -12,10 +12,16 @@ import {
 import GooglePayButton from "@google-pay/button-react";
 import { plans } from "../../../common/Data";
 import { SnackbarDisplay } from "../../../components";
+import auth from "../../../auth/auth";
+import { quizPointPaymentService } from "../../../services/ServerRequest";
 
 const Payment = () => {
   const [open, setOpen] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState({ title: "", price: 0 });
+  const [selectedPlan, setSelectedPlan] = useState({
+    id: "",
+    title: "",
+    price: 0,
+  });
   const [snackbarData, setSnackbarData] = useState({
     open: false,
     message: "",
@@ -57,8 +63,9 @@ const Payment = () => {
     callbackIntents: ["PAYMENT_AUTHORIZATION"],
   };
 
-  const handleClickOpen = (title, price) => {
-    setSelectedPlan({ title, price });
+  const handleClickOpen = (plan) => {
+    const data = { title: plan.title, id: plan.id, price: plan.price };
+    setSelectedPlan(data);
     setOpen(true);
   };
 
@@ -72,13 +79,44 @@ const Payment = () => {
     setOpen(false);
   };
 
-  const handlePayment = (paymentData) => {
-    console.log(paymentData);
-    setSnackbarData({
-      ...snackbarData,
-      open: true,
-      message: "payment Successfull",
-      type: "success",
+  const handlePayment = async (paymentData) => {
+    const sendData = {
+      user_id: auth.id,
+      courses: [selectedPlan],
+      paymentMethodData: paymentData,
+    };
+    try {
+      const res = await quizPointPaymentService.set(sendData);
+      console.log(res);
+
+      if (res.status === 202) {
+        setSnackbarData({
+          ...snackbarData,
+          open: true,
+          message: "payment Successfull",
+          type: "success",
+        });
+      } else {
+        setSnackbarData({
+          ...snackbarData,
+          open: true,
+          message: "payment Failed",
+          type: "error",
+        });
+      }
+    } catch (err) {
+      setSnackbarData({
+        ...snackbarData,
+        open: true,
+        message: "payment Failed",
+        type: "error",
+      });
+      console.log(err);
+    }
+    setSelectedPlan({
+      id: "",
+      title: "",
+      price: 0,
     });
     setOpen(false);
   };
@@ -94,10 +132,7 @@ const Payment = () => {
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <p>Total Price: ₹{plan.price}</p>
             <p>Quiz tokens: {plan.points}</p>
-            <Button
-              variant="contained"
-              onClick={() => handleClickOpen(plan.title, plan.price)}
-            >
+            <Button variant="contained" onClick={() => handleClickOpen(plan)}>
               Buy Now
             </Button>
           </div>
@@ -117,7 +152,7 @@ const Payment = () => {
                   <p>Total Price: ₹{addon.price}</p>
                   <Button
                     variant="contained"
-                    onClick={() => handleClickOpen(addon.title, addon.price)}
+                    onClick={() => handleClickOpen(addon)}
                   >
                     Buy Now
                   </Button>

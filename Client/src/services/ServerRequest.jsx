@@ -162,8 +162,20 @@ const JWTService = {
 };
 
 const quizPointsService = {
+  set: async (data) => {
+    return sendRequest("post", "quiz-point", data);
+  },
   getById: (id) => {
     return sendRequest("get", "quiz-point/" + id);
+  },
+};
+
+const quizPointPaymentService = {
+  set: async (data) => {
+    return sendRequest("post", "quiz-point-payment", data);
+  },
+  getById: (id) => {
+    return sendRequest("get", "quiz-point-payment/" + id);
   },
 };
 
@@ -177,4 +189,5 @@ export {
   UserRecordingService,
   JWTService,
   quizPointsService,
+  quizPointPaymentService,
 };

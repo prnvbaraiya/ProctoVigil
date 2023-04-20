@@ -11,6 +11,7 @@ const {
   QuizResult,
   TeacherUser,
   UserRecording,
+  QuizSubscriptionPayment,
 } = require("../controller/AuthController");
 const router = express.Router();
 
@@ -72,5 +73,7 @@ router
 router
   .post("/quiz-point", TeacherUser.update)
   .get("/quiz-point/:id", TeacherUser.getByUserId);
+
+router.post("/quiz-point-payment", QuizSubscriptionPayment.register);
 
 module.exports = router;

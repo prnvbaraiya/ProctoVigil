@@ -1,5 +1,9 @@
 const { JWT, ZegocloudTokenGenerator } = require("../utils/index");
-const { User, Feedback, TeacherUser } = require("./UserConteoller");
+const { User, Feedback } = require("./UserConteoller");
+const {
+  TeacherUser,
+  QuizSubscriptionPayment,
+} = require("./SubscriptionController");
 const {
   Quiz,
   TeacherQuiz,
@@ -44,4 +48,5 @@ module.exports = {
   Feedback,
   TeacherUser,
   testing,
+  QuizSubscriptionPayment,
 };

@@ -3,7 +3,6 @@ const {
   QuizModel,
   UserModel,
   UserRecordingModel,
-  QuizSubscriptionPoint,
 } = require("../model/model.js");
 const {
   constants,
@@ -179,52 +178,6 @@ const User = {
   },
 };
 
-const TeacherUser = {
-  register: async (req, res) => {
-    try {
-      const data = req.body;
-      const tmp = await QuizSubscriptionPoint.create(data);
-      return res
-        .status(SUCCESS_CODE)
-        .send("Quiz Subscription Point Updated Successfully");
-    } catch (err) {
-      return res
-        .status(ERROR_CODE)
-        .send("Quiz Subscription Point Update Error: " + err);
-    }
-  },
-  getByUserId: async (req, res) => {
-    try {
-      const id = req.params.id;
-      var quizPoints = await QuizSubscriptionPoint.findOne({
-        user_id: id,
-      }).populate("user_id", "firstName lastName email");
-      if (quizPoints.length == 0) {
-        quizPoints = await QuizSubscriptionPoint.create({ user_id: id });
-      }
-      return res.status(SUCCESS_CODE).send(quizPoints);
-    } catch (err) {
-      return res.status(ERROR_CODE).send("There is some error: " + err);
-    }
-  },
-  update: async (req, res) => {
-    try {
-      const data = req.body;
-      const tmp = await QuizSubscriptionPoint.findByIdAndUpdate(data._id, data);
-      if (!tmp) {
-        await QuizSubscriptionPoint.create(data);
-      }
-      return res
-        .status(SUCCESS_CODE)
-        .send("Quiz Subscription Point Updated Successfully");
-    } catch (err) {
-      return res
-        .status(ERROR_CODE)
-        .send("Quiz Subscription Point Update Error: " + err);
-    }
-  },
-};
-
 const Feedback = {
   add: async (req, res) => {
     try {
@@ -253,4 +206,4 @@ const Feedback = {
   },
 };
 
-module.exports = { User, Feedback, TeacherUser };
+module.exports = { User, Feedback };

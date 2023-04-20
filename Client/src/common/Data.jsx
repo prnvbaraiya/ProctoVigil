@@ -161,6 +161,7 @@ export const questionTypes = [
 
 export const plans = [
   {
+    id: "c4a4363f-1128-43d0-ba32-5d0132f37302",
     title: "Online Proctorign System",
     points: 5,
     price: "600",
@@ -168,6 +169,7 @@ export const plans = [
       "By online Proctoirng you can take exams from anywhere with student being anywhere in the world. Take your exams outside of just a classroom with help this product. This system will allow you to add tests as and customize them as your need and proctor your students from anywhere.",
   },
   {
+    id: "549d961b-1f07-46fa-b7d6-5ff94d188465",
     title: "Online Proctorign System",
     points: 10,
     price: "1000",
@@ -175,6 +177,7 @@ export const plans = [
       "By online Proctoirng you can take exams from anywhere with student being anywhere in the world. Take your exams outside of just a classroom with help this product. This system will allow you to add tests as and customize them as your need and proctor your students from anywhere.",
     addOns: [
       {
+        id: "603f8af0-694c-49ce-a7cf-a8489843122f",
         title: "AI Analyzation",
         price: "1999",
         description:
