@@ -68,7 +68,8 @@ router
 router
   .post("/feedback", Feedback.add)
   .get("/feedback", Feedback.get)
-  .post("/feedback/:id", Feedback.getById);
+  .get("/feedback/:id", Feedback.getById)
+  .delete("/feedback", Feedback.delete);
 
 router
   .post("/quiz-point", TeacherUser.update)

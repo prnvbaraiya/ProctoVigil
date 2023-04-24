@@ -2,6 +2,7 @@ const {
   QuizResultModel,
   QuizModel,
   UserModel,
+  FeedbackModel,
   UserRecordingModel,
 } = require("../model/model.js");
 const {
@@ -201,7 +202,17 @@ const Feedback = {
       const feedback = await FeedbackModel.findById(id);
       return res.status(SUCCESS_CODE).send(feedback);
     } catch (err) {
+      console.log(err);
       return res.status(ERROR_CODE).send("There is some error: " + err);
+    }
+  },
+  delete: async (req, res) => {
+    try {
+      const feedback = await FeedbackModel.findOne(req.body);
+      feedback.remove();
+      return res.status(SUCCESS_CODE).send("Feedback Deleted Successfully");
+    } catch (err) {
+      return res.status(ERROR_CODE).send("Feedback Delted Error: " + err);
     }
   },
 };

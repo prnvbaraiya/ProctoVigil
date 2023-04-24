@@ -1,22 +1,24 @@
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
+import React from "react";
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Paper,
+  Box,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router";
 import { SERVER_LINK } from "../common/constants";
 import auth from "../auth/auth";
 import side from "../assets/side.jpg";
-import { SnackbarDisplay, LoadingSpinner } from "../components/index";
+import { SnackbarDisplay, LoadingSpinner, TextBox } from "../components/index";
+import { useFormInput } from "../hooks/useFormInput";
 
 const theme = createTheme();
 
@@ -32,6 +34,8 @@ export default function Login() {
     vertical: "top",
     horizontal: "left",
   });
+  const username = useFormInput();
+  const password = useFormInput();
 
   //Handle Form Submit
   const handleSubmit = async (event) => {
@@ -39,8 +43,8 @@ export default function Login() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const data = {
-      username: formData.get("username"),
-      password: formData.get("password"),
+      username: username.value,
+      password: password.value,
       rememberMe: formData.get("rememberMe") !== null,
     };
     try {
@@ -123,25 +127,18 @@ export default function Login() {
                 onSubmit={handleSubmit}
                 sx={{ mt: 1 }}
               >
-                <TextField
+                <TextBox
                   margin="normal"
-                  required
-                  fullWidth
-                  id="username"
                   label="Username or RollNo"
-                  name="username"
-                  autoComplete="username"
-                  autoFocus
-                />
-                <TextField
-                  margin="normal"
                   required
-                  fullWidth
-                  name="password"
+                  {...username}
+                />
+                <TextBox
+                  margin="normal"
                   label="Password"
+                  required
                   type="password"
-                  id="password"
-                  autoComplete="current-password"
+                  {...password}
                 />
                 <FormControlLabel
                   control={

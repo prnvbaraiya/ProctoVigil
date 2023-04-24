@@ -16,6 +16,7 @@ function TextBox({
   multiline = false,
   rows = 2,
   disabled = false,
+  readOnly = false,
   ...props
 }) {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -36,24 +37,23 @@ function TextBox({
           disabled={disabled}
           autoComplete="on"
           {...props}
-          InputProps={
-            type === "password"
-              ? {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }
-              : {}
-          }
+          InputProps={{
+            readOnly,
+            endAdornment:
+              type === "password" ? (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ) : (
+                <></>
+              ),
+          }}
         />
       </FormControl>
     </>

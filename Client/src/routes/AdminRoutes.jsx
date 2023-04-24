@@ -22,6 +22,8 @@ import AddInterview from "../pages/admin/interview/AddInterview";
 import EditInterview from "../pages/admin/interview/EditInterview";
 import Gradding from "../pages/admin/Result/Gradding";
 import AIAnalyzer from "../pages/admin/ai-analyzer/AIAnalyzer";
+import ViewFeedback from "../pages/admin/feedback/ViewFeedback";
+import DetailFeedback from "../pages/admin/feedback/DetailFeedback";
 
 const AdminRoutes = (
   <Route
@@ -64,6 +66,10 @@ const AdminRoutes = (
       </Route>
       <Route path="ai-analyzer">
         <Route index element={<AIAnalyzer />} />
+      </Route>
+      <Route path="feedback">
+        <Route index element={<ViewFeedback />} />
+        <Route path="detail" element={<DetailFeedback />} />
       </Route>
       <Route path="settings">
         <Route index element={<Settings />} />

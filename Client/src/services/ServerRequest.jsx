@@ -141,6 +141,9 @@ const FeedbackService = {
   set: (data) => {
     return sendRequest("post", "feedback", data);
   },
+  delete: (data) => {
+    return sendRequest("delete", "feedback", data);
+  },
 };
 
 const UserRecordingService = {
