@@ -75,6 +75,10 @@ router
   .post("/quiz-point", TeacherUser.update)
   .get("/quiz-point/:id", TeacherUser.getByUserId);
 
-router.post("/quiz-point-payment", QuizSubscriptionPayment.register);
+router
+  .post("/quiz-point-payment", QuizSubscriptionPayment.register)
+  .get("/quiz-point-payment", QuizSubscriptionPayment.get)
+  .get("/quiz-point-payment/:id", QuizSubscriptionPayment.getById)
+  .get("/quiz-point-payment/user/:userId", QuizSubscriptionPayment.getByUserId);
 
 module.exports = router;

@@ -5,7 +5,7 @@ import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import NoAccountsIcon from "@mui/icons-material/NoAccounts";
 import { BarChart, LoadingSpinner } from "../../../components/index";
-import { quizPointsService } from "../../../services/ServerRequest";
+import { QuizPointsService } from "../../../services/ServerRequest";
 import auth from "../../../auth/auth";
 
 const labels = [
@@ -66,7 +66,7 @@ function Dashboard() {
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
-      const res = await quizPointsService.getById(auth.id);
+      const res = await QuizPointsService.getById(auth.id);
       setUserData(res.data);
       setLoading(false);
     };

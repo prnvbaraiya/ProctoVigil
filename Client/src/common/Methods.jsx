@@ -1,9 +1,9 @@
 import axios from "axios";
-import { quizPointsService } from "../services/ServerRequest";
+import { QuizPointsService } from "../services/ServerRequest";
 import auth from "../auth/auth";
 
 export const isSubsciber = async () => {
-  const res = await quizPointsService.getById(auth.id);
+  const res = await QuizPointsService.getById(auth.id);
   return res.data.aiAnalyzation;
 };
 

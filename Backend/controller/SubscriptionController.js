@@ -80,6 +80,50 @@ const QuizSubscriptionPayment = {
         .send("Quiz Subscription Payment Update Error: " + err);
     }
   },
+  get: async (req, res) => {
+    try {
+      const paymentRecords = await PaymentCourse.find().populate(
+        "user_id",
+        "username email"
+      );
+      return res.status(SUCCESS_CODE).send(paymentRecords);
+    } catch (err) {
+      console.log(err);
+      return res
+        .status(ERROR_CODE)
+        .send("Payment Records Fetching Error: " + err);
+    }
+  },
+  getById: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const paymentRecord = await PaymentCourse.findById(id).populate(
+        "user_id",
+        "firstName lastName username email"
+      );
+      return res.status(SUCCESS_CODE).send(paymentRecord);
+    } catch (err) {
+      console.log(err);
+      return res
+        .status(ERROR_CODE)
+        .send("Payment Record Fetching Error: " + err);
+    }
+  },
+  getByUserId: async (req, res) => {
+    try {
+      const user_id = req.params.userId;
+      const paymentRecords = await PaymentCourse.find({ user_id }).populate(
+        "user_id",
+        "username email"
+      );
+      return res.status(SUCCESS_CODE).send(paymentRecords);
+    } catch (err) {
+      console.log(err);
+      return res
+        .status(ERROR_CODE)
+        .send("User Payment Records Fetching Error: " + err);
+    }
+  },
 };
 
 module.exports = { TeacherUser, QuizSubscriptionPayment };

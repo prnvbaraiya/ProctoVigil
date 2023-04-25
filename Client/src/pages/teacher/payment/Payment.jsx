@@ -13,7 +13,7 @@ import GooglePayButton from "@google-pay/button-react";
 import { plans } from "../../../common/Data";
 import { SnackbarDisplay } from "../../../components";
 import auth from "../../../auth/auth";
-import { quizPointPaymentService } from "../../../services/ServerRequest";
+import { QuizPointPaymentService } from "../../../services/ServerRequest";
 
 const Payment = () => {
   const [open, setOpen] = useState(false);
@@ -86,7 +86,7 @@ const Payment = () => {
       paymentMethodData: paymentData,
     };
     try {
-      const res = await quizPointPaymentService.set(sendData);
+      const res = await QuizPointPaymentService.set(sendData);
       console.log(res);
 
       if (res.status === 202) {

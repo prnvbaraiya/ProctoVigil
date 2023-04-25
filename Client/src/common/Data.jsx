@@ -10,6 +10,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import VideoChatIcon from "@mui/icons-material/VideoChat";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
+import ReceiptIcon from "@mui/icons-material/Receipt";
 
 export const ERROR_CODE = 500;
 export const SUCCESS_CODE = 202;
@@ -25,6 +26,11 @@ export const adminSidebarItems = [
     href: "/dashboard",
     icon: <SignalCellularAltIcon fontSize="small" />,
     title: "Dashboard",
+  },
+  {
+    href: "/payment-records",
+    icon: <ReceiptIcon fontSize="small" />,
+    title: "Payment Records",
   },
   {
     href: "/user",

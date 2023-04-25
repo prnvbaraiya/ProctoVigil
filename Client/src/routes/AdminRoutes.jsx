@@ -24,6 +24,8 @@ import Gradding from "../pages/admin/Result/Gradding";
 import AIAnalyzer from "../pages/admin/ai-analyzer/AIAnalyzer";
 import ViewFeedback from "../pages/admin/feedback/ViewFeedback";
 import DetailFeedback from "../pages/admin/feedback/DetailFeedback";
+import ViewPaymentRecords from "../pages/admin/payment-records/ViewPaymentRecords";
+import DetailPaymentRecord from "../pages/admin/payment-records/DetailPaymentRecord";
 
 const AdminRoutes = (
   <Route
@@ -38,6 +40,10 @@ const AdminRoutes = (
         <Route index element={<ViewUser />} />
         <Route path="add" element={<AddUser />} />
         <Route path="edit" element={<EditUser />} />
+      </Route>
+      <Route path="payment-records">
+        <Route index element={<ViewPaymentRecords />} />
+        <Route path="detail" element={<DetailPaymentRecord />} />
       </Route>
       <Route path="quiz">
         <Route index element={<Quiz />} />

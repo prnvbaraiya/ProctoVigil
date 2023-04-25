@@ -10,6 +10,7 @@ const {
   comparePassword,
   JWT,
   MailingSystem,
+  cryptingPassword,
 } = require("../utils/index.js");
 
 const ERROR_CODE = constants.ERROR_CODE;
@@ -59,6 +60,7 @@ const User = {
         }
       });
     } catch (err) {
+      console.log(err);
       return res.status(ERROR_CODE).send("Server Error: " + err);
     }
   },

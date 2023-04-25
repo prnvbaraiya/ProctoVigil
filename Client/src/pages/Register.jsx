@@ -13,7 +13,7 @@ import {
 import { useFormInput } from "../hooks/useFormInput";
 import { SERVER_LINK } from "../common/constants";
 import sideImg from "../assets/side.jpg";
-import { userRoles } from "../common/Data";
+import { SUCCESS_CODE, userRoles } from "../common/Data";
 import { LoadingSpinner, TextBox, RadioButton } from "../components/index";
 
 function Register() {
@@ -39,10 +39,10 @@ function Register() {
     };
     const res = await axios.post(SERVER_LINK + "register", data);
     setLoading(false);
-    if (res.status === 202) {
+    if (res.status === SUCCESS_CODE) {
       navigate("/login");
     } else {
-      alert("Server Error While Creating Account! Tey Again Later");
+      alert("Server Error While Creating Account! Try Again Later");
     }
   };
 
