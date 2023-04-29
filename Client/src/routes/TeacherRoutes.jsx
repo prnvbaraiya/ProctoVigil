@@ -24,6 +24,8 @@ import Gradding from "../pages/admin/Result/Gradding";
 import Payment from "../pages/teacher/payment/Payment";
 import AIAnalyzer from "../pages/teacher/ai-analyzer/AIAnalyzer";
 import RequireSubscription from "../auth/RequireSubscription";
+import ViewPaymentHistory from "../pages/teacher/payment-history/ViewPaymentHistory";
+import DetailPaymentHistory from "../pages/teacher/payment-history/DetailPaymentHistory";
 
 const TeacherRoutes = (
   <Route
@@ -38,6 +40,10 @@ const TeacherRoutes = (
         <Route index element={<ViewUser />} />
         <Route path="add" element={<AddUser />} />
         <Route path="edit" element={<EditUser />} />
+      </Route>
+      <Route path="payment-history">
+        <Route index element={<ViewPaymentHistory />} />
+        <Route path="detail" element={<DetailPaymentHistory />} />
       </Route>
       <Route path="quiz">
         <Route index element={<ViewQuiz />} />

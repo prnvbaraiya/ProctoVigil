@@ -10,6 +10,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import VideoChatIcon from "@mui/icons-material/VideoChat";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
+import PaymentIcon from "@mui/icons-material/Payment";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 
 export const ERROR_CODE = 500;
@@ -94,6 +95,11 @@ export const teacherSidebarItems = [
     href: "/user",
     icon: <PersonIcon fontSize="small" />,
     title: "Student",
+  },
+  {
+    href: "/payment-history",
+    icon: <PaymentIcon fontSize="small" />,
+    title: "Payment History",
   },
   {
     href: "/quiz",

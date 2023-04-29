@@ -5,8 +5,9 @@ import { Box, Divider, Typography } from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import { BasicTable, LoadingSpinner } from "../../../components";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import auth from "../../../auth/auth";
 
-function ViewPaymentRecords() {
+function ViewPaymentHistory() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const navigate = useNavigate();
@@ -14,8 +15,7 @@ function ViewPaymentRecords() {
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
-      const res = await QuizPointPaymentService.get();
-      console.log(res.data);
+      const res = await QuizPointPaymentService.getByUserId(auth.id);
       setData(res.data);
       setLoading(false);
     };
@@ -101,7 +101,7 @@ function ViewPaymentRecords() {
           }}
         >
           <Box></Box>
-          <Typography variant="h6">Payment Records</Typography>
+          <Typography variant="h6">Payment History</Typography>
           <Box></Box>
         </Box>
         <Divider sx={{ margin: "10px 0 20px" }} />
@@ -119,4 +119,4 @@ function ViewPaymentRecords() {
   );
 }
 
-export default ViewPaymentRecords;
+export default ViewPaymentHistory;

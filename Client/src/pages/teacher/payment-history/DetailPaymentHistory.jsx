@@ -5,7 +5,7 @@ import { QuizPointPaymentService } from "../../../services/ServerRequest";
 import { LoadingSpinner, TextBox } from "../../../components";
 import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 
-function DetailPaymentRecord() {
+function DetailPaymentHistory() {
   const location = useLocation();
   const { payment_id } = location.state;
   const [loading, setLoading] = useState(false);
@@ -65,7 +65,7 @@ function DetailPaymentRecord() {
               Back
             </Button>
           </Link>
-          <Typography variant="h6">Detail Payment Record</Typography>
+          <Typography variant="h6">Detail of Payment</Typography>
           <Box></Box>
         </Box>
         <Divider sx={{ margin: "10px" }} />
@@ -121,4 +121,4 @@ function DetailPaymentRecord() {
   );
 }
 
-export default DetailPaymentRecord;
+export default DetailPaymentHistory;
