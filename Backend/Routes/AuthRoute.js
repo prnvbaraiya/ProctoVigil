@@ -20,6 +20,8 @@ router.get("/test-mail", testing.testMailSend);
 router.post("/register", User.register);
 router.post("/login", User.login);
 
+router.get("/public/student", User.publicStudent);
+
 //Authenticate Routes
 router.use(JWT.authenticateToken);
 router.post("/generateToken", ZegocloudTokenGenerator.getToken);
@@ -28,6 +30,7 @@ router
   .get("/student", User.getStudent)
   .post("/user", User.register)
   .post("/users", User.usersRegister)
+  .post("/users/erp", User.usersERPRegister)
   .post("/user/find", User.find)
   .put("/user", User.update)
   .delete("/user", User.delete)
@@ -58,6 +61,7 @@ router
   .get("/quiz-result/:id", QuizResult.getById)
   .post("/quiz-result/send-mail", QuizResult.sendResultMail)
   .post("/quiz-result", QuizResult.add)
+  .put("/quiz-result/:quizId", QuizResult.add)
   .delete("/quiz-result/student", QuizResult.deleteStudent);
 
 router

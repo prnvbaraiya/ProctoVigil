@@ -11,6 +11,7 @@ const {
   JWT,
   MailingSystem,
   cryptingPassword,
+  getRandomPassword,
 } = require("../utils/index.js");
 
 const ERROR_CODE = constants.ERROR_CODE;
@@ -177,6 +178,71 @@ const User = {
     } catch (err) {
       console.error(err);
       res.status(ERROR_CODE).send("Error deleting users");
+    }
+  },
+  usersERPRegister: async (req, res) => {
+    const data = req.body;
+    try {
+      for (let i = 0; i < data.length; i++) {
+        const password = getRandomPassword();
+        const user = {
+          ...data[i],
+          password,
+          roles: "student",
+        };
+        cryptingPassword(user.password, async function (err, hash) {
+          if (err) {
+            return res.status(ERROR_CODE).send(err);
+          } else {
+            user.password = hash;
+            const userObj = new UserModel(user);
+            await userObj.save();
+
+            MailingSystem.sendMail({
+              to: user.email,
+              subject: "Welcome To ProctoVigil",
+              template: "welcome-mail",
+              context: {
+                name: user.firstName + " " + user.lastName,
+              },
+            });
+          }
+        });
+      }
+      return res.status(SUCCESS_CODE).send("User Created Succesfully");
+    } catch (err) {
+      return res.status(ERROR_CODE).send("User CreationFailed");
+    }
+  },
+  publicStudent: async (req, res) => {
+    try {
+      // const users = await UserModel.find(
+      //   { roles: "student" },
+      //   { username: 1, _id: 0, firstName: 1, lastName: 1, email: 1 }
+      // ).limit(2);
+      const users = [
+        {
+          username: "erpStudent1",
+          firstName: "Test",
+          lastName: "Student1",
+          email: "erptest@student.com",
+        },
+        {
+          username: "erpStudent2",
+          firstName: "Test",
+          lastName: "Student2",
+          email: "erptest2@student.com",
+        },
+        {
+          username: "erpStudent3",
+          firstName: "Test",
+          lastName: "Student3",
+          email: "erptest3@student.com",
+        },
+      ];
+      return res.status(SUCCESS_CODE).send(users);
+    } catch (err) {
+      return res.status(ERROR_CODE).send("User Getting Error: " + err);
     }
   },
 };

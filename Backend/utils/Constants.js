@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const ERROR_CODE = 500;
 const SUCCESS_CODE = 202;
 

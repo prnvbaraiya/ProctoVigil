@@ -43,6 +43,7 @@ function Gradding() {
   }, []);
 
   const handleSubmit = () => {
+    console.log(quiz_id, totalObtainedMarks);
     console.log("Submit");
   };
 

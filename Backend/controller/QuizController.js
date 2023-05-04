@@ -379,6 +379,16 @@ const QuizResult = {
       return res.status(ERROR_CODE).send(`There is some error: ${err}`);
     }
   },
+  updateMarks: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const quiz = await QuizResultModel.findOne({ quiz_id: id });
+      quiz.update();
+      return res.status(SUCCESS_CODE).send(quiz);
+    } catch (err) {
+      return res.status(ERROR_CODE).send("There is some error: " + err);
+    }
+  },
   deleteStudent: async (req, res) => {
     try {
       const quizResults = await QuizResultModel.findOne({

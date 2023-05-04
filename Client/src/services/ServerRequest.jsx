@@ -45,6 +45,9 @@ const UserService = {
   deleteUsers: async (data) => {
     return sendRequest("delete", "users", data);
   },
+  setERPStudent: async (data) => {
+    return sendRequest("post", "users/erp", data);
+  },
 };
 
 const QuizService = {

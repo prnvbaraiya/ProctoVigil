@@ -5,9 +5,11 @@ import Papa from "papaparse";
 import { LoadingSpinner, SelectBox } from "../../../components/index";
 import { useFormInput } from "../../../hooks/useFormInput";
 import { UserService } from "../../../services/ServerRequest";
-import { userRoles } from "../../../common/Data";
+import { SUCCESS_CODE, userRoles } from "../../../common/Data";
 import ManualUserAdd from "./ManualUserAdd";
 import CSVUserAdd from "./CSVUserAdd";
+import ERPUserAdd from "./ERPUserAdd";
+import axios from "axios";
 
 function AddUser() {
   const [loading, setLoading] = useState(false);
@@ -20,6 +22,7 @@ function AddUser() {
   const password = useFormInput("");
   const cnfPassword = useFormInput("");
   const [csvFile, setCsvFile] = useState("");
+  const erpLink = useFormInput("");
   const navigate = useNavigate();
 
   const inputMethodTypes = [
@@ -114,7 +117,7 @@ function AddUser() {
     };
     try {
       const res = await UserService.set(data);
-      if (res.status === 202) {
+      if (res.status === SUCCESS_CODE) {
         const state = {
           open: true,
           message: res.data,
@@ -129,12 +132,34 @@ function AddUser() {
     }
   };
 
+  const handleERPLink = async () => {
+    try {
+      const result = await axios.get(erpLink.value);
+      const res = await UserService.setERPStudent(result.data);
+      console.log(res);
+      if (res.status === SUCCESS_CODE) {
+        const state = {
+          open: true,
+          message: res.data,
+          type: "success",
+        };
+        navigate("/admin/user", { state });
+      } else {
+        alert("Server Error While Creating Account! Try Again Later");
+      }
+    } catch (err) {
+      alert("Please Enter Valid URL");
+    }
+  };
+
   const handleSubmit = () => {
     setLoading(true);
     if (inputMethods.value == "csv") {
       handleCsvUpload();
     } else if (inputMethods.value == "manual") {
       handleManualUpload();
+    } else if (inputMethods.value == "erp") {
+      handleERPLink();
     }
     setLoading(false);
   };
@@ -186,6 +211,9 @@ function AddUser() {
       )}
       {inputMethods.value === "csv" && (
         <CSVUserAdd setCsvFile={setCsvFile} csvFile={csvFile} />
+      )}
+      {inputMethods.value === "erp" && (
+        <ERPUserAdd handleERPLink={handleERPLink} erpLink={erpLink} />
       )}
     </Box>
   );
