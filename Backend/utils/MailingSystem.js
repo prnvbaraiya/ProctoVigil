@@ -34,6 +34,7 @@ const MailingSystem = {
 
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
+        console.log(error);
         return false;
       } else {
         return true;

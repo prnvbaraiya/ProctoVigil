@@ -41,6 +41,7 @@ const User = {
   },
   register: async (req, res) => {
     var data = req.body;
+    const oldPassword = data.password;
 
     try {
       cryptingPassword(data.password, async function (err, hash) {
@@ -55,6 +56,8 @@ const User = {
             template: "welcome-mail",
             context: {
               name: user.firstName + " " + user.lastName,
+              username: user.username,
+              password: oldPassword,
             },
           });
           return res.status(SUCCESS_CODE).send("User Created Succesfully");
@@ -75,6 +78,7 @@ const User = {
           if (err) {
             return res.status(ERROR_CODE).send(err);
           } else {
+            const oldPassword = user.password;
             user.password = hash;
             const userObj = new UserModel(user);
             userObjs.push(userObj);
@@ -87,6 +91,8 @@ const User = {
               template: "welcome-mail",
               context: {
                 name: user.firstName + " " + user.lastName,
+                username: user.username,
+                password: oldPassword,
               },
             });
           }
@@ -182,8 +188,22 @@ const User = {
   },
   usersERPRegister: async (req, res) => {
     const data = req.body;
+    const error = { username: false, email: false };
+    var message = "User Created Succesfully ";
     try {
       for (let i = 0; i < data.length; i++) {
+        if (data) {
+          const user = await UserModel.findOne({ username: data[i].username });
+          if (user) {
+            error.username = true;
+            continue;
+          }
+          const email = await UserModel.findOne({ email: data[i].email });
+          if (email) {
+            error.email = true;
+            continue;
+          }
+        }
         const password = getRandomPassword();
         const user = {
           ...data[i],
@@ -192,8 +212,10 @@ const User = {
         };
         cryptingPassword(user.password, async function (err, hash) {
           if (err) {
+            console.log("CRY:", err);
             return res.status(ERROR_CODE).send(err);
           } else {
+            const oldPassword = user.password;
             user.password = hash;
             const userObj = new UserModel(user);
             await userObj.save();
@@ -204,13 +226,22 @@ const User = {
               template: "welcome-mail",
               context: {
                 name: user.firstName + " " + user.lastName,
+                username: user.username,
+                password: oldPassword,
               },
             });
           }
         });
       }
-      return res.status(SUCCESS_CODE).send("User Created Succesfully");
+      if (error.username) {
+        message += "same username found ";
+      }
+      if (error.email) {
+        message += "same email found";
+      }
+      return res.status(SUCCESS_CODE).send(message);
     } catch (err) {
+      console.log(err);
       return res.status(ERROR_CODE).send("User CreationFailed");
     }
   },
