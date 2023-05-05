@@ -22,6 +22,12 @@ router.post("/login", User.login);
 
 router.get("/public/student", User.publicStudent);
 
+router
+  .post("/feedback", Feedback.add)
+  .get("/feedback", Feedback.get)
+  .get("/feedback/:id", Feedback.getById)
+  .delete("/feedback", Feedback.delete);
+
 //Authenticate Routes
 router.use(JWT.authenticateToken);
 router.post("/generateToken", ZegocloudTokenGenerator.getToken);
@@ -68,12 +74,6 @@ router
   .post("/user-recording", UserRecording.add)
   .post("/user-recording/file-path", UserRecording.sendFile)
   .get("/user-recording", UserRecording.get);
-
-router
-  .post("/feedback", Feedback.add)
-  .get("/feedback", Feedback.get)
-  .get("/feedback/:id", Feedback.getById)
-  .delete("/feedback", Feedback.delete);
 
 router
   .post("/quiz-point", TeacherUser.update)

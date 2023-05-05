@@ -37,7 +37,7 @@ function EditUser() {
   }, []);
 
   const handleSubmit = async () => {
-    useState(true);
+    setLoading(true);
     const dataTmp = {
       _id: id,
       roles: roles.value,
@@ -57,7 +57,7 @@ function EditUser() {
     } else {
       alert("There is Some error ", JSON.stringify(res));
     }
-    useState(false);
+    setLoading(false);
   };
 
   return (

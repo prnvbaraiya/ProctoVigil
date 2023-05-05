@@ -1,12 +1,13 @@
 import { Box, Button, Divider, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LoadingSpinner, QuestionCard } from "../../../components";
 import {
   QuizResultService,
   QuizService,
 } from "../../../services/ServerRequest";
 import { groupByObject } from "../../../common/Methods";
+import { SUCCESS_CODE } from "../../../common/Data";
 
 function Gradding() {
   const location = useLocation();
@@ -15,6 +16,7 @@ function Gradding() {
   const [quizData, setQuizData] = useState([]);
   const [studentQuizResultData, setStudentQuizResultData] = useState({});
   const [totalObtainedMarks, setTotalObtainedMarks] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
@@ -42,9 +44,24 @@ function Gradding() {
     getData();
   }, []);
 
-  const handleSubmit = () => {
-    console.log(quiz_id, totalObtainedMarks);
-    console.log("Submit");
+  const handleSubmit = async () => {
+    console.log(studentQuizResultData.user._id);
+    const res = await QuizService.update({
+      quiz_id,
+      user_id: studentQuizResultData.user._id,
+      obtainedMarks: totalObtainedMarks,
+    });
+    if (res.status === SUCCESS_CODE) {
+      const state = {
+        open: true,
+        message: res.data,
+        type: "success",
+      };
+      navigate("..", { state });
+    } else {
+      console.log(res);
+      alert("Server Error");
+    }
   };
 
   return (

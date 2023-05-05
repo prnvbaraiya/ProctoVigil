@@ -84,10 +84,20 @@ const Quiz = {
   },
   update: async (req, res) => {
     try {
-      const data = req.body;
-      await QuizModel.findByIdAndUpdate(data._id, data);
+      const { quiz_id, user_id, obtainedMarks } = req.body;
+      quizres = await QuizResultModel.findOne({
+        quiz_id,
+      });
+      for (var i = 0; i < quizres.students.length; i++) {
+        if (quizres.students[i].user.toString() === user_id) {
+          quizres.students[i].obtainedMarks = obtainedMarks;
+        }
+      }
+      quizres.save();
+
       return res.status(SUCCESS_CODE).send("Quiz Updated Successfully");
     } catch (err) {
+      console.log(err);
       return res.status(ERROR_CODE).send("There is some error: " + err);
     }
   },
