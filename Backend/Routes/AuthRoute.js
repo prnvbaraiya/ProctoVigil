@@ -68,6 +68,7 @@ router
   .post("/quiz-result/send-mail", QuizResult.sendResultMail)
   .post("/quiz-result", QuizResult.add)
   .put("/quiz-result/:quizId", QuizResult.add)
+  .put("/quiz-result", QuizResult.updateMarks)
   .delete("/quiz-result/student", QuizResult.deleteStudent);
 
 router

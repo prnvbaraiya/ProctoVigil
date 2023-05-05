@@ -84,20 +84,10 @@ const Quiz = {
   },
   update: async (req, res) => {
     try {
-      const { quiz_id, user_id, obtainedMarks } = req.body;
-      quizres = await QuizResultModel.findOne({
-        quiz_id,
-      });
-      for (var i = 0; i < quizres.students.length; i++) {
-        if (quizres.students[i].user.toString() === user_id) {
-          quizres.students[i].obtainedMarks = obtainedMarks;
-        }
-      }
-      quizres.save();
-
+      const data = req.body;
+      await QuizModel.findByIdAndUpdate(data._id, data);
       return res.status(SUCCESS_CODE).send("Quiz Updated Successfully");
     } catch (err) {
-      console.log(err);
       return res.status(ERROR_CODE).send("There is some error: " + err);
     }
   },
@@ -340,6 +330,11 @@ const QuizResult = {
         }
       }
 
+      await QuizModel.updateOne(
+        { _id: quiz_id },
+        { $pull: { studentNames: user._id } }
+      );
+
       // Save the quiz result document
       await quizResult.save();
 
@@ -400,12 +395,20 @@ const QuizResult = {
     }
   },
   updateMarks: async (req, res) => {
+    const { quiz_id, user_id, obtainedMarks } = req.body;
     try {
-      const id = req.params.id;
-      const quiz = await QuizResultModel.findOne({ quiz_id: id });
-      quiz.update();
-      return res.status(SUCCESS_CODE).send(quiz);
+      quizres = await QuizResultModel.findOne({
+        quiz_id,
+      });
+      for (var i = 0; i < quizres.students.length; i++) {
+        if (quizres.students[i].user.toString() === user_id) {
+          quizres.students[i].obtainedMarks = obtainedMarks;
+        }
+      }
+      quizres.save();
+      return res.status(SUCCESS_CODE).send("Marks Updated Successfully");
     } catch (err) {
+      console.log(err);
       return res.status(ERROR_CODE).send("There is some error: " + err);
     }
   },

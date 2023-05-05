@@ -46,7 +46,7 @@ function Gradding() {
 
   const handleSubmit = async () => {
     console.log(studentQuizResultData.user._id);
-    const res = await QuizService.update({
+    const res = await QuizResultService.update({
       quiz_id,
       user_id: studentQuizResultData.user._id,
       obtainedMarks: totalObtainedMarks,

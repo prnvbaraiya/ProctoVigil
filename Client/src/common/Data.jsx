@@ -48,16 +48,21 @@ export const adminSidebarItems = [
     icon: <VideoChatIcon fontSize="small" />,
     title: "Interview",
   },
+  // {
+  //   href: "/subscriptionPlan",
+  //   icon: <VideoChatIcon fontSize="small" />,
+  //   title: "Subscription Plans",
+  // },
   {
     href: "/stream",
     icon: <LiveTvIcon fontSize="small" />,
     title: "Stream",
   },
-  {
-    href: "/phase",
-    icon: <AutorenewIcon fontSize="small" />,
-    title: "Change Phase",
-  },
+  // {
+  //   href: "/phase",
+  //   icon: <AutorenewIcon fontSize="small" />,
+  //   title: "Change Phase",
+  // },
   {
     href: "/result",
     icon: <EmojiEventsIcon fontSize="small" />,
@@ -116,11 +121,11 @@ export const teacherSidebarItems = [
     icon: <LiveTvIcon fontSize="small" />,
     title: "Stream",
   },
-  {
-    href: "/phase",
-    icon: <AutorenewIcon fontSize="small" />,
-    title: "Change Phase",
-  },
+  // {
+  //   href: "/phase",
+  //   icon: <AutorenewIcon fontSize="small" />,
+  //   title: "Change Phase",
+  // },
   {
     href: "/result",
     icon: <EmojiEventsIcon fontSize="small" />,

@@ -207,7 +207,7 @@ const AttemptQuiz = (props) => {
         data={`Question Attempted: ${
           selectedAnswers.filter(({ userAnswer }) => userAnswer.length > 0)
             .length
-        }/ tobeUpdated`}
+        }/${selectedAnswers.length}`}
       />
       <LoadingSpinner loading={loading} />
       {!loading && (
