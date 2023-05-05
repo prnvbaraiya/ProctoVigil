@@ -3,7 +3,7 @@
 - 1. Install all the packages for frontend & backend.
 - 2. If you are running first time then go to next step otherwise go to step 4.
 - 3. Open terminal and run `npm run dev`
-- 4. Open terminal and run `npm run first`
+- 4. Open terminal and run `npm i && npm run first`
 - 5. Your project is running localhost port for frontend 5173 and backend 1322.
 
 ### Scope

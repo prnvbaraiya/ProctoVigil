@@ -135,17 +135,21 @@ function AddUser() {
   const handleERPLink = async () => {
     try {
       const result = await axios.get(erpLink.value);
-      const res = await UserService.setERPStudent(result.data);
-      console.log(res);
-      if (res.status === SUCCESS_CODE) {
-        const state = {
-          open: true,
-          message: res.data,
-          type: "success",
-        };
-        navigate("/admin/user", { state });
-      } else {
-        alert("Server Error While Creating Account! Try Again Later");
+      try {
+        const res = await UserService.setERPStudent(result.data);
+        if (res.status === SUCCESS_CODE) {
+          const state = {
+            open: true,
+            message: res.data,
+            type: "success",
+          };
+          navigate("/admin/user", { state });
+        } else {
+          alert("Server Error While Creating Account! Try Again Later");
+          return;
+        }
+      } catch (er) {
+        console.log(er);
       }
     } catch (err) {
       alert("Please Enter Valid URL");

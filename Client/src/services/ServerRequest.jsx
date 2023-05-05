@@ -16,7 +16,7 @@ const sendRequest = async (type, link, data = null) => {
     return res;
   } catch (err) {
     alert("Server: " + err.message);
-    console.log("PRNV AXIOS ERROR:", err);
+    console.log("PRNV AXIOS ERROR:", err.request.responseText);
   }
 };
 

@@ -25,6 +25,11 @@ function AIAnalyzer() {
   const [students, setStudents] = useState([]);
   const [driveLinkUrl, setDriveLinkUrl] = useState("");
   const [showRes, setShowRes] = useState(false);
+  const [videoAnalyzationDataMouth, setVideoAnalyzationDataMouth] =
+    useState(null);
+  const [videoAnalyzationDataEye, setVideoAnalyzationDataEye] = useState(null);
+  const [videoAnalyzationDataPhone, setVideoAnalyzationDataPhone] =
+    useState(null);
   // const [videoAnalyzationData, setVideoAnalyzationData] = useState({})
   // const [playVideo, setPlatVideo] = useState(false);
 
@@ -96,12 +101,6 @@ function AIAnalyzer() {
       "http://127.0.0.1:5003/flask/" + d.split("/").slice(-1)
     );
   };
-
-  const [videoAnalyzationDataMouth, setVideoAnalyzationDataMouth] =
-    useState(null);
-  const [videoAnalyzationDataEye, setVideoAnalyzationDataEye] = useState(null);
-  const [videoAnalyzationDataPhone, setVideoAnalyzationDataPhone] =
-    useState(null);
 
   const getVideoAnalyzed = async () => {
     setLoading(true);
@@ -248,6 +247,18 @@ function AIAnalyzer() {
         </Grid>
         <Box sx={{ padding: 5 }} textAlign="center">
           <LoadingSpinner loading={loading} />
+          <Box sx={{ padding: 5 }} textAlign="center">
+            {!loading && driveLinkUrl !== "" && (
+              <video
+                controls
+                id="Student-camera"
+                style={{ width: "50vw" }}
+                src={driveLinkUrl}
+              >
+                Your browser does not support the video tag.
+              </video>
+            )}
+          </Box>
 
           {showRes && (
             <div className="result">

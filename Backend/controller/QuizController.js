@@ -4,6 +4,7 @@ const {
   UserModel,
   UserRecordingModel,
   InterviewModel,
+  QuizSubscriptionPoint,
 } = require("../model/model.js");
 const { constants } = require("../utils/index");
 
@@ -28,6 +29,11 @@ const Quiz = {
   add: async (req, res) => {
     const user = await UserModel.findOne({ username: req.body.author });
     const data = { ...req.body, author: user._id };
+    var quizPoints = await QuizSubscriptionPoint.findOne({
+      user_id: user._id,
+    });
+    quizPoints.quizPoint = quizPoints.quizPoint - 1;
+    await quizPoints.save();
     try {
       await QuizModel.create(data);
       return res.status(SUCCESS_CODE).send("Quiz Created Successfully");
@@ -114,6 +120,10 @@ const TeacherQuiz = {
   add: async (req, res) => {
     const user = await UserModel.findOne({ username: req.body.author });
     const data = { ...req.body, author: user._id };
+    var quizPoints = await QuizSubscriptionPoint.findOne({
+      user_id: user._id,
+    });
+    console.log(quizPoints);
     try {
       await QuizModel.create(data);
       return res.status(SUCCESS_CODE).send("Quiz Created Successfully");

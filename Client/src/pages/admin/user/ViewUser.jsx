@@ -59,7 +59,8 @@ function ViewUser() {
       width: 150,
       renderCell: (params) => {
         const row = params.row;
-        return <Typography>{row.firstName + " " + row.lastName}</Typography>;
+        const lName = row.lastName ? row.lastName : "";
+        return <Typography>{row.firstName + " " + lName}</Typography>;
       },
     },
     { field: "email", headerName: "E-mail", width: 250 },

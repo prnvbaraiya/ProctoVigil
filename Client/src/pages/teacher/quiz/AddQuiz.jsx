@@ -14,7 +14,11 @@ import {
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useFormInput } from "../../../hooks/useFormInput";
 import auth from "../../../auth/auth";
-import { QuizService, UserService } from "../../../services/ServerRequest";
+import {
+  QuizPointsService,
+  QuizService,
+  UserService,
+} from "../../../services/ServerRequest";
 import {
   LoadingSpinner,
   SelectBox,
@@ -30,6 +34,7 @@ function AddQuiz() {
   const [loading, setLoading] = React.useState(false);
   const [studentNames, setStudentNames] = useState([]);
   const author = useFormInput(auth.username);
+  const remainingQuizPoint = useFormInput(0);
   const name = useFormInput("");
   const description = useFormInput("");
   const [startDate, setStartDate] = useState(new Date());
@@ -63,6 +68,8 @@ function AddQuiz() {
         return { title: item.username, value: item._id };
       })
     );
+    const response = await QuizPointsService.getById(auth.id);
+    remainingQuizPoint.onChange(response.data.quizPoint);
     setLoading(false);
   };
 
@@ -171,7 +178,12 @@ function AddQuiz() {
             </Button>
           </Link>
           <Typography variant="h6">Add Quiz</Typography>
-          <Button color="secondary" onClick={handleSubmit} variant="contained">
+          <Button
+            color="secondary"
+            onClick={handleSubmit}
+            disabled={remainingQuizPoint.value < 1}
+            variant="contained"
+          >
             Save Quiz
           </Button>
         </Box>
@@ -181,7 +193,18 @@ function AddQuiz() {
         {/* Body  */}
         <form>
           <Stack spacing={3}>
-            <TextBox label="Author" disabled={true} {...author} />
+            <Stack
+              spacing={{ sm: 3 }}
+              direction={{ lg: "row", sm: "column" }}
+              sx={{ justifyContent: "space-between" }}
+            >
+              <TextBox label="Author" disabled={true} {...author} />
+              <TextBox
+                label="Remaining Quiz Point"
+                disabled={true}
+                {...remainingQuizPoint}
+              />
+            </Stack>
             <TextBox label="Name" {...name} />
             <TextBox label="Description" {...description} />
             <Stack

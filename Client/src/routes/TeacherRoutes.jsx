@@ -6,7 +6,7 @@ import ViewQuiz from "../pages/teacher/quiz/ViewQuiz";
 import Stream from "../pages/teacher/stream/Stream";
 import AdminLayout from "../pages/admin/AdminLayout";
 import ViewUser from "../pages/admin/user/ViewUser";
-import AddQuiz from "../pages/admin/quiz/AddQuiz";
+import AddQuiz from "../pages/teacher/quiz/AddQuiz";
 import EditQuiz from "../pages/admin/quiz/EditQuiz";
 import EditUser from "../pages/admin/user/EditUser";
 import PageNotFound from "../pages/PageNotFound";

@@ -9,7 +9,10 @@
     "newFrontend": "cd Client && npm i && npm run dev",
     "backend": "cd Backend && nodemon main",
     "newBackend": "cd Backend && npm i && nodemon main",
-    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "mouthAPI":"cd Proctoring-AI && python mouth_opening_detector_api.py",
+    "eyeAPI":"cd Proctoring-AI && python eye_tracker_api.py",
+    "mobilePersonAPI":"cd Proctoring-AI && python person_and_phone_api.py",
+    "dev": "concurrently -k \"npm run backend\" \"npm run frontend\" \"npm run mouthAPI\" \"npm run eyeAPI\" \"npm run mobilePersonAPI\"",
     "first": "concurrently \"npm run newBackend\" \"npm run newFrontend\""
   },
   "repository": {
